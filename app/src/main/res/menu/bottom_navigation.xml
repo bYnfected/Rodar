@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_eventos"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Eventos" />
+
+    <item
+        android:id="@+id/nav_transportes"
+        android:icon="@drawable/ic_directions_car_black_24dp"
+        android:title="Transportes"/>
+
+    <item
+        android:id="@+id/nav_mensagens"
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="Mensagens" />
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="Perfil" />
+
+
+
+</menu>
