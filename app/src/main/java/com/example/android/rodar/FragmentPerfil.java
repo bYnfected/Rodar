@@ -13,6 +13,6 @@ public class FragmentPerfil extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login, container, false);
+        return inflater.inflate(R.layout.perfil, container, false);
     }
 }
