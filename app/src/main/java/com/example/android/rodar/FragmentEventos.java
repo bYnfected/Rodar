@@ -32,14 +32,6 @@ public class FragmentEventos extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_eventos, container, false);
         InicilizaLista();
-        RecyclerView recyclerView = v.findViewById(R.id.recycler_view_eventos);
-
-        AdapterListaEventos adapter = new AdapterListaEventos(mEventos,mCidades,mDatas,this.getContext());
-
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
 
         return v;
     }
@@ -88,6 +80,14 @@ public class FragmentEventos extends Fragment {
                         mEventos.add(user.getUsername());
 
                         Toast.makeText(getContext(), "CARREGOU USERS", Toast.LENGTH_LONG).show();
+                        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
+
+                        AdapterListaEventos adapter = new AdapterListaEventos(mEventos,mCidades,mDatas,getView().getContext());
+
+                        recyclerView.setAdapter(adapter);
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+
                     }
 
             }
