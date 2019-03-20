@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentPerfil extends Fragment {
-
+public class FragmentCadastroEmail extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        View v = inflater.inflate(R.layout.cria_cadastro, container, false);
+
+        return v;
     }
+
 }

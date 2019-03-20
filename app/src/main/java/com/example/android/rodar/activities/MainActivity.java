@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.activities;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -6,6 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.example.android.rodar.FragmentEventos;
+import com.example.android.rodar.FragmentMensagens;
+import com.example.android.rodar.FragmentPerfil;
+import com.example.android.rodar.FragmentTransportes;
+import com.example.android.rodar.R;
 
 public class MainActivity extends AppCompatActivity {
 
