@@ -14,7 +14,7 @@ public class StartActivity extends AppCompatActivity {
 
         // Vai direto para a MainActivity se ta logado
 
-        if (1 == 1) {
+        if (1 != 1) {
             activityIntent = new Intent(this, MainActivity.class);
         } else {
             activityIntent = new Intent(this, LoginActivity.class);

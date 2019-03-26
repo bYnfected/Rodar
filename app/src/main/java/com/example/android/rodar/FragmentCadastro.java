@@ -12,16 +12,16 @@ import android.widget.Button;
 
 public class FragmentCadastro extends Fragment {
 
-    private Button cadastra;
+    private Button btnCadastra;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.cadastro, container, false);
 
-        cadastra = v.findViewById(R.id.cadastro_por_email);
+        btnCadastra = v.findViewById(R.id.cadastro_por_email);
 
-        cadastra.setOnClickListener(cadastraListener);
+        btnCadastra.setOnClickListener(cadastraListener);
         return v;
     }
 

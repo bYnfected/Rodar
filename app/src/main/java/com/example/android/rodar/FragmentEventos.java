@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 
 import java.util.ArrayList;
@@ -61,39 +62,37 @@ public class FragmentEventos extends Fragment {
 
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
 
-        Call<List<TesteUser>> call = service.getUsers();
+        Call<Usuario> call = service.getUser(1);
 
-        call.enqueue(new Callback<List<TesteUser>>() {
+        call.enqueue(new Callback<Usuario>() {
             @Override
-            public void onResponse(Call<List<TesteUser>> call, Response<List<TesteUser>> response) {
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
 
                 if (!response.isSuccessful()){
                     Toast.makeText(getContext(), "ERRO NOT SUCCESSFUL", Toast.LENGTH_LONG).show();
                     return;
                 }
                 // TUDO CERTO AQUI
-                    List<TesteUser> users = response.body();
+                    Usuario user = response.body();
 
-                    for (TesteUser user : users) {
-                        mCidades.add(user.getPhone());
-                        mDatas.add(user.getEmail());
-                        mEventos.add(user.getUsername());
 
-                        Toast.makeText(getContext(), "CARREGOU USERS", Toast.LENGTH_LONG).show();
-                        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
+                    mCidades.add(user.getSenha());
+                    mDatas.add(user.getGenero());
+                    mEventos.add(user.getEmail());
 
-                        AdapterListaEventos adapter = new AdapterListaEventos(mEventos,mCidades,mDatas,getView().getContext());
+                    Toast.makeText(getContext(), "CARREGOU USERS", Toast.LENGTH_LONG).show();
+                    RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
 
-                        recyclerView.setAdapter(adapter);
+                    AdapterListaEventos adapter = new AdapterListaEventos(mEventos,mCidades,mDatas,getView().getContext());
 
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+                    recyclerView.setAdapter(adapter);
 
-                    }
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
 
             }
 
             @Override
-            public void onFailure(Call<List<TesteUser>> call, Throwable t) {
+            public void onFailure(Call<Usuario> call, Throwable t) {
 
                 Toast.makeText(getContext(), "ERRO FALHA", Toast.LENGTH_LONG).show();
             }
