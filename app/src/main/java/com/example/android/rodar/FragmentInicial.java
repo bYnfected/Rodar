@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.rodar.models.Usuario;
+import com.example.android.rodar.models.UsuarioLogin;
+import com.example.android.rodar.services.UsuarioService;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -22,16 +27,22 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FragmentInicial extends Fragment {
 
     private Button cadastra,entra;
     private LoginButton loginButtonFB;
+    private TextInputLayout email,senha;
     private CallbackManager callbackManager;
 
 
@@ -42,6 +53,8 @@ public class FragmentInicial extends Fragment {
         View v = inflater.inflate(R.layout.pagina_inicial, container, false);
         cadastra = v.findViewById(R.id.inicial_cadastrar) ;
         entra = v.findViewById(R.id.inicial_entrar);
+        email = v.findViewById(R.id.inicial_email_cpf);
+        senha = v.findViewById(R.id.inicial_senha);
 
         cadastra.setOnClickListener(cadastraListener);
         entra.setOnClickListener(entraListener);
@@ -87,10 +100,32 @@ public class FragmentInicial extends Fragment {
 
         @Override
         public void onClick(View v) {
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.inicial_fragment_container, new FragmentLogin());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            UsuarioLogin usuario = new UsuarioLogin();
+            usuario.setUsername(email.getEditText().getText().toString());
+            usuario.setPassword(senha.getEditText().getText().toString());
+            usuario.setGrant_type("password");
+
+            UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
+
+            Call<JsonObject> call = usrService.loginUser(usuario);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    JsonObject teste = response.body();
+                    if (teste.has("access_token")) {
+                        Toast.makeText(getContext(), teste.get("access_token").toString(), Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                }
+            });
+
+
+
         }
     };
 
@@ -142,4 +177,6 @@ public class FragmentInicial extends Fragment {
         request.executeAsync();
 
     }
+
+
 }

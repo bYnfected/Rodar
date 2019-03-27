@@ -3,6 +3,7 @@ package com.example.android.rodar.activities;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import com.example.android.rodar.FragmentPerfil;
 import com.example.android.rodar.FragmentTransportes;
 import com.example.android.rodar.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,4 +56,27 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    private void doFragmentTransaction(Fragment fragment, String acao){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.inicial_fragment_container, fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void setToolbarTitle(String fragmentTag) {
+        // mudar toolbar
+    }
+
+    @Override
+    public void inflateFragment(String fragment, String acao) {
+        if (fragment == "eventos"){
+            FragmentEventos novoFragment = new FragmentEventos();
+            doFragmentTransaction(novoFragment, acao);
+        }
+        else if (fragment == "mensagens"){
+            FragmentMensagens novoFragment = new FragmentMensagens();
+            doFragmentTransaction(novoFragment, acao);
+        }
+    }
 }

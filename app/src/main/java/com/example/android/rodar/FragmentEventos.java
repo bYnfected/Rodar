@@ -23,6 +23,8 @@ import retrofit2.Response;
 
 public class FragmentEventos extends Fragment {
 
+    private static final String TAG = "eventos";
+
     private ArrayList<String> mEventos = new ArrayList<>();
     private ArrayList<String> mCidades = new ArrayList<>();
     private ArrayList<String> mDatas = new ArrayList<>();

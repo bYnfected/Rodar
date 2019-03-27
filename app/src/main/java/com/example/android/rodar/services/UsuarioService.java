@@ -1,6 +1,8 @@
 package com.example.android.rodar.services;
 
 import com.example.android.rodar.models.Usuario;
+import com.example.android.rodar.models.UsuarioLogin;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,4 +20,8 @@ public interface UsuarioService {
 
     @POST("Usuario/Cadastrar")
     Call<Integer> createUser(@Body Usuario usuario);
+
+    @POST("Login")
+    Call<JsonObject>  loginUser(@Body UsuarioLogin usuario);
 }
+
