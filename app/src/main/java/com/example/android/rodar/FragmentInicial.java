@@ -2,6 +2,7 @@ package com.example.android.rodar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.rodar.activities.LoginActivity;
+import com.example.android.rodar.activities.MainActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.models.UsuarioLogin;
 import com.example.android.rodar.services.UsuarioService;
@@ -103,18 +106,23 @@ public class FragmentInicial extends Fragment {
             UsuarioLogin usuario = new UsuarioLogin();
             usuario.setUsername(email.getEditText().getText().toString());
             usuario.setPassword(senha.getEditText().getText().toString());
-            usuario.setGrant_type("password");
+            //usuario.setGrant_type("password");
 
             UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
 
-            Call<JsonObject> call = usrService.loginUser(usuario);
+            Call<JsonObject> call = usrService.loginUser(email.getEditText().getText().toString(),senha.getEditText().getText().toString(),"password");
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     JsonObject teste = response.body();
                     if (teste.has("access_token")) {
-                        Toast.makeText(getContext(), teste.get("access_token").toString(), Toast.LENGTH_LONG).show();
+                        PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
+                        PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+                        PreferenceUtils.saveToken(teste.get("access_token").toString(), getContext());
 
+                        Intent activityIntent = new Intent(getContext(), MainActivity.class);
+                        startActivity(activityIntent);
+                        //finish();
                     }
                 }
 

@@ -4,7 +4,7 @@ public class UsuarioLogin {
 
     private String username;
     private String password;
-    private String grant_type = "password";
+    private String grant_type;
 
     public void setUsername(String username) {
         this.username = username;
