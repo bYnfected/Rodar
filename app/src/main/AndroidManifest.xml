@@ -16,7 +16,7 @@ package="com.example.android.rodar">
     <activity android:name=".activities.MainActivity"></activity>
     <activity
         android:name=".activities.StartActivity"
-        android:theme="@android:style/Theme.NoDisplay">
+        android:theme="@style/AppFullScreenTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN"/>
 

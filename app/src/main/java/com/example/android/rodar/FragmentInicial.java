@@ -1,5 +1,6 @@
 package com.example.android.rodar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.activities.LoginActivity;
 import com.example.android.rodar.activities.MainActivity;
 import com.example.android.rodar.models.Usuario;
@@ -47,6 +49,7 @@ public class FragmentInicial extends Fragment {
     private LoginButton loginButtonFB;
     private TextInputLayout email,senha;
     private CallbackManager callbackManager;
+    private ILoginActivity loginActivity;
 
 
     @Nullable
@@ -87,6 +90,11 @@ public class FragmentInicial extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        loginActivity = (ILoginActivity) getActivity();
+    }
 
     private View.OnClickListener cadastraListener = new View.OnClickListener() {
 
@@ -103,37 +111,9 @@ public class FragmentInicial extends Fragment {
 
         @Override
         public void onClick(View v) {
-            UsuarioLogin usuario = new UsuarioLogin();
-            usuario.setUsername(email.getEditText().getText().toString());
-            usuario.setPassword(senha.getEditText().getText().toString());
-            //usuario.setGrant_type("password");
-
-            UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
-
-            Call<JsonObject> call = usrService.loginUser(email.getEditText().getText().toString(),senha.getEditText().getText().toString(),"password");
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    JsonObject teste = response.body();
-                    if (teste.has("access_token")) {
-                        PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
-                        PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
-                        PreferenceUtils.saveToken(teste.get("access_token").toString(), getContext());
-
-                        Intent activityIntent = new Intent(getContext(), MainActivity.class);
-                        startActivity(activityIntent);
-                        //finish();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-
-                }
-            });
-
-
-
+            PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
+            PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+            loginActivity.loginUsuario();
         }
     };
 

@@ -1,7 +1,6 @@
 package com.example.android.rodar.services;
 
 import com.example.android.rodar.models.Usuario;
-import com.example.android.rodar.models.UsuarioLogin;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;

@@ -1,6 +1,10 @@
 package com.example.android.rodar;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -11,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 
@@ -18,10 +23,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+
 public class FragmentCadastro extends Fragment {
 
     private Button btnConclui;
     private TextInputLayout nome, sobrenome, genero, cpf, celular, email, senha, senhaConfirma;
+    private ILoginActivity loginActivity;
 
     @Nullable
     @Override
@@ -42,34 +50,96 @@ public class FragmentCadastro extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        loginActivity = (ILoginActivity) getActivity();
+    }
+
 
     private View.OnClickListener concluiListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            Usuario novoUsuario = new Usuario();
-            novoUsuario.setNomeCompleto(nome.getEditText().getText().toString() + sobrenome.getEditText().getText().toString());
-            novoUsuario.setCPF(cpf.getEditText().getText().toString());
-            novoUsuario.setNumeroTelefone(celular.getEditText().getText().toString());
-            novoUsuario.setEmail(email.getEditText().getText().toString());
-            novoUsuario.setSenha(senha.getEditText().getText().toString());
+            if (validaCampos()){
+                Usuario novoUsuario = new Usuario();
+                novoUsuario.setNomeCompleto(nome.getEditText().getText().toString() + sobrenome.getEditText().getText().toString());
+                novoUsuario.setCPF(cpf.getEditText().getText().toString());
+                novoUsuario.setNumeroTelefone(celular.getEditText().getText().toString());
+                novoUsuario.setEmail(email.getEditText().getText().toString());
+                novoUsuario.setSenha(senha.getEditText().getText().toString());
 
-            UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
-
-            Call<Integer> call = usrService.createUser(novoUsuario);
-
-            call.enqueue(new Callback<Integer>() {
-                @Override
-                public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    Toast.makeText(getContext(), response.toString(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
-                    Toast.makeText(getContext(), "ERRO FALHA", Toast.LENGTH_LONG).show();
-                }
-            });
+                registraUsuario(novoUsuario);
+            }
         }
     };
+
+    private boolean validaCampos(){
+      boolean ok = true;
+
+      nome.setError(null);
+      sobrenome.setError(null);
+      cpf.setError(null);
+      celular.setError(null);
+      email.setError(null);
+      senha.setError(null);
+      senhaConfirma.setError(null);
+
+      if (nome.getEditText().getText().toString().isEmpty()) {
+          nome.setError("Preencher nome");
+          ok = false;
+      }
+      if (sobrenome.getEditText().getText().toString().isEmpty()){
+          sobrenome.setError("Preencher sobrenome");
+          ok = false;
+      }
+      if (cpf.getEditText().getText().toString().isEmpty()){
+          cpf.setError("Campo obrigatório");
+          ok = false;
+      }
+      if (celular.getEditText().getText().toString().isEmpty()) {
+          celular.setError("Campo obrigatório");
+          ok = false;
+      }
+      if (email.getEditText().getText().toString().isEmpty()){
+          email.setError("Campo obrigatório");
+          ok = false;
+      }
+      if (senha.getEditText().getText().toString().isEmpty()){
+          senha.setError("Informe a senha");
+          ok = false;
+      }
+      if (senhaConfirma.getEditText().getText().toString().isEmpty()) {
+          senhaConfirma.setError("Confirme a senha");
+          ok = false;
+      }
+      if (!senha.getEditText().getText().toString().equals(senhaConfirma.getEditText().getText().toString())) {
+          senha.setError("As senhas são diferentes");
+          senhaConfirma.setError("As senhas são diferentes");
+          ok = false;
+      }
+
+      return ok;
+    }
+
+    private void registraUsuario(Usuario novoUsuario){
+        UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
+        Call<Integer> call = usrService.createUser(novoUsuario);
+
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
+                PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
+                PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+                loginActivity.loginUsuario();
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 }
