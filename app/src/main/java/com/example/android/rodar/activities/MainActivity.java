@@ -82,5 +82,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             FragmentMensagens novoFragment = new FragmentMensagens();
             doFragmentTransaction(novoFragment, acao);
         }
+        else if (fragment == "perfil_meusDados"){
+            FragmentMeusDados novoFragment = new FragmentMeusDados();
+            doFragmentTransaction(novoFragment,acao);
+        }
     }
 }

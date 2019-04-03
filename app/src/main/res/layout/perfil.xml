@@ -19,7 +19,7 @@
         tools:srcCompat="@drawable/ic_account_circle_black_24dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/perfil_btn_meus_dados"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:text="Tornar-se Transportador"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_meus_dados" />
 
     <Button
         android:id="@+id/button4"
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/perfil_btn_notifica"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,14 +63,14 @@
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/perfil_btn_sair"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="sair da conta"
+        android:text="Sair da conta"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_notifica" />
 </android.support.constraint.ConstraintLayout>

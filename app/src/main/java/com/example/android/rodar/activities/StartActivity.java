@@ -20,8 +20,9 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // Vai direto para a MainActivity se esta logado
-        if (!PreferenceUtils.getPassword(getApplicationContext()).isEmpty()) {
+        if (PreferenceUtils.getPassword(getApplicationContext()) == null) {
             UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
             Call<JsonObject> call = usrService.loginUser(PreferenceUtils.getEmail(this), PreferenceUtils.getPassword(this), "password");
             call.enqueue(new Callback<JsonObject>() {
@@ -55,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
 
 
     private void abrirLogin(){
-        Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent activityIntent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(activityIntent);
         finish();
     }
