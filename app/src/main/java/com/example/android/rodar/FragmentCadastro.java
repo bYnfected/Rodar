@@ -1,10 +1,7 @@
 package com.example.android.rodar;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -132,6 +129,7 @@ public class FragmentCadastro extends Fragment {
                 Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
                 PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
                 PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+                PreferenceUtils.saveID(response.body(),getContext());
                 loginActivity.loginUsuario();
             }
 

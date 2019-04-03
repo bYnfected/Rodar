@@ -13,14 +13,14 @@ import retrofit2.http.Path;
 
 public interface UsuarioService {
 
-    @GET("Usuario/Buscar/{id}")
-    Call<Usuario> getUser(@Path("id") int id);
+    @POST("Usuario/Cadastrar")
+    Call<Integer> createUser(@Body Usuario usuario);
 
     @POST("Usuario/Atualizar")
     Call<Integer> updateUser(@Body Usuario usuario);
 
-    @POST("Usuario/Cadastrar")
-    Call<Integer> createUser(@Body Usuario usuario);
+    @GET("Usuario/Buscar/{id}")
+    Call<Usuario> getUser(@Path("id") int id);
 
     @FormUrlEncoded
     @POST("Login")

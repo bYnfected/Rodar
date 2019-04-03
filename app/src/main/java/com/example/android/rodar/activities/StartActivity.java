@@ -53,8 +53,6 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void abrirLogin(){
         Intent activityIntent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(activityIntent);

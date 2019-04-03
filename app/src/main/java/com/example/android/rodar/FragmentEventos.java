@@ -71,7 +71,7 @@ public class FragmentEventos extends Fragment {
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
 
                 if (!response.isSuccessful()){
-                    Toast.makeText(getContext(), "ERRO NOT SUCCESSFUL", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "BAD", Toast.LENGTH_LONG).show();
                     return;
                 }
                 // TUDO CERTO AQUI
