@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
 import com.example.android.rodar.activities.MainActivity;
@@ -29,7 +31,7 @@ public class FragmentPerfil extends Fragment {
 
         btnLogout.setOnClickListener(logoutListener);
         btnDados.setOnClickListener(meusDadosListener);
-
+        Toast.makeText(getContext(), PreferenceUtils.getToken(getContext()), Toast.LENGTH_LONG).show();
         return v;
     }
 

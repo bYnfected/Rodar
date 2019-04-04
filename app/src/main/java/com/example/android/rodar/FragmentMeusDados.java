@@ -53,7 +53,10 @@ public class FragmentMeusDados extends Fragment {
 
     private void carregaDados() {
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-        Call<Usuario> call = service.getUser(PreferenceUtils.getID(getContext()));
+        String auth = "Bearer ".concat(PreferenceUtils.getToken(getContext()));
+        auth =  auth.replace("\"","");
+        Call<Usuario> call = service.getUser(auth,14);
+
 
         call.enqueue(new Callback<Usuario>() {
             @Override
@@ -61,7 +64,12 @@ public class FragmentMeusDados extends Fragment {
                 if (response.isSuccessful()){
                     Usuario user = response.body();
 
-                    nome.getEditText().setText(user.getCPF());
+                    nome.getEditText().setText(user.getNomeCompleto());
+                    cpf.getEditText().setText(user.getCPF());
+                    celular.getEditText().setText(user.getNumeroTelefone());
+                    email.getEditText().setText(user.getEmail());
+
+
                 }
                 else {
                     Toast.makeText(getContext(), "ERRO NOT SUCCESSFUL", Toast.LENGTH_LONG).show();

@@ -22,7 +22,7 @@ public class StartActivity extends AppCompatActivity {
 
 
         // Vai direto para a MainActivity se esta logado
-        if (PreferenceUtils.getPassword(getApplicationContext()) == null) {
+        if (PreferenceUtils.getPassword(getApplicationContext()) != null) {
             UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
             Call<JsonObject> call = usrService.loginUser(PreferenceUtils.getEmail(this), PreferenceUtils.getPassword(this), "password");
             call.enqueue(new Callback<JsonObject>() {
