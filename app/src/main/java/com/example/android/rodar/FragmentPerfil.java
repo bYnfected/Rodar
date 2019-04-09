@@ -1,6 +1,8 @@
 package com.example.android.rodar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,7 +33,6 @@ public class FragmentPerfil extends Fragment {
 
         btnLogout.setOnClickListener(logoutListener);
         btnDados.setOnClickListener(meusDadosListener);
-        Toast.makeText(getContext(), PreferenceUtils.getToken(getContext()), Toast.LENGTH_LONG).show();
         return v;
     }
 
@@ -51,12 +52,29 @@ public class FragmentPerfil extends Fragment {
     private View.OnClickListener logoutListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            PreferenceUtils.saveEmail(null,getActivity());
-            PreferenceUtils.savePassword(null, getActivity());
-            PreferenceUtils.saveToken(null,getActivity());
-            Intent activityIntent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
-            startActivity(activityIntent);
-            getActivity().finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Tem certeza que deseja sair?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PreferenceUtils.saveEmail(null,getActivity());
+                    PreferenceUtils.savePassword(null, getActivity());
+                    PreferenceUtils.saveToken(null,getActivity());
+                    Intent activityIntent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                    startActivity(activityIntent);
+                    getActivity().finish();
+                }
+            });
+
+            builder.setNegativeButton("Não", null);
+            /*builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });*/
+
+            builder.show();
         }
     };
 

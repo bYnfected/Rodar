@@ -10,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,7 +28,9 @@ import retrofit2.Response;
 public class FragmentCadastro extends Fragment {
 
     private Button btnConclui;
-    private TextInputLayout nome, sobrenome, genero, cpf, celular, email, senha, senhaConfirma;
+    private TextInputLayout nome, sobrenome, cpf, celular, email, senha, senhaConfirma;
+    private RadioGroup genero;
+    private RadioButton generoM,generoF;
     private ILoginActivity loginActivity;
 
     @Nullable
@@ -38,12 +43,17 @@ public class FragmentCadastro extends Fragment {
 
         nome = v.findViewById(R.id.cadastro_nome);
         sobrenome = v.findViewById(R.id.cadastro_sobrenome);
+        genero = v.findViewById(R.id.cadastro_genero);
+        generoM = v.findViewById(R.id.cadastro_genero_masculino);
+        generoF = v.findViewById(R.id.cadastro_genero_feminino);
         cpf = v.findViewById(R.id.cadastro_cpf);
         celular = v.findViewById(R.id.cadastro_celular);
         email = v.findViewById(R.id.cadastro_email);
         senha = v.findViewById(R.id.cadastro_senha);
         senhaConfirma = v.findViewById(R.id.cadastro_senha2);
 
+        // Inicia como masculino
+        generoM.toggle();
         return v;
     }
 
@@ -60,7 +70,13 @@ public class FragmentCadastro extends Fragment {
         public void onClick(View v) {
             if (validaCampos()){
                 Usuario novoUsuario = new Usuario();
-                novoUsuario.setNomeCompleto(nome.getEditText().getText().toString() + sobrenome.getEditText().getText().toString());
+                novoUsuario.setNome(nome.getEditText().getText().toString());
+                novoUsuario.setSobrenome(sobrenome.getEditText().getText().toString());
+                if (generoM.isChecked()) {
+                    novoUsuario.setGenero("M");
+                } else {
+                    novoUsuario.setGenero("F");
+                }
                 novoUsuario.setCPF(cpf.getEditText().getText().toString());
                 novoUsuario.setNumeroTelefone(celular.getEditText().getText().toString());
                 novoUsuario.setEmail(email.getEditText().getText().toString());
@@ -121,20 +137,19 @@ public class FragmentCadastro extends Fragment {
 
     private void registraUsuario(Usuario novoUsuario){
         UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
-        Call<Integer> call = usrService.createUser(novoUsuario);
+        Call<ResponseBody> call = usrService.createUser(novoUsuario);
 
-        call.enqueue(new Callback<Integer>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
                 PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
                 PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
-                PreferenceUtils.saveID(response.body(),getContext());
                 loginActivity.loginUsuario();
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
             }
         });

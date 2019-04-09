@@ -16,6 +16,7 @@ import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,8 +24,9 @@ import retrofit2.Response;
 public class FragmentMeusDados extends Fragment {
 
     Button btnSalvar;
-    private TextInputLayout nome, sobrenome, genero, cpf, celular, email, senha, senhaConfirma;
+    private TextInputLayout nome, sobrenome, cpf, celular, email, senha, senhaConfirma, descricao;
     private IMainActivity mainActivity;
+    Usuario user;
 
     @Nullable
     @Override
@@ -41,7 +43,10 @@ public class FragmentMeusDados extends Fragment {
         email = v.findViewById(R.id.atualiza_email);
         senha = v.findViewById(R.id.atualiza_senha);
         senhaConfirma = v.findViewById(R.id.atualiza_senha2);
+        descricao = v.findViewById(R.id.atualiza_bio);
 
+        nome.getEditText().setEnabled(false);
+        sobrenome.getEditText().setEnabled(false);
         return v;
     }
 
@@ -53,22 +58,21 @@ public class FragmentMeusDados extends Fragment {
 
     private void carregaDados() {
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-        String auth = "Bearer ".concat(PreferenceUtils.getToken(getContext()));
-        auth =  auth.replace("\"","");
-        Call<Usuario> call = service.getUser(auth,14);
-
-
+        Call<Usuario> call = service.getUser(PreferenceUtils.getToken(getContext()));
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful()){
-                    Usuario user = response.body();
+                    user = response.body();
 
-                    nome.getEditText().setText(user.getNomeCompleto());
+                    nome.getEditText().setText(user.getNome());
+                    sobrenome.getEditText().setText(user.getSobrenome());
                     cpf.getEditText().setText(user.getCPF());
                     celular.getEditText().setText(user.getNumeroTelefone());
                     email.getEditText().setText(user.getEmail());
-
+                    senha.getEditText().setText(user.getSenha());
+                    senhaConfirma.getEditText().setText(user.getSenha());
+                    descricao.getEditText().setText(user.getDescricao());
 
                 }
                 else {
@@ -93,9 +97,49 @@ public class FragmentMeusDados extends Fragment {
     private View.OnClickListener salvarListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (validaSenha()){
+            user.setNumeroTelefone(celular.getEditText().getText().toString());
+            user.setDescricao(descricao.getEditText().getText().toString());
+            user.setSenha(senha.getEditText().getText().toString());
 
-            // Depois de salvar retorna a tela de perfil
-            mainActivity.inflateFragment("perfil","");
+            UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
+            Call<ResponseBody> call = service.updateUser(PreferenceUtils.getToken(getContext()),user);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()){
+                        Toast.makeText(getContext(), "Atualizado com sucesso", Toast.LENGTH_LONG).show();
+                        mainActivity.inflateFragment("perfil","");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+                }
+            });
+            }
+        }
+
+        private boolean validaSenha() {
+            senha.setError(null);
+            senhaConfirma.setError(null);
+
+            boolean retorno = true;
+            if (senha.getEditText().getText().toString().isEmpty()){
+                senha.setError("Informe a senha");
+                retorno = false;
+            }
+            if (senhaConfirma.getEditText().getText().toString().isEmpty()) {
+                senhaConfirma.setError("Confirme a senha");
+                retorno = false;
+            }
+            if (!senha.getEditText().getText().toString().equals(senhaConfirma.getEditText().getText().toString())) {
+                senha.setError("As senhas são diferentes");
+                senhaConfirma.setError("As senhas são diferentes");
+                retorno = false;
+            }
+            return retorno;
         }
     };
 }

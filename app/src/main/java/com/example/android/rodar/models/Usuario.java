@@ -1,12 +1,11 @@
 package com.example.android.rodar.models;
 
 
-import java.time.ZonedDateTime;
-
 public class Usuario {
 
     private int idUsuario;
-    private String nomeCompleto;
+    private String Nome;
+    private String Sobrenome;
     private String RG;
     private String CPF;
     private String urlImagemSelfie;
@@ -30,12 +29,21 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
+
+    public String getSobrenome() {
+        return Sobrenome;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setSobrenome(String sobrenome) {
+        this.Sobrenome = sobrenome;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        this.Nome = nome;
     }
 
     public String getRG() {

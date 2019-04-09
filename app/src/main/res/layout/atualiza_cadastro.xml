@@ -18,8 +18,7 @@
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"/>
+            android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -30,45 +29,12 @@
         android:layout_marginTop="8dp"
         android:hint="Sobrenome"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_nome"
-        app:errorEnabled="false">
+        app:layout_constraintTop_toBottomOf="@+id/atualiza_nome">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
-
-    <RadioGroup
-        android:id="@+id/atualiza_genero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_sobrenome">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Gênero" />
-
-        <RadioButton
-            android:id="@+id/genero_masculino"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Masculino" />
-
-        <RadioButton
-            android:id="@+id/genero_feminino"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Feminino" />
-    </RadioGroup>
 
     <Button
         android:id="@+id/atualiza_salvar"
@@ -79,7 +45,7 @@
         android:text="Salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_senha2" />
+        app:layout_constraintTop_toBottomOf="@+id/atualiza_bio" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/atualiza_cpf"
@@ -88,9 +54,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="CPF"
+        app:errorEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_genero"
-        app:errorEnabled="false">
+        app:layout_constraintTop_toBottomOf="@+id/atualiza_sobrenome">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -164,6 +130,24 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
 
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/atualiza_bio"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:counterMaxLength="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/atualiza_senha2">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Minha Bio" />
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>

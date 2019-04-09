@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
                     if (resposta.has("access_token")) {
 
                         PreferenceUtils.saveToken(resposta.get("access_token").toString(), getApplicationContext());
-
                         Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(activityIntent);
                         finish();

@@ -3,10 +3,8 @@ package com.example.android.rodar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,15 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.rodar.activities.ILoginActivity;
-import com.example.android.rodar.activities.LoginActivity;
-import com.example.android.rodar.activities.MainActivity;
 import com.example.android.rodar.models.Usuario;
-import com.example.android.rodar.models.UsuarioLogin;
-import com.example.android.rodar.services.UsuarioService;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -32,16 +25,11 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FragmentInicial extends Fragment {
 
@@ -142,7 +130,7 @@ public class FragmentInicial extends Fragment {
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
                     Usuario usuario = new Usuario();
-                    usuario.setNomeCompleto(object.getString("first_name") + " " + object.getString("last_name"));
+                    usuario.setNome(object.getString("first_name") + " " + object.getString("last_name"));
                     usuario.setEmail(object.getString("email"));
                     usuario.setFacebookId(object.getString("id"));
 

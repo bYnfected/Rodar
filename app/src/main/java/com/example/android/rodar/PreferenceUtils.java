@@ -11,20 +11,6 @@ import android.preference.PreferenceManager;
         public PreferenceUtils(){
 
         }
-
-        public static Integer getID(Context context){
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            return prefs.getInt("id", -1);
-        }
-
-        public static boolean saveID(Integer id, Context context) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor prefsEditor = prefs.edit();
-            prefsEditor.putInt("id", id);
-            prefsEditor.apply();
-            return true;
-        }
-
         public static boolean saveEmail(String email, Context context) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor prefsEditor = prefs.edit();
@@ -61,6 +47,7 @@ import android.preference.PreferenceManager;
 
         public static String getToken(Context context) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            return prefs.getString("token", null);
+            String tokenBearer = ("Bearer " + prefs.getString("token",null));
+            return tokenBearer.replace("\"", "");
         }
     }

@@ -54,14 +54,14 @@
             android:text="Gênero" />
 
         <RadioButton
-            android:id="@+id/genero_masculino"
+            android:id="@+id/cadastro_genero_masculino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Masculino" />
 
         <RadioButton
-            android:id="@+id/genero_feminino"
+            android:id="@+id/cadastro_genero_feminino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

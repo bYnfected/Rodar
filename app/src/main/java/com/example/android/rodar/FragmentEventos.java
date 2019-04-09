@@ -64,7 +64,7 @@ public class FragmentEventos extends Fragment {
 
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
 
-        Call<Usuario> call = service.getUser(PreferenceUtils.getToken(getContext()),1);
+        Call<Usuario> call = service.getUser(PreferenceUtils.getToken(getContext()));
 
         call.enqueue(new Callback<Usuario>() {
             @Override
