@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.android.rodar.FragmentInicial;
-import com.example.android.rodar.PreferenceUtils;
+import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.R;
-import com.example.android.rodar.RetrofitClient;
+import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.services.UsuarioService;
 import com.google.gson.JsonObject;
 

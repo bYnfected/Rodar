@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsPerfil;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
+import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;

@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsPerfil;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,11 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
+import com.example.android.rodar.R;
+import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
-import com.example.android.rodar.activities.MainActivity;
 
 public class FragmentPerfil extends Fragment {
 

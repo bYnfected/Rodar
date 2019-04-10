@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.android.rodar.FragmentsPerfil.FragmentCadastro;
+import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.facebook.AccessToken;

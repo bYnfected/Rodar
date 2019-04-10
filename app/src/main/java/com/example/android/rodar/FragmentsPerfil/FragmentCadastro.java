@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsPerfil;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -16,6 +16,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
+import com.example.android.rodar.Utils.DatePickerFragment;
+import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
@@ -43,7 +47,7 @@ public class FragmentCadastro extends Fragment {
         View v = inflater.inflate(R.layout.cria_cadastro, container, false);
 
         btnConclui = v.findViewById(R.id.cadastro_concluir);
-        btnConclui.setOnClickListener(dataListener);
+        btnConclui.setOnClickListener(concluiListener);
 
         nome = v.findViewById(R.id.cadastro_nome);
         sobrenome = v.findViewById(R.id.cadastro_sobrenome);

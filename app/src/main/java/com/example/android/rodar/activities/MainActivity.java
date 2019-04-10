@@ -8,10 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
-import com.example.android.rodar.FragmentMeusDados;
-import com.example.android.rodar.FragmentPerfil;
+import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
+import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
 import com.example.android.rodar.FragmentTransportes;
 import com.example.android.rodar.R;
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     private void doFragmentTransaction(Fragment fragment, String acao){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         }
         else if (fragment == "perfil_meusDados"){
             FragmentMeusDados novoFragment = new FragmentMeusDados();
+            doFragmentTransaction(novoFragment,acao);
+        }
+        else if (fragment == "eventos_criaEvento"){
+            FragmentCriaEvento novoFragment = new FragmentCriaEvento();
             doFragmentTransaction(novoFragment,acao);
         }
     }

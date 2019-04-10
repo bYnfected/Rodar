@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
