@@ -1,6 +1,5 @@
 package com.example.android.rodar.services;
 
-import com.example.android.rodar.PreferenceUtils;
 import com.example.android.rodar.models.Usuario;
 import com.google.gson.JsonObject;
 

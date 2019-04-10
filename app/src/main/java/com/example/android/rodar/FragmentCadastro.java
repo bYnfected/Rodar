@@ -1,5 +1,6 @@
 package com.example.android.rodar;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
+
+import java.util.Calendar;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,7 +43,7 @@ public class FragmentCadastro extends Fragment {
         View v = inflater.inflate(R.layout.cria_cadastro, container, false);
 
         btnConclui = v.findViewById(R.id.cadastro_concluir);
-        btnConclui.setOnClickListener(concluiListener);
+        btnConclui.setOnClickListener(dataListener);
 
         nome = v.findViewById(R.id.cadastro_nome);
         sobrenome = v.findViewById(R.id.cadastro_sobrenome);
@@ -51,6 +55,8 @@ public class FragmentCadastro extends Fragment {
         email = v.findViewById(R.id.cadastro_email);
         senha = v.findViewById(R.id.cadastro_senha);
         senhaConfirma = v.findViewById(R.id.cadastro_senha2);
+
+
 
         // Inicia como masculino
         generoM.toggle();
@@ -86,6 +92,16 @@ public class FragmentCadastro extends Fragment {
             }
         }
     };
+
+
+    private View.OnClickListener dataListener = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            showDatePicker();
+        }
+    };
+
 
     private boolean validaCampos(){
       boolean ok = true;
@@ -154,5 +170,36 @@ public class FragmentCadastro extends Fragment {
             }
         });
     }
+
+    private void showDatePicker() {
+        DatePickerFragment date = new DatePickerFragment();
+        /**
+         * Set Up Current Date Into dialog
+         */
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        /**
+         * Set Call back to capture selected date
+         */
+        date.setCallBack(ondate);
+        date.show(getFragmentManager(), "Date Picker");
+    }
+
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+
+            Toast.makeText(getContext(),(String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
+                    + "-" + String.valueOf(year)) , Toast.LENGTH_LONG).show();
+        }
+    };
+
+
+
 
 }
