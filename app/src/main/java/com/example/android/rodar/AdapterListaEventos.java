@@ -11,20 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.rodar.models.Evento;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEventos.ViewHolder> {
 
-    private ArrayList<String> mEventos = new ArrayList<>();
-    private ArrayList<String> mCidades = new ArrayList<>();
-    private ArrayList<String> mDatas = new ArrayList<>();
     private Context mContext;
+    private List<Evento> eventos;
 
-    public AdapterListaEventos(ArrayList<String> mEventos, ArrayList<String> mCidades, ArrayList<String> mDatas, Context mContext) {
-        this.mEventos = mEventos;
-        this.mCidades = mCidades;
-        this.mDatas = mDatas;
+    public AdapterListaEventos(Context mContext, List<Evento> eventos) {
         this.mContext = mContext;
+        this.eventos = eventos;
     }
 
     @NonNull
@@ -37,15 +36,15 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.data.setText(mDatas.get(i));
-        viewHolder.cidade.setText(mCidades.get(i));
-        viewHolder.evento.setText(mEventos.get(i));
+        viewHolder.data.setText(eventos.get(i).getEnderecoCEP());
+        viewHolder.cidade.setText(eventos.get(i).getEnderecoCidade());
+        viewHolder.evento.setText(eventos.get(i).getDescricaoEvento());
 
     }
 
     @Override
     public int getItemCount() {
-        return mEventos.size();
+        return eventos.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -16,10 +16,13 @@ import android.widget.Toast;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
+import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.models.Usuario;
+import com.example.android.rodar.services.EventoService;
 import com.example.android.rodar.services.UsuarioService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,10 +31,6 @@ import retrofit2.Response;
 public class FragmentEventos extends Fragment {
 
     private IMainActivity mainActivity;
-    private ArrayList<String> mEventos = new ArrayList<>();
-    private ArrayList<String> mCidades = new ArrayList<>();
-    private ArrayList<String> mDatas = new ArrayList<>();
-
     private FloatingActionButton btnCadastro;
 
     @Nullable
@@ -61,59 +60,32 @@ public class FragmentEventos extends Fragment {
     };
 
     private void InicilizaLista(){
-        /*mEventos.add("Festa da Uva");
-        mEventos.add("Show Racionais MC");
-        mEventos.add("Show Comunidade Nin Jitsu");
-        mEventos.add("Mano Lima ft Gelain");
 
-        mCidades.add("Caxias do Sul");
-        mCidades.add("Caxias do Sul");
-        mCidades.add("MALIBU DISCO PUD");
-        mCidades.add("BAR DO BRANCHINI");
 
-        mDatas.add("11");
-        mDatas.add("12");
-        mDatas.add("11/11/2016");
-        mDatas.add("04/04/2019");*/
-
-        UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-
-        Call<Usuario> call = service.getUser(PreferenceUtils.getToken(getContext()));
-
-        call.enqueue(new Callback<Usuario>() {
+        EventoService service = RetrofitClient.getClient().create(EventoService.class);
+        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()));
+        call.enqueue(new Callback<List<Evento>>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-
-                if (!response.isSuccessful()){
-                    Toast.makeText(getContext(), "BAD", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                // TUDO CERTO AQUI
-                    Usuario user = response.body();
-
-
-                    mCidades.add(user.getSenha());
-                    mDatas.add(user.getGenero());
-                    mEventos.add(user.getEmail());
-
-                    Toast.makeText(getContext(), "CARREGOU USERS", Toast.LENGTH_LONG).show();
+            public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
+                    List<Evento> eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
 
-                    AdapterListaEventos adapter = new AdapterListaEventos(mEventos,mCidades,mDatas,getView().getContext());
+                    AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos);
 
                     recyclerView.setAdapter(adapter);
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
 
+                }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-
+            public void onFailure(Call<List<Evento>> call, Throwable t) {
                 Toast.makeText(getContext(), "ERRO FALHA", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }
 
