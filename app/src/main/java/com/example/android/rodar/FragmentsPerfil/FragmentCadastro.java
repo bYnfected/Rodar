@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -24,7 +25,10 @@ import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -37,9 +41,11 @@ public class FragmentCadastro extends Fragment {
 
     private Button btnConclui;
     private TextInputLayout nome, sobrenome, cpf, celular, email, senha, senhaConfirma;
+    private EditText dataNascimento;
     private RadioGroup genero;
     private RadioButton generoM,generoF;
     private ILoginActivity loginActivity;
+    private Date tempDataNascimento;
 
     @Nullable
     @Override
@@ -56,6 +62,8 @@ public class FragmentCadastro extends Fragment {
         generoF = v.findViewById(R.id.cadastro_genero_feminino);
         cpf = v.findViewById(R.id.cadastro_cpf);
         celular = v.findViewById(R.id.cadastro_celular);
+        dataNascimento = v.findViewById(R.id.cadastro_data_nascimento);
+        dataNascimento.setOnFocusChangeListener(dataListener);
         email = v.findViewById(R.id.cadastro_email);
         senha = v.findViewById(R.id.cadastro_senha);
         senhaConfirma = v.findViewById(R.id.cadastro_senha2);
@@ -91,19 +99,22 @@ public class FragmentCadastro extends Fragment {
                 novoUsuario.setNumeroTelefone(celular.getEditText().getText().toString());
                 novoUsuario.setEmail(email.getEditText().getText().toString());
                 novoUsuario.setSenha(senha.getEditText().getText().toString());
-
+                novoUsuario.setDataNascimento(tempDataNascimento);
                 registraUsuario(novoUsuario);
             }
         }
     };
 
 
-    private View.OnClickListener dataListener = new View.OnClickListener(){
+    private View.OnFocusChangeListener dataListener = new View.OnFocusChangeListener(){
+
 
         @Override
-        public void onClick(View v) {
-            showDatePicker();
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                showDatePicker();
         }
+    }
     };
 
 
@@ -117,6 +128,7 @@ public class FragmentCadastro extends Fragment {
       email.setError(null);
       senha.setError(null);
       senhaConfirma.setError(null);
+      dataNascimento.setError(null);
 
       if (nome.getEditText().getText().toString().isEmpty()) {
           nome.setError("Preencher nome");
@@ -134,6 +146,10 @@ public class FragmentCadastro extends Fragment {
           celular.setError("Campo obrigatório");
           ok = false;
       }
+      if (dataNascimento.getText().toString().isEmpty()){
+          dataNascimento.setError("Campo obrigatório");
+          ok = false;
+        }
       if (email.getEditText().getText().toString().isEmpty()){
           email.setError("Campo obrigatório");
           ok = false;
@@ -177,18 +193,14 @@ public class FragmentCadastro extends Fragment {
 
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
-        /**
-         * Set Up Current Date Into dialog
-         */
+        // Informa a data atual como inicial
         Calendar calender = Calendar.getInstance();
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
         args.putInt("month", calender.get(Calendar.MONTH));
         args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
         date.setArguments(args);
-        /**
-         * Set Call back to capture selected date
-         */
+        // Indica quem ira receber o retorno da chamada
         date.setCallBack(ondate);
         date.show(getFragmentManager(), "Date Picker");
     }
@@ -198,8 +210,14 @@ public class FragmentCadastro extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
-            Toast.makeText(getContext(),(String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
-                    + "-" + String.valueOf(year)) , Toast.LENGTH_LONG).show();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                tempDataNascimento = format.parse (String.valueOf(year) + "-" + String.valueOf(monthOfYear+1) + "-"  + String.valueOf(dayOfMonth));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            dataNascimento.setText(String.valueOf(dayOfMonth) + "-" +String.valueOf(monthOfYear+1) + "-" + String.valueOf(year));
         }
     };
 

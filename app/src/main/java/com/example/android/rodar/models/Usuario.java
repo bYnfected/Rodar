@@ -1,7 +1,7 @@
 package com.example.android.rodar.models;
 
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Usuario {
 
@@ -13,7 +13,7 @@ public class Usuario {
     private String urlImagemSelfie;
     private String Genero;
     private String Descricao;
-    private Timestamp dataNascimento;
+    private Date dataNascimento;
     private String Email;
     private String numeroTelefone;
     private String Senha;
@@ -152,11 +152,11 @@ public class Usuario {
         this.urlImagemCPF = urlImagemCPF;
     }
 
-    public Timestamp getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Timestamp dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }

@@ -61,7 +61,6 @@ public class FragmentEventos extends Fragment {
 
     private void InicilizaLista(){
 
-
         EventoService service = RetrofitClient.getClient().create(EventoService.class);
         Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()));
         call.enqueue(new Callback<List<Evento>>() {
