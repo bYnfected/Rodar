@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface EventoService {
 
@@ -17,5 +18,5 @@ public interface EventoService {
     Call<ResponseBody> createEvento(@Body Evento evento);
 
     @GET("Evento/BuscarTodos")
-    Call<List<Evento>> getEventos(@Header("Authorization") String token);
+    Call<List<Evento>> getEventos(@Header("Authorization") String token, @Query("somenteMeusEventos") boolean somenteMeus);
 }

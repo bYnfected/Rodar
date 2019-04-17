@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class FragmentEventos extends Fragment {
     private void InicilizaLista(){
 
         EventoService service = RetrofitClient.getClient().create(EventoService.class);
-        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()));
+        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()),false);
         call.enqueue(new Callback<List<Evento>>() {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
@@ -71,7 +72,7 @@ public class FragmentEventos extends Fragment {
                     List<Evento> eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
 
-                    AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos);
+                    AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos, teste);
 
                     recyclerView.setAdapter(adapter);
 
@@ -86,5 +87,16 @@ public class FragmentEventos extends Fragment {
             }
         });
     }
+     
+    AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
+        @Override
+        public void onEventoClick(int position) {
+            // manda pro fragment de evento detalhado
+            // exemplo array.get(position) pq é o mesmo que ta na lista
+            Log.d("a", "onEventoClick: clicado" + position);
+        }
+    };
+
+
 }
 

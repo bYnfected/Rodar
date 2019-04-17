@@ -2,11 +2,9 @@ package com.example.android.rodar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,12 +22,11 @@ import com.example.android.rodar.Utils.TimePickerFragment;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.EventoService;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import okhttp3.ResponseBody;
@@ -40,11 +37,10 @@ import retrofit2.Response;
 public class FragmentCriaEvento extends Fragment {
 
     private Button btnConclui;
-    private TextInputLayout local, rua, numero, complemento, bairro, cidade, uf, descricao;
+    private TextInputLayout nome, rua, numero, complemento, bairro, cidade, uf, descricao;
     private EditText dataHoraInicio,dataHoraFim;
-    private Timestamp tempDataInicio;
-    private Date tempDataFim;
     private int tmpAno,tmpMes,tmpDia,tmpHora,tmpMiuto;
+    private String tmpDataHrIni,tmpDataHrFim;
 
 
     @Nullable
@@ -56,7 +52,7 @@ public class FragmentCriaEvento extends Fragment {
         btnConclui = v.findViewById(R.id.cadastro_evento_but_concluir);
         btnConclui.setOnClickListener(concluirListener);
 
-        local = v.findViewById(R.id.cadastro_evento_local);
+        nome = v.findViewById(R.id.cadastro_evento_nome);
         rua = v.findViewById(R.id.cadastro_evento_rua);
         numero = v.findViewById(R.id.cadastro_evento_nr);
         complemento = v.findViewById(R.id.cadastro_evento_complemento);
@@ -76,41 +72,38 @@ public class FragmentCriaEvento extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Evento evento = new Evento();
-            evento.setEnderecoRua(rua.getEditText().getText().toString());
-            evento.setEnderecoNumero(Integer.parseInt(numero.getEditText().getText().toString()));
-            evento.setEnderecoComplemento(complemento.getEditText().getText().toString());
-            evento.setEnderecoBairro(bairro.getEditText().getText().toString());
-            evento.setEnderecoCidade(cidade.getEditText().getText().toString());
-            evento.setEnderecoUF(uf.getEditText().getText().toString());
-            evento.setDescricaoEvento(descricao.getEditText().getText().toString());
-
-            GregorianCalendar calendar;
-            calendar = new GregorianCalendar(tmpAno, tmpMes, tmpDia, tmpHora, tmpMiuto, 0);
-            Date date = calendar.getTime();
-            // Conversao em formato padrao
-            SimpleDateFormat sdf;
-            sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX");
-            sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
-            String text = sdf.format(date);
-            evento.setDataHoraInicio(text);
+            if (validaCampos()) {
 
 
-            EventoService service = RetrofitClient.getClient().create(EventoService.class);
-            Call<ResponseBody> call = service.createEvento(evento);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()){
-                        getFragmentManager().popBackStackImmediate();
+                Evento evento = new Evento();
+                evento.setNomeEvento(nome.getEditText().getText().toString());
+                evento.setEnderecoRua(rua.getEditText().getText().toString());
+                evento.setEnderecoNumero(Integer.parseInt(numero.getEditText().getText().toString()));
+                evento.setEnderecoComplemento(complemento.getEditText().getText().toString());
+                evento.setEnderecoBairro(bairro.getEditText().getText().toString());
+                evento.setEnderecoCidade(cidade.getEditText().getText().toString());
+                evento.setEnderecoUF(uf.getEditText().getText().toString());
+                evento.setDescricaoEvento(descricao.getEditText().getText().toString());
+                evento.setDataHoraInicio(tmpDataHrIni);
+                evento.setDataHoraTermino(tmpDataHrFim);
+
+
+                EventoService service = RetrofitClient.getClient().create(EventoService.class);
+                Call<ResponseBody> call = service.createEvento(evento);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            getFragmentManager().popBackStackImmediate();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
     };
 
@@ -151,7 +144,7 @@ public class FragmentCriaEvento extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             tmpAno = year;
-            tmpMes = monthOfYear+1;
+            tmpMes = monthOfYear;
             tmpDia = dayOfMonth;
             showTimePicker("ini");
         }
@@ -162,14 +155,10 @@ public class FragmentCriaEvento extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                tempDataFim = format.parse (String.valueOf(year) + "-" + String.valueOf(monthOfYear+1) + "-"  + String.valueOf(dayOfMonth));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            dataHoraFim.setText(String.valueOf(dayOfMonth) + "-" +String.valueOf(monthOfYear+1) + "-" + String.valueOf(year));
+            tmpAno = year;
+            tmpMes = monthOfYear;
+            tmpDia = dayOfMonth;
+            showTimePicker("fim");
         }
     };
 
@@ -195,29 +184,77 @@ public class FragmentCriaEvento extends Fragment {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             tmpHora = hourOfDay;
             tmpMiuto = minute;
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-            tempDataInicio = new Timestamp(tmpAno-1900,tmpMes,tmpDia,tmpHora,tmpMiuto,0,0);
-
-
-
-            /*try {
-                tempDataInicio = format.parse (String.valueOf(tmpAno) + "-" + String.valueOf(tmpMes+1) + "-"  + String.valueOf(tmpDia) + "T" +  String.valueOf(tmpHora) + ":" + String.valueOf(tmpMiuto));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
-
-            // Somente data de exibicao
-            dataHoraInicio.setText(String.valueOf(tmpDia) + "-" +String.valueOf(tmpMes+1) + "-" + String.valueOf(tmpAno));
+            tmpDataHrIni = transformaDataHrString(dataHoraInicio);
         }
     };
 
     TimePickerDialog.OnTimeSetListener ontimeFim = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+            tmpHora = hourOfDay;
+            tmpMiuto = minute;
+            tmpDataHrFim = transformaDataHrString(dataHoraFim);
         }
     };
 
+    private String transformaDataHrString(EditText dataHora){
+        GregorianCalendar calendar;
+        calendar = new GregorianCalendar(tmpAno, tmpMes, tmpDia, tmpHora, tmpMiuto, 0);
+        Date date = calendar.getTime();
+        // Conversao em formato padrao para o banco
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX");
+        // Formato para exibir
+        SimpleDateFormat sdfExibicao = new SimpleDateFormat("dd/MMM/yy HH:mm" ,new Locale("pt", "BR"));
+        dataHora.setText(sdfExibicao.format(date));
+
+        sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
+        return sdf.format(date);
+    }
+
+    private boolean validaCampos(){
+        boolean ok = true;
+
+        nome.setError(null);
+        rua.setError(null);
+        bairro.setError(null);
+        cidade.setError(null);
+        uf.setError(null);
+        descricao.setError(null);
+        dataHoraFim.setError(null);
+        dataHoraInicio.setError(null);
+
+        if (nome.getEditText().getText().toString().isEmpty()) {
+            nome.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (rua.getEditText().getText().toString().isEmpty()){
+            rua.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (bairro.getEditText().getText().toString().isEmpty()){
+            bairro.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (cidade.getEditText().getText().toString().isEmpty()) {
+            cidade.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (uf.getEditText().getText().toString().isEmpty()){
+            uf.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (descricao.getEditText().getText().toString().isEmpty()){
+            descricao.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (tmpDataHrIni.isEmpty()){
+            dataHoraInicio.setError("Campo obrigatório");
+            ok = false;
+        }
+        if (tmpDataHrFim.isEmpty()) {
+            dataHoraFim.setError("Campo obrigatório");
+            ok = false;
+        }
+        return ok;
+    }
 }

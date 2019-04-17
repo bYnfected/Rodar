@@ -16,7 +16,7 @@
 
 
         <TextView
-            android:id="@+id/card_titulo_evento"
+            android:id="@+id/card_evento_titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -27,26 +27,26 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/card_cidade_evento"
+            android:id="@+id/card_evento_local"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Cidade Evento"
+            android:text="Local Evento"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_titulo_evento"
+            app:layout_constraintTop_toBottomOf="@+id/card_evento_titulo"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/card_data_evento"
+            android:id="@+id/card_evento_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Data Evento"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_cidade_evento" />
+            app:layout_constraintTop_toBottomOf="@+id/card_evento_local" />
 
         <ImageButton
             android:id="@+id/imageButton3"

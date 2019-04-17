@@ -4,6 +4,7 @@ public class Evento {
     private Integer idEvento;
     private String dataCriacao;
     private Integer idUsuarioCriacao;
+    private String nomeEvento;
     private String enderecoRua;
     private String enderecoComplemento;
     private String enderecoBairro;
@@ -171,5 +172,13 @@ public class Evento {
 
     public void setDescricaoEvento(String descricaoEvento) {
         this.descricaoEvento = descricaoEvento;
+    }
+
+    public String getNomeEvento() {
+        return nomeEvento;
+    }
+
+    public void setNomeEvento(String nomeEvento) {
+        this.nomeEvento = nomeEvento;
     }
 }
