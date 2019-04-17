@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,15 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.rodar.Utils.FragmentEventoDetalhe;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
-import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.EventoService;
-import com.example.android.rodar.services.UsuarioService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,6 +32,7 @@ public class FragmentEventos extends Fragment {
 
     private IMainActivity mainActivity;
     private FloatingActionButton btnCadastro;
+    private List<Evento> eventos;
 
     @Nullable
     @Override
@@ -69,7 +69,7 @@ public class FragmentEventos extends Fragment {
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
-                    List<Evento> eventos = response.body();
+                    eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
 
                     AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos, teste);
@@ -91,6 +91,12 @@ public class FragmentEventos extends Fragment {
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
         public void onEventoClick(int position) {
+            FragmentEventoDetalhe fragmentEventoDetalhe = new FragmentEventoDetalhe(eventos.get(position).getNomeEvento());
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragmentEventoDetalhe);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
             // manda pro fragment de evento detalhado
             // exemplo array.get(position) pq é o mesmo que ta na lista
             Log.d("a", "onEventoClick: clicado" + position);
