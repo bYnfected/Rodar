@@ -15,7 +15,6 @@
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_eventos"
         android:layout_width="match_parent"

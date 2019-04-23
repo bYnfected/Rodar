@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -32,6 +35,59 @@ public class FragmentEventos extends Fragment {
     private IMainActivity mainActivity;
     private FloatingActionButton btnCadastro;
     private List<Evento> eventos;
+    private boolean somenteMeusEventos = false;
+    private boolean somenteMeusFavoritos = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_pesquisa_eventos, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId())
+        {
+            case R.id.menu_eventos_meuseventos:
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+
+                somenteMeusEventos = item.isChecked();
+
+                break;
+                //return true;
+
+            case R.id.menu_eventos_favoritos:
+                if(item.isChecked()){
+                    item.setChecked(false);
+                }else{
+                    item.setChecked(true);
+                }
+
+                somenteMeusFavoritos = item.isChecked();
+
+                break;
+                //return true;
+
+            //default:
+
+        }
+
+        CarregarEventos();
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Nullable
     @Override
@@ -42,7 +98,7 @@ public class FragmentEventos extends Fragment {
         btnCadastro = v.findViewById(R.id.cria_evento_btn);
         btnCadastro.setOnClickListener(criaEventoListener);
 
-        InicilizaLista();
+        CarregarEventos();
 
         return v;
     }
@@ -59,10 +115,10 @@ public class FragmentEventos extends Fragment {
         }
     };
 
-    private void InicilizaLista(){
+    private void CarregarEventos(){
 
         EventoService service = RetrofitClient.getClient().create(EventoService.class);
-        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()),false);
+        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()), somenteMeusEventos, somenteMeusFavoritos);
         call.enqueue(new Callback<List<Evento>>() {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
@@ -70,13 +126,9 @@ public class FragmentEventos extends Fragment {
                     Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
                     eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
-
                     AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos, teste);
-
                     recyclerView.setAdapter(adapter);
-
                     recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
-
                 }
             }
 

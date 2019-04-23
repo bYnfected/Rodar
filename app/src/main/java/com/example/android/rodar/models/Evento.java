@@ -1,6 +1,7 @@
 package com.example.android.rodar.models;
 
 public class Evento {
+
     private Integer idEvento;
     private String dataCriacao;
     private Integer idUsuarioCriacao;
@@ -21,6 +22,7 @@ public class Evento {
     private String dataHoraInicio;
     private String dataHoraTermino;
     private String descricaoEvento;
+    private boolean Favorito;
 
     public Integer getIdEvento() {
         return idEvento;
@@ -181,4 +183,8 @@ public class Evento {
     public void setNomeEvento(String nomeEvento) {
         this.nomeEvento = nomeEvento;
     }
+
+    public boolean getFavorito() { return Favorito; }
+
+    public void setFavorito(boolean favorito) { this.Favorito = favorito; }
 }
