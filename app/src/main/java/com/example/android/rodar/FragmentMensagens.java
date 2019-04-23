@@ -13,6 +13,6 @@ public class FragmentMensagens extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.cadastro_evento, container, false);
+        return inflater.inflate(R.layout.cadastro_carona, container, false);
     }
 }

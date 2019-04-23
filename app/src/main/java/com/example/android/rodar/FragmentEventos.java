@@ -138,7 +138,7 @@ public class FragmentEventos extends Fragment {
             }
         });
     }
-     
+
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
         public void onEventoClick(int position) {

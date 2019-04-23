@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
 
+import com.example.android.rodar.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentTransportes();
                             break;
                         case R.id.nav_mensagens :
-                            selectedFragment = new FragmentMensagens();
+                            selectedFragment = new FragmentCriaCarona();
                             break;
                         case R.id.nav_perfil :
                             selectedFragment = new FragmentPerfil();

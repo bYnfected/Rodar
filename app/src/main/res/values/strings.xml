@@ -2,4 +2,12 @@
     <string name="app_name">Rodar</string>
     <string name="facebook_app_id">894011187657056</string>
     <string name="fb_login_protocol_scheme">fb894011187657056</string>
+
+    <string-array name="vagas_carona">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>
