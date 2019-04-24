@@ -13,6 +13,7 @@ import com.example.android.rodar.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
+import com.example.android.rodar.FragmentPesquisaEventos;
 import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
 import com.example.android.rodar.FragmentTransportes;
@@ -51,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                         case R.id.nav_perfil :
                             selectedFragment = new FragmentPerfil();
                             break;
-
-
                     }
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -94,6 +93,18 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         }
         else if (fragment == "eventos_criaEvento"){
             FragmentCriaEvento novoFragment = new FragmentCriaEvento();
+            doFragmentTransaction(novoFragment,acao);
+        }
+        else if (fragment == "eventos_criaEvento"){
+            FragmentCriaEvento novoFragment = new FragmentCriaEvento();
+            doFragmentTransaction(novoFragment,acao);
+        }
+        else if (fragment == "eventos_criaEvento"){
+            FragmentCriaEvento novoFragment = new FragmentCriaEvento();
+            doFragmentTransaction(novoFragment,acao);
+        }
+        else if (fragment == "eventos_pesquisaEvento"){
+            FragmentPesquisaEventos novoFragment = new FragmentPesquisaEventos();
             doFragmentTransaction(novoFragment,acao);
         }
     }

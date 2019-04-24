@@ -53,7 +53,6 @@ public class FragmentEventos extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         switch (item.getItemId())
         {
             case R.id.menu_eventos_meuseventos:
@@ -64,10 +63,9 @@ public class FragmentEventos extends Fragment {
                 }
 
                 somenteMeusEventos = item.isChecked();
+                CarregarEventos();
 
                 break;
-                //return true;
-
             case R.id.menu_eventos_favoritos:
                 if(item.isChecked()){
                     item.setChecked(false);
@@ -76,15 +74,14 @@ public class FragmentEventos extends Fragment {
                 }
 
                 somenteMeusFavoritos = item.isChecked();
+                CarregarEventos();
 
                 break;
-                //return true;
-
-            //default:
+            case R.id.menu_eventos_filtros:
+                mainActivity.inflateFragment("eventos_pesquisaEvento","");
+                break;
 
         }
-
-        CarregarEventos();
 
         return super.onOptionsItemSelected(item);
     }
