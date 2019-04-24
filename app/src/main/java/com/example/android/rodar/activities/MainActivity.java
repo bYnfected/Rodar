@@ -107,5 +107,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             FragmentPesquisaEventos novoFragment = new FragmentPesquisaEventos();
             doFragmentTransaction(novoFragment,acao);
         }
+        else if (fragment == "criaCarona") {
+            FragmentCriaCarona novoFragment = new FragmentCriaCarona();
+            doFragmentTransaction(novoFragment,acao);
+        }
     }
 }

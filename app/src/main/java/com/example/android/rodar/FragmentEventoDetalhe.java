@@ -1,10 +1,12 @@
 package com.example.android.rodar;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,16 +18,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.rodar.R;
+import com.example.android.rodar.activities.IMainActivity;
 
 @SuppressLint("ValidFragment")
 public class FragmentEventoDetalhe extends Fragment {
 
+    private IMainActivity mainActivity;
     CollapsingToolbarLayout teste;
     private String testeTitulo;
 
     private EventoDetalhePageAdapter eventoDetalhePageAdapter;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+
+    private FloatingActionButton btnCriaTranspCarona;
 
     @SuppressLint("ValidFragment")
     public FragmentEventoDetalhe(String testeTitulo) {
@@ -47,6 +53,9 @@ public class FragmentEventoDetalhe extends Fragment {
         mTabLayout = v.findViewById(R.id.evento_detalhe_tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        // Botao para criar carona OU transporte conforme o tipo de usuario
+        btnCriaTranspCarona = v.findViewById(R.id.evento_detalhe_criaTranspCarona);
+        btnCriaTranspCarona.setOnClickListener(criaTranspCarona);
         return v;
     }
 
@@ -55,6 +64,12 @@ public class FragmentEventoDetalhe extends Fragment {
         super.onDestroyView();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
     }
 
     // Configura quais os fragments para as abas
@@ -67,4 +82,12 @@ public class FragmentEventoDetalhe extends Fragment {
         viewPager.setAdapter(adapter);
 
     }
+
+    View.OnClickListener criaTranspCarona = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            mainActivity.inflateFragment("criaCarona","");
+        }
+    };
+
 }

@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/evento_detalhe_criaTranspCarona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,10 +23,10 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="360dp"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:contentScrim="@color/colorPrimary"
-            app:title="Teste Barra Colapse"
+            app:title="Titutlo Evento"
             android:id="@+id/evento_detalhe_titulo">
 
             <android.support.constraint.ConstraintLayout
@@ -24,16 +34,16 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/evento_detalhe_dataHoraIni"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Teste Data abc"
+                    android:text="01/01/2019 10:00"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/abc123" />
+                    app:layout_constraintTop_toBottomOf="@+id/evento_detalhe_imagem" />
 
                 <ImageView
-                    android:id="@+id/abc123"
+                    android:id="@+id/evento_detalhe_imagem"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="centerCrop"
@@ -41,13 +51,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/evento_detalhe_dataHoraFim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Teste Local 123, Bairro, Cidade, UF"
-                    app:layout_constraintStart_toEndOf="@+id/textView12"
-                    app:layout_constraintTop_toBottomOf="@+id/abc123" />
+                    android:text="02/01/2019 12:00"
+                    app:layout_constraintStart_toEndOf="@+id/evento_detalhe_dataHoraIni"
+                    app:layout_constraintTop_toBottomOf="@+id/evento_detalhe_imagem" />
+
+                <TextView
+                    android:id="@+id/evento_detalhe_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Local"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/evento_detalhe_dataHoraIni" />
 
 
             </android.support.constraint.ConstraintLayout>
@@ -59,8 +79,6 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,11 +95,10 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/evento_detalhe_viewPager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="0px"
             android:layout_weight="1"/>
 
     </LinearLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>
