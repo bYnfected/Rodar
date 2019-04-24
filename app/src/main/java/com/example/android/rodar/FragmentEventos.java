@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
+import com.example.android.rodar.adapters.AdapterListaEventos;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.EventoService;
 
@@ -123,7 +124,7 @@ public class FragmentEventos extends Fragment {
                     Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
                     eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
-                    AdapterListaEventos adapter = new AdapterListaEventos(getView().getContext(),eventos, teste);
+                    AdapterListaEventos adapter = new AdapterListaEventos(eventos, teste);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
                 }

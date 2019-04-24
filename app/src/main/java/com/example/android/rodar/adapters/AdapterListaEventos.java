@@ -1,22 +1,19 @@
-package com.example.android.rodar;
+package com.example.android.rodar.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Evento;
-import com.example.android.rodar.services.EventoService;
 import com.example.android.rodar.services.FavoritoService;
 
 import java.util.List;
@@ -28,17 +25,12 @@ import retrofit2.Response;
 
 public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEventos.ViewHolder> {
 
-    private Context mContext;
     private List<Evento> eventos;
     private OnEventoClickListener mOnEventoClickListener;
-    //private SharedPreferences preferences;
 
-    public AdapterListaEventos(Context mContext, List<Evento> eventos, OnEventoClickListener onEventoClickListener) {
-        this.mContext = mContext;
+    public AdapterListaEventos(List<Evento> eventos, OnEventoClickListener onEventoClickListener) {
         this.eventos = eventos;
         this.mOnEventoClickListener = onEventoClickListener;
-
-        //preferences = mContext.getSharedPreferences("EventoPreferences", Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -55,7 +47,6 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.textViewEvento.setText(eventos.get(position).getNomeEvento());
-        //viewHolder.cidade.setText(eventos.get(i).getEnderecoCidade() +);
         viewHolder.textViewData.setText(eventos.get(position).getEnderecoCEP());
 
         Evento evento =  eventos.get(position);
@@ -65,13 +56,8 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
         favoritoData.setIsFavorito(evento.getFavorito());
         favoritoData.setIdEvento(evento.getIdEvento());
 
-        //boolean favorito = preferences.getBoolean(evento.getIdEvento().toString(), false);
-
         viewHolder.buttonFavoritar.setTag(favoritoData);
-        //viewHolder.buttonFavoritar.setOnClickListener(viewHolder);
         viewHolder.buttonFavoritar.setBackgroundResource(evento.getFavorito() ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_favorite_border_black_24dp);
-
-        //viewHolder.favorito .setText(eventos.get(i).getEnderecoCEP());
     }
 
     @Override
@@ -133,36 +119,11 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
                         Toast.makeText(view.getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
                     }
                 });
-
-
-//                Evento evento =  eventos.get((Integer)view.getTag());
-//                boolean favorito = !preferences.getBoolean(evento.getIdEvento().toString(), false);
-//
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.putBoolean(evento.getIdEvento().toString(), favorito);
-//                editor.commit();
-
             }
             else
             {
                 onEventoClickListener.onEventoClick(getAdapterPosition());
             }
-            //
-//            if(view.getId() == R.id.card_evento_favoritar ){
-//
-//                //Filme filme = getItem((Integer)view.getTag());
-//
-//                boolean favorito = preferences.getBoolean(filme.getTitulo(), false);
-//                favorito = !favorito;
-//
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.putBoolean(filme.getTitulo(), favorito);
-//                editor.commit();
-//
-//                notifyDataSetChanged();
-//
-//            }
-//
         }
     }
 
