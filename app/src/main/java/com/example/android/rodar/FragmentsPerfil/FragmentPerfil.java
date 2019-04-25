@@ -45,7 +45,7 @@ public class FragmentPerfil extends Fragment {
     private View.OnClickListener meusDadosListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.inflateFragment("perfil_meusDados","");
+            mainActivity.inflateFragment("perfil_meusDados",null);
         }
     };
 

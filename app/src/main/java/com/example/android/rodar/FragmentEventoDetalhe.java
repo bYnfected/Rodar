@@ -26,6 +26,7 @@ public class FragmentEventoDetalhe extends Fragment {
     private IMainActivity mainActivity;
     CollapsingToolbarLayout teste;
     private String testeTitulo;
+    private int idEvento;
 
     private EventoDetalhePageAdapter eventoDetalhePageAdapter;
     private ViewPager mViewPager;
@@ -33,18 +34,16 @@ public class FragmentEventoDetalhe extends Fragment {
 
     private FloatingActionButton btnCriaTranspCarona;
 
-    @SuppressLint("ValidFragment")
-    public FragmentEventoDetalhe(String testeTitulo) {
-        this.testeTitulo = testeTitulo;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_evento_detalhe, container, false);
 
+        idEvento = getArguments().getInt("id");
+
+
         teste = v.findViewById(R.id.evento_detalhe_titulo);
-        teste.setTitle(testeTitulo);
+        teste.setTitle("teste");
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         mViewPager = v.findViewById(R.id.evento_detalhe_viewPager);
@@ -63,7 +62,6 @@ public class FragmentEventoDetalhe extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-
     }
 
     @Override
@@ -86,7 +84,9 @@ public class FragmentEventoDetalhe extends Fragment {
     View.OnClickListener criaTranspCarona = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            mainActivity.inflateFragment("criaCarona","");
+            Bundle bundle  = new Bundle();
+            bundle.putInt("id",idEvento);
+            mainActivity.inflateFragment("criaCarona",null);
         }
     };
 

@@ -79,7 +79,7 @@ public class FragmentEventos extends Fragment {
 
                 break;
             case R.id.menu_eventos_filtros:
-                mainActivity.inflateFragment("eventos_pesquisaEvento","");
+                mainActivity.inflateFragment("eventos_pesquisaEvento",null);
                 break;
 
         }
@@ -109,7 +109,7 @@ public class FragmentEventos extends Fragment {
     private View.OnClickListener criaEventoListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            mainActivity.inflateFragment("eventos_criaEvento","");
+            mainActivity.inflateFragment("eventos_criaEvento",null);
         }
     };
 
@@ -140,15 +140,15 @@ public class FragmentEventos extends Fragment {
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
         public void onEventoClick(int position) {
-            FragmentEventoDetalhe fragmentEventoDetalhe = new FragmentEventoDetalhe(eventos.get(position).getNomeEvento());
+            /*FragmentEventoDetalhe fragmentEventoDetalhe = new FragmentEventoDetalhe(eventos.get(position).getNomeEvento());
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragmentEventoDetalhe);
             transaction.addToBackStack(null);
-            transaction.commit();
+            transaction.commit();*/
 
-            // manda pro fragment de evento detalhado
-            // exemplo array.get(position) pq é o mesmo que ta na lista
-            Log.d("a", "onEventoClick: clicado" + position);
+            Bundle bundle = new Bundle();
+            bundle.putInt("id",eventos.get(position).getIdEvento());
+            mainActivity.inflateFragment("evento_detalhe",bundle);
         }
     };
 

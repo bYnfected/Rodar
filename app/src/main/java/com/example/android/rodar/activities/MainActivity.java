@@ -11,6 +11,7 @@ import android.view.Menu;
 
 import com.example.android.rodar.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
+import com.example.android.rodar.FragmentEventoDetalhe;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
 import com.example.android.rodar.FragmentPesquisaEventos;
@@ -61,8 +62,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 }
             };
 
-    private void doFragmentTransaction(Fragment fragment, String acao){
+    private void doFragmentTransaction(Fragment fragment,Bundle bundle){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        fragment.setArguments(bundle);
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -74,42 +76,46 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     }
 
     @Override
-    public void inflateFragment(String fragment, String acao) {
+    public void inflateFragment(String fragment, Bundle bundle) {
         if (fragment == "eventos"){
             FragmentEventos novoFragment = new FragmentEventos();
-            doFragmentTransaction(novoFragment, acao);
+            doFragmentTransaction(novoFragment, bundle);
         }
         else if (fragment == "mensagens"){
             FragmentMensagens novoFragment = new FragmentMensagens();
-            doFragmentTransaction(novoFragment, acao);
+            doFragmentTransaction(novoFragment, bundle);
         }
         else if (fragment == "perfil"){
             FragmentPerfil novoFragment = new FragmentPerfil();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "perfil_meusDados"){
             FragmentMeusDados novoFragment = new FragmentMeusDados();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "eventos_criaEvento"){
             FragmentCriaEvento novoFragment = new FragmentCriaEvento();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "eventos_criaEvento"){
             FragmentCriaEvento novoFragment = new FragmentCriaEvento();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "eventos_criaEvento"){
             FragmentCriaEvento novoFragment = new FragmentCriaEvento();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "eventos_pesquisaEvento"){
             FragmentPesquisaEventos novoFragment = new FragmentPesquisaEventos();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "criaCarona") {
             FragmentCriaCarona novoFragment = new FragmentCriaCarona();
-            doFragmentTransaction(novoFragment,acao);
+            doFragmentTransaction(novoFragment,bundle);
+        }
+        else if (fragment == "evento_detalhe") {
+            FragmentEventoDetalhe novoFragment = new FragmentEventoDetalhe();
+            doFragmentTransaction(novoFragment, bundle);
         }
     }
 }

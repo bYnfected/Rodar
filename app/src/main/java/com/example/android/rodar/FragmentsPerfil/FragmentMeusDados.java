@@ -112,7 +112,7 @@ public class FragmentMeusDados extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()){
                         Toast.makeText(getContext(), "Atualizado com sucesso", Toast.LENGTH_LONG).show();
-                        mainActivity.inflateFragment("perfil","");
+                        mainActivity.inflateFragment("perfil",null);
                     }
                 }
 
