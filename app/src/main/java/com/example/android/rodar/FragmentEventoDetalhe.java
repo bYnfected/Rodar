@@ -86,6 +86,7 @@ public class FragmentEventoDetalhe extends Fragment {
         public void onClick(View v) {
             Bundle bundle  = new Bundle();
             bundle.putInt("id",idEvento);
+            // Testar aqui se o usuario cria transporte ou carona
             mainActivity.inflateFragment("criaCarona",null);
         }
     };
