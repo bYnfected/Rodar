@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
-import com.example.android.rodar.adapters.AdapterListaEventos;
 import com.example.android.rodar.adapters.AdapterListaTransportes;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.TransporteService;
@@ -63,7 +62,7 @@ public class FragmentEventoTransportes extends Fragment {
     AdapterListaTransportes.OnTransporteClickListener listenerTransportes = new AdapterListaTransportes.OnTransporteClickListener() {
         @Override
         public void onTransporteClick(int position) {
-
+            Toast.makeText(getContext(), "CLICOU TRANSPORTE", Toast.LENGTH_LONG).show();
         }
     };
 }

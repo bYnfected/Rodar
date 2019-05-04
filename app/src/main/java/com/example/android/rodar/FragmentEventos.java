@@ -140,14 +140,9 @@ public class FragmentEventos extends Fragment {
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
         public void onEventoClick(int position) {
-            /*FragmentEventoDetalhe fragmentEventoDetalhe = new FragmentEventoDetalhe(eventos.get(position).getNomeEvento());
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragmentEventoDetalhe);
-            transaction.addToBackStack(null);
-            transaction.commit();*/
-
             Bundle bundle = new Bundle();
             bundle.putInt("id",eventos.get(position).getIdEvento());
+            bundle.putSerializable("evento",eventos.get(position));
             mainActivity.inflateFragment("evento_detalhe",bundle);
         }
     };

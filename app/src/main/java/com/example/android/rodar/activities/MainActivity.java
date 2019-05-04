@@ -11,6 +11,7 @@ import android.view.Menu;
 
 import com.example.android.rodar.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
+import com.example.android.rodar.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentEventoDetalhe;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
@@ -55,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             break;
                     }
 
+
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
 
                     return true;
+
                 }
             };
 
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void setToolbarTitle(String fragmentTag) {
-        // mudar toolbar
+
     }
 
     @Override
@@ -111,6 +114,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         }
         else if (fragment == "criaCarona") {
             FragmentCriaCarona novoFragment = new FragmentCriaCarona();
+            doFragmentTransaction(novoFragment,bundle);
+        }
+        else if (fragment == "criaTransporte") {
+            FragmentCriaTransporte novoFragment = new FragmentCriaTransporte();
             doFragmentTransaction(novoFragment,bundle);
         }
         else if (fragment == "evento_detalhe") {

@@ -1,6 +1,8 @@
 package com.example.android.rodar.models;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable {
 
     private Integer idEvento;
     private String dataCriacao;

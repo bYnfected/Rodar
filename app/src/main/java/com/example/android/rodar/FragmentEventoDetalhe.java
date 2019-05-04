@@ -7,30 +7,28 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.android.rodar.R;
 import com.example.android.rodar.activities.IMainActivity;
+import com.example.android.rodar.models.Evento;
 
 @SuppressLint("ValidFragment")
 public class FragmentEventoDetalhe extends Fragment {
 
     private IMainActivity mainActivity;
-    CollapsingToolbarLayout teste;
-    private String testeTitulo;
-    private int idEvento;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    private Evento evento;
 
-    private EventoDetalhePageAdapter eventoDetalhePageAdapter;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private TextView dataHrIni,dataHrFim, local;
 
     private FloatingActionButton btnCriaTranspCarona;
 
@@ -39,11 +37,19 @@ public class FragmentEventoDetalhe extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_evento_detalhe, container, false);
 
-        idEvento = getArguments().getInt("id");
+        evento = (Evento) getArguments().getSerializable("evento");
+
+        dataHrIni = v.findViewById(R.id.evento_detalhe_dataHoraIni);
+        dataHrFim = v.findViewById(R.id.evento_detalhe_dataHoraFim);
+        local = v.findViewById(R.id.evento_detalhe_local);
 
 
-        teste = v.findViewById(R.id.evento_detalhe_titulo);
-        teste.setTitle("teste");
+        dataHrIni.setText(evento.getDataHoraInicio());
+        dataHrFim.setText(evento.getDataHoraTermino());
+        local.setText(evento.getEnderecoRua());
+
+        collapsingToolbarLayout = v.findViewById(R.id.evento_detalhe_titulo);
+        collapsingToolbarLayout.setTitle(evento.getNomeEvento());
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         mViewPager = v.findViewById(R.id.evento_detalhe_viewPager);
@@ -79,15 +85,38 @@ public class FragmentEventoDetalhe extends Fragment {
         // Seta esse adapter para o viewPager
         viewPager.setAdapter(adapter);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            // Verifica se deve ou nao exibir o botao conforme perfil do usuario
+            public void onPageSelected(int i) {
+                if (((i == 0) && (true)) || ((i == 1) && (i==2)))
+                    btnCriaTranspCarona.show();
+                else
+                    btnCriaTranspCarona.hide();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
     }
 
     View.OnClickListener criaTranspCarona = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             Bundle bundle  = new Bundle();
-            bundle.putInt("id",idEvento);
             // Testar aqui se o usuario cria transporte ou carona
-            mainActivity.inflateFragment("criaCarona",null);
+            if (mViewPager.getCurrentItem() == 0)
+                mainActivity.inflateFragment("criaTransporte",bundle);
+            else
+                mainActivity.inflateFragment("criaCarona",bundle);
         }
     };
 

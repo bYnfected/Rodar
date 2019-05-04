@@ -48,6 +48,9 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.textViewEvento.setText(eventos.get(position).getNomeEvento());
         viewHolder.textViewData.setText(eventos.get(position).getEnderecoCEP());
+        viewHolder.textViewCidade.setText(eventos.get(position).getEnderecoRua() + ", " +
+                eventos.get(position).getEnderecoCidade() + " - " +
+                eventos.get(position).getEnderecoUF());
 
         Evento evento =  eventos.get(position);
 
@@ -57,7 +60,7 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
         favoritoData.setIdEvento(evento.getIdEvento());
 
         viewHolder.buttonFavoritar.setTag(favoritoData);
-        viewHolder.buttonFavoritar.setBackgroundResource(evento.getFavorito() ? R.drawable.ic_favorite_black_24dp : R.drawable.ic_favorite_border_black_24dp);
+        viewHolder.buttonFavoritar.setBackgroundResource(evento.getFavorito() ? R.drawable.ic_favorite_red_36dp : R.drawable.ic_favorite_border_black_36dp);
     }
 
     @Override

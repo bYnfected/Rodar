@@ -7,6 +7,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -19,4 +20,7 @@ public interface EventoService {
 
     @GET("Evento/BuscarTodos")
     Call<List<Evento>> getEventos(@Header("Authorization") String token, @Query("somenteMeusEventos") boolean somenteMeusEventos,  @Query("somenteMeusFavoritos") boolean somenteMeusFavoritos);
+
+    @GET("Evento/Buscar")
+    Call <Evento> getEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 }

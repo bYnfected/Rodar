@@ -7,133 +7,129 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout15"
+        android:id="@+id/cadastro_transporte_mensagem"
         android:layout_width="395dp"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Nome do Transporte"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:hint="Mensagem" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout16"
-        android:layout_width="395dp"
+        android:id="@+id/cadastro_transporte_rua"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Endereço de Partida"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout15">
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_mensagem">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Rua" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout17"
-        android:layout_width="395dp"
+        android:id="@+id/cadastro_transporte_num"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Cidade de Partida"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout16">
+        app:layout_constraintStart_toEndOf="@+id/cadastro_transporte_rua"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_mensagem">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Num"
+            android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout18"
+        android:id="@+id/cadastro_transporte_complemento"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_rua">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Complemento" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/cadastro_transporte_bairro"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Data e Hora Saída"
+        app:layout_constraintStart_toEndOf="@+id/cadastro_transporte_complemento"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_rua">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Bairro" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/cadastro_transporte_cidade"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout17">
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_complemento">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Cidade" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout19"
-        android:layout_width="180dp"
+        android:id="@+id/cadastro_transporte_uf"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Data e Hora Chegada"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout18"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout17">
+        app:layout_constraintStart_toEndOf="@+id/cadastro_transporte_cidade"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_bairro">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="UF" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout20"
-        android:layout_width="80dp"
+        android:id="@+id/cadastro_transporte_valor"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Valor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout18">
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_cidade">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout21"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Vagas"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout20"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout19">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout22"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Descrição"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout21">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="wrap_content"
+            android:hint="Valor da transporte"
+            android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/cadastro_transporte_concluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -142,6 +138,22 @@
         android:text="Concluir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout22" />
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_valor" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/cadastro_transporte_vagas"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/cadastro_transporte_valor"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_transporte_cidade">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vagas"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>
