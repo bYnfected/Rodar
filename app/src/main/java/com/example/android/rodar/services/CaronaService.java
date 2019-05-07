@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface CaronaService {
 
@@ -18,4 +19,7 @@ public interface CaronaService {
 
     @GET ("EventoCarona/BuscarTodos")
     Call<List<Carona>> getCaronas(@Header("Authorization") String token);
+
+    @GET ("EventoCarona/BuscarPorEvento")
+    Call<List<Carona>> getCaronasEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 }

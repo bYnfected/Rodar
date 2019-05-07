@@ -26,11 +26,13 @@ import retrofit2.Response;
 public class FragmentEventoTransportes extends Fragment {
 
     private List<Transporte> transportes;
+    private int idEvento;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_evento_transportes,container,false);
+        idEvento = getArguments().getInt("idEvento");
 
         CarregaTransportes();
 
@@ -39,7 +41,7 @@ public class FragmentEventoTransportes extends Fragment {
 
     public void CarregaTransportes() {
         TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
-        Call<List<Transporte>> call = service.getTransporte(PreferenceUtils.getToken(getContext()));
+        Call<List<Transporte>> call = service.getTransportesEvento(PreferenceUtils.getToken(getContext()),idEvento);
         call.enqueue(new Callback<List<Transporte>>() {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {

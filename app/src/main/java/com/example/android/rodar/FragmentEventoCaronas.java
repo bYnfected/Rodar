@@ -26,11 +26,13 @@ import retrofit2.Response;
 public class FragmentEventoCaronas extends Fragment {
 
     private  List<Carona> caronas;
+    private int idEvento;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_evento_caronas,container,false);
+        idEvento = getArguments().getInt("idEvento");
 
         CarregaCaronas();
 
@@ -39,7 +41,7 @@ public class FragmentEventoCaronas extends Fragment {
 
     private void CarregaCaronas() {
         CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-        Call<List<Carona>> call = service.getCaronas(PreferenceUtils.getToken(getContext()));
+        Call<List<Carona>> call = service.getCaronasEvento(PreferenceUtils.getToken(getContext()),idEvento);
         call.enqueue(new Callback<List<Carona>>() {
             @Override
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {

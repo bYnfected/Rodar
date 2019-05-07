@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface TransporteService {
 
@@ -18,4 +19,7 @@ public interface TransporteService {
 
     @GET ("EventoTransporte/BuscarTodos")
     Call<List<Transporte>> getTransporte(@Header("Authorization") String token);
+
+    @GET ("EventoTransporte/BuscarPorEvento")
+    Call<List<Transporte>> getTransportesEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 }
