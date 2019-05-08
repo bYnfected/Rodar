@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
 
 import okhttp3.Response;
@@ -26,13 +27,15 @@ public class FragmentParticipaCarona extends Fragment {
     private TextView endereco, mensagem, vagas, valor;
     private Button btnConcluir;
     private int idEventoCarona;
+    private Carona mCarona;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_participa_carona, container, false);
 
-        idEventoCarona = getArguments().getInt("idEventoCarona");
+        mCarona = (Carona) getArguments().getSerializable("carona");
+        //idEventoCarona = getArguments().getInt("idEventoCarona");
 
         endereco = v.findViewById(R.id.participa_carona_endereco);
         mensagem = v.findViewById(R.id.participa_carona_mensagem);
@@ -41,6 +44,14 @@ public class FragmentParticipaCarona extends Fragment {
         btnConcluir = v.findViewById(R.id.participa_carona_concluir);
         btnConcluir.setOnClickListener(concluirListener);
 
+        endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
+                ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
+                " - " + mCarona.getEnderecoPartidaCidade() + " - " + mCarona.getEnderecoPartidaUF());
+
+        valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
+        mensagem.setText(mCarona.getMensagem());
+
+
         return v;
     }
 
@@ -48,7 +59,7 @@ public class FragmentParticipaCarona extends Fragment {
         @Override
         public void onClick(View v) {
             CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-            Call<ResponseBody> call = service.participarCarona(PreferenceUtils.getToken(getContext()), idEventoCarona);
+            Call<ResponseBody> call = service.participarCarona(PreferenceUtils.getToken(getContext()), mCarona.getIdEventoCarona());
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override

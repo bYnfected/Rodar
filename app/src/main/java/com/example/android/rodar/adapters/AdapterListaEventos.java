@@ -112,7 +112,7 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             eventos.get(favoritoData.listPosition).setFavorito(!favoritoData.isFavorito);
-                            Toast.makeText(view.getContext(), "Bombou", Toast.LENGTH_LONG).show();
+                            Toast.makeText(view.getContext(), "Adicionado aos favoritos", Toast.LENGTH_LONG).show();
                             notifyDataSetChanged();
                         }
                     }

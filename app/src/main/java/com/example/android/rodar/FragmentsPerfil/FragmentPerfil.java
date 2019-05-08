@@ -61,7 +61,6 @@ public class FragmentPerfil extends Fragment {
 
             if (PreferenceUtils.getOrganizador(getContext()))
                 btnPromoverOrganizador.setVisibility(View.GONE);
-
         }
 
     @Override
@@ -125,6 +124,7 @@ public class FragmentPerfil extends Fragment {
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext(), "Perfil Atualizado", Toast.LENGTH_LONG).show();
+                                PreferenceUtils.saveTransportador(getContext());
                                 mainActivity.inflateFragment("perfil",null);
                             }
                         }
@@ -152,7 +152,24 @@ public class FragmentPerfil extends Fragment {
             builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // confirma mudança
+                    UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
+                    Call<ResponseBody> call = service.promoverOrganizador(PreferenceUtils.getToken(getContext()));
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()){
+                                Toast.makeText(getContext(), "Perfil Atualizado", Toast.LENGTH_LONG).show();
+                                PreferenceUtils.saveOrganizador(getContext());
+                                mainActivity.inflateFragment("perfil",null);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(getContext(), "ERRO FALHA CONEXAO", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                 }
             });
             builder.show();

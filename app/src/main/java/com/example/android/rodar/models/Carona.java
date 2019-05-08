@@ -1,6 +1,8 @@
 package com.example.android.rodar.models;
 
-public class Carona {
+import java.io.Serializable;
+
+public class Carona implements Serializable {
     public Integer idEventoCarona;
     public Integer idEvento;
     public Integer idUsuarioMotorista;
@@ -12,7 +14,7 @@ public class Carona {
     public String enderecoPartidaCidade;
     public String enderecoPartidaUF;
     public Double valorParticipacao;
-    public String mensagem;
+    public String Mensagem;
     private Integer quantidadeVagas;
     private Integer quantidadeVagasDisponiveis;
     private Integer quantidadeVagasOcupadas;
@@ -130,10 +132,10 @@ public class Carona {
     }
 
     public String getMensagem() {
-        return mensagem;
+        return Mensagem;
     }
 
     public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+        this.Mensagem = mensagem;
     }
 }

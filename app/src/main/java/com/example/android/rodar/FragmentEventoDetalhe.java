@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
 import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
+import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
 
@@ -50,6 +51,10 @@ public class FragmentEventoDetalhe extends Fragment {
         dataHrFim.setText(evento.getDataHoraTermino());
         local.setText(evento.getEnderecoRua());
 
+        // Botao para criar carona OU transporte conforme o tipo de usuario
+        btnCriaTranspCarona = v.findViewById(R.id.evento_detalhe_criaTranspCarona);
+        btnCriaTranspCarona.setOnClickListener(criaTranspCarona);
+
         collapsingToolbarLayout = v.findViewById(R.id.evento_detalhe_titulo);
         collapsingToolbarLayout.setTitle(evento.getNomeEvento());
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
@@ -60,9 +65,7 @@ public class FragmentEventoDetalhe extends Fragment {
         mTabLayout = v.findViewById(R.id.evento_detalhe_tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        // Botao para criar carona OU transporte conforme o tipo de usuario
-        btnCriaTranspCarona = v.findViewById(R.id.evento_detalhe_criaTranspCarona);
-        btnCriaTranspCarona.setOnClickListener(criaTranspCarona);
+        mostraBotaoCriar(0);
         return v;
     }
 
@@ -103,18 +106,22 @@ public class FragmentEventoDetalhe extends Fragment {
             @Override
             // Verifica se deve ou nao exibir o botao conforme perfil do usuario
             public void onPageSelected(int i) {
-                if (((i == 0) && (false)) || ((i == 1) && (true)))
-                    btnCriaTranspCarona.show();
-                else
-                    btnCriaTranspCarona.hide();
+                mostraBotaoCriar(i);
             }
-
             @Override
             public void onPageScrollStateChanged(int i) {
 
             }
         });
 
+    }
+
+    private void mostraBotaoCriar(int i) {
+        if (((i == 0) && (PreferenceUtils.getTransportador(getContext()))) ||
+                ((i == 1) && (!PreferenceUtils.getTransportador(getContext()))))
+            btnCriaTranspCarona.show();
+        else
+            btnCriaTranspCarona.hide();
     }
 
     View.OnClickListener criaTranspCarona = new View.OnClickListener(){

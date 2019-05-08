@@ -82,6 +82,21 @@ public class PreferenceUtils {
             });
         }
 
+        public static void saveTransportador(final Context context){
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor prefsEditor = prefs.edit();
+            prefsEditor.putBoolean("transportador", true);
+            prefsEditor.apply();
+
+        }
+
+        public static void saveOrganizador(final Context context) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor prefsEditor = prefs.edit();
+            prefsEditor.putBoolean("organizador", true);
+            prefsEditor.apply();
+        }
+
         public static boolean getTransportador(Context context){
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             return prefs.getBoolean("transportador", false);

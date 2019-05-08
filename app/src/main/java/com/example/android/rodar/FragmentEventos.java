@@ -96,6 +96,8 @@ public class FragmentEventos extends Fragment {
         btnCadastro = v.findViewById(R.id.cria_evento_btn);
         btnCadastro.setOnClickListener(criaEventoListener);
 
+        if (PreferenceUtils.getOrganizador(getContext()))
+            btnCadastro.show();
         CarregarEventos();
 
         return v;
