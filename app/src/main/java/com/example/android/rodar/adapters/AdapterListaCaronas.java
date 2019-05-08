@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.android.rodar.R;
 import com.example.android.rodar.models.Carona;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,10 @@ public class AdapterListaCaronas extends RecyclerView.Adapter<AdapterListaCarona
     private OnCaronaClickListener mOnCaronaClickListener;
 
     public AdapterListaCaronas(List<Carona> caronas, OnCaronaClickListener mOnCaronaClickListener) {
+        if (caronas == null) {
+            caronas = new ArrayList<>();
+        }
+
         this.caronas = caronas;
         this.mOnCaronaClickListener = mOnCaronaClickListener;
     }

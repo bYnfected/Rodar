@@ -16,6 +16,7 @@ import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.FavoritoService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -29,6 +30,9 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
     private OnEventoClickListener mOnEventoClickListener;
 
     public AdapterListaEventos(List<Evento> eventos, OnEventoClickListener onEventoClickListener) {
+        if (eventos == null){
+            eventos = new ArrayList<>();
+        }
         this.eventos = eventos;
         this.mOnEventoClickListener = onEventoClickListener;
     }

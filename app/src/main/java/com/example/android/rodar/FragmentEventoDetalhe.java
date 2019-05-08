@@ -22,6 +22,9 @@ import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @SuppressLint("ValidFragment")
 public class FragmentEventoDetalhe extends Fragment {
 
@@ -46,10 +49,21 @@ public class FragmentEventoDetalhe extends Fragment {
         dataHrFim = v.findViewById(R.id.evento_detalhe_dataHoraFim);
         local = v.findViewById(R.id.evento_detalhe_local);
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Converte para LocalDateTime
+            LocalDateTime localDateTime = LocalDateTime.parse(evento.getDataHoraInicio());
+            LocalDateTime localDateTime1 = LocalDateTime.parse(evento.getDataHoraTermino());
+            // Cria um formato legivel
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // Converte a data para o formato desejado
+            dataHrIni.setText(localDateTime.format(formatter));
+            dataHrFim.setText(localDateTime1.format(formatter));
+        }
 
-        dataHrIni.setText(evento.getDataHoraInicio());
         dataHrFim.setText(evento.getDataHoraTermino());
-        local.setText(evento.getEnderecoRua());
+        local.setText(evento.getEnderecoRua() + ", " + evento.getEnderecoNumero().toString() +
+                ", " + evento.getEnderecoBairro() + " - " + evento.getEnderecoCidade() +
+                " - " + evento.getEnderecoUF());
 
         // Botao para criar carona OU transporte conforme o tipo de usuario
         btnCriaTranspCarona = v.findViewById(R.id.evento_detalhe_criaTranspCarona);

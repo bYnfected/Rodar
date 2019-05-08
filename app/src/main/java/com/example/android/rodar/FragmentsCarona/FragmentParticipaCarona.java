@@ -17,14 +17,13 @@ import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class FragmentParticipaCarona extends Fragment {
 
-    private TextView endereco, mensagem, vagas, valor;
+    private TextView endereco, mensagem, vagas, valor, vagasTotal;
     private Button btnConcluir;
     private int idEventoCarona;
     private Carona mCarona;
@@ -39,7 +38,8 @@ public class FragmentParticipaCarona extends Fragment {
 
         endereco = v.findViewById(R.id.participa_carona_endereco);
         mensagem = v.findViewById(R.id.participa_carona_mensagem);
-        vagas = v.findViewById(R.id.participa_carona_vagas);
+        vagas = v.findViewById(R.id.participa_carona_vagas_disp);
+        vagasTotal = v.findViewById(R.id.participa_carona_vagas_total);
         valor = v.findViewById(R.id.participa_carona_valor);
         btnConcluir = v.findViewById(R.id.participa_carona_concluir);
         btnConcluir.setOnClickListener(concluirListener);
@@ -48,8 +48,11 @@ public class FragmentParticipaCarona extends Fragment {
                 ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
                 " - " + mCarona.getEnderecoPartidaCidade() + " - " + mCarona.getEnderecoPartidaUF());
 
-        valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
+
         mensagem.setText(mCarona.getMensagem());
+        vagas.setText(mCarona.getQuantidadeVagasDisponiveis().toString());
+        vagasTotal.setText(mCarona.getQuantidadeVagas().toString());
+        valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
 
 
         return v;

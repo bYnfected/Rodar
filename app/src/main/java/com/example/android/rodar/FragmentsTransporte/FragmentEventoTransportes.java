@@ -47,6 +47,7 @@ public class FragmentEventoTransportes extends Fragment {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
                 if (response.isSuccessful()){
+
                     transportes = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_evento_detalhe_transportes);
                     AdapterListaTransportes adapter = new AdapterListaTransportes(transportes,listenerTransportes);

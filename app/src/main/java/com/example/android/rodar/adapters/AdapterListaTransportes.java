@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.android.rodar.R;
 import com.example.android.rodar.models.Transporte;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,6 +20,9 @@ public class AdapterListaTransportes extends RecyclerView.Adapter<AdapterListaTr
     private OnTransporteClickListener mOnTransporteClickListener;
 
     public AdapterListaTransportes(List<Transporte> transportes, OnTransporteClickListener mOnTransporteClickListener) {
+        if (transportes == null){
+            transportes = new ArrayList<>();
+        }
         this.transportes = transportes;
         this.mOnTransporteClickListener = mOnTransporteClickListener;
     }
