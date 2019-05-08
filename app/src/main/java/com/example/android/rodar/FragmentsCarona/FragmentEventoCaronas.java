@@ -1,5 +1,6 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsCarona;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaCaronas;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
@@ -25,6 +28,7 @@ import retrofit2.Response;
 
 public class FragmentEventoCaronas extends Fragment {
 
+    private IMainActivity mainActivity;
     private  List<Carona> caronas;
     private int idEvento;
 
@@ -37,6 +41,12 @@ public class FragmentEventoCaronas extends Fragment {
         CarregaCaronas();
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
     }
 
     private void CarregaCaronas() {
@@ -65,7 +75,10 @@ public class FragmentEventoCaronas extends Fragment {
 
         @Override
         public void onCaronaClick(int position) {
-            Toast.makeText(getContext(), "CLICOU CARONA", Toast.LENGTH_LONG).show();
+            // Listener do card, retorna a posicao = valor no array
+            Bundle bundle = new Bundle();
+            bundle.putInt("idEventoCarona", caronas.get(position).getIdEventoCarona());
+            mainActivity.inflateFragment("participaCarona",bundle);
         }
     };
 }

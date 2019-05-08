@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/perfil_btn_transportador"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/perfil_btn_meus_dados" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/perfil_btn_organizador"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
         android:layout_marginTop="8dp"
         android:text="Tornar-se Organizador de Eventos"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_transportador" />
 
     <Button
         android:id="@+id/perfil_btn_notifica"
@@ -60,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:text="Configurar Notificações"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_organizador" />
 
     <Button
         android:id="@+id/perfil_btn_sair"

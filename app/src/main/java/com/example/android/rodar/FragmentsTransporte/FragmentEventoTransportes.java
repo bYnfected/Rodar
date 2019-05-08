@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsTransporte;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.adapters.AdapterListaTransportes;

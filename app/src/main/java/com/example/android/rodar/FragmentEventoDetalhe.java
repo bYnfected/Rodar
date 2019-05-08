@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
+import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
 
@@ -101,7 +103,7 @@ public class FragmentEventoDetalhe extends Fragment {
             @Override
             // Verifica se deve ou nao exibir o botao conforme perfil do usuario
             public void onPageSelected(int i) {
-                if (((i == 0) && (true)) || ((i == 1) && (i==2)))
+                if (((i == 0) && (false)) || ((i == 1) && (true)))
                     btnCriaTranspCarona.show();
                 else
                     btnCriaTranspCarona.hide();
@@ -118,8 +120,9 @@ public class FragmentEventoDetalhe extends Fragment {
     View.OnClickListener criaTranspCarona = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
+            // Listener para criar Transporte ou Carona
             Bundle bundle  = new Bundle();
-            // Testar aqui se o usuario cria transporte ou carona
+            bundle.putInt("idEvento",evento.getIdEvento());
             if (mViewPager.getCurrentItem() == 0)
                 mainActivity.inflateFragment("criaTransporte",bundle);
             else

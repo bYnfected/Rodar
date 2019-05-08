@@ -12,15 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
+import com.example.android.rodar.services.UsuarioService;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentPerfil extends Fragment {
 
-    private Button btnLogout,btnDados;
+    private Button btnLogout,btnDados, btnPromoverTransportador, btnPromoverOrganizador;
     private IMainActivity mainActivity;
 
     @Nullable
@@ -33,8 +41,28 @@ public class FragmentPerfil extends Fragment {
 
         btnLogout.setOnClickListener(logoutListener);
         btnDados.setOnClickListener(meusDadosListener);
+
+        btnPromoverOrganizador = v.findViewById(R.id.perfil_btn_organizador);
+        btnPromoverOrganizador.setOnClickListener(promoverOrganizador);
+
+        btnPromoverTransportador = v.findViewById(R.id.perfil_btn_transportador);
+        btnPromoverTransportador.setOnClickListener(promoverTransportador);
+
+        ConfiguraBotoes();
+
         return v;
     }
+
+
+
+    private void ConfiguraBotoes() {
+            if (PreferenceUtils.getTransportador(getContext()))
+                btnPromoverTransportador.setVisibility(View.GONE);
+
+            if (PreferenceUtils.getOrganizador(getContext()))
+                btnPromoverOrganizador.setVisibility(View.GONE);
+
+        }
 
     @Override
     public void onAttach(Context context) {
@@ -74,6 +102,59 @@ public class FragmentPerfil extends Fragment {
                 }
             });*/
 
+            builder.show();
+        }
+    };
+
+    private View.OnClickListener promoverTransportador = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Deseja tornar-se um transportador? Você não poderá mais oferecer " +
+                            "caronas, e passará a oferer transportes de maior porte");
+            builder.setNegativeButton("Não", null);
+            builder.setCancelable(true);
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
+                    Call<ResponseBody> call = service.promoverTransportador(PreferenceUtils.getToken(getContext()));
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getContext(), "Perfil Atualizado", Toast.LENGTH_LONG).show();
+                                mainActivity.inflateFragment("perfil",null);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(getContext(), "ERRO FALHA CONEXAO", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+
+            builder.show();
+        }
+    };
+
+    private View.OnClickListener promoverOrganizador = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Deseja tornar-se um organizador de eventos? Você poderá criar eventos");
+            builder.setCancelable(true);
+            builder.setNegativeButton("Não", null);
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // confirma mudança
+                }
+            });
             builder.show();
         }
     };

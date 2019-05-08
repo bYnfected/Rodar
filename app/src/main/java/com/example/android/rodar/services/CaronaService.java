@@ -4,6 +4,7 @@ import com.example.android.rodar.models.Carona;
 
 import java.util.List;
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,4 +23,7 @@ public interface CaronaService {
 
     @GET ("EventoCarona/BuscarPorEvento")
     Call<List<Carona>> getCaronasEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
+
+    @POST ("EventoCarona/AdicionarParticipacaoCarona")
+    Call <ResponseBody> participarCarona(@Header("Authorization") String token, @Query("idEventoCarona") int idEventoCarona);
 }

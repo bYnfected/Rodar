@@ -1,8 +1,6 @@
 package com.example.android.rodar.models;
 
 
-import java.util.Date;
-
 public class Usuario {
 
     private int idUsuario;
@@ -13,7 +11,7 @@ public class Usuario {
     private String urlImagemSelfie;
     private String Genero;
     private String Descricao;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String Email;
     private String numeroTelefone;
     private String Senha;
@@ -22,6 +20,24 @@ public class Usuario {
     private String urlImagemRGFrente;
     private String urlImagemRGTras;
     private String urlImagemCPF;
+    private boolean Transportador;
+    private boolean OrganizadorEvento;
+
+    public boolean isTransportador() {
+        return Transportador;
+    }
+
+    public void setTransportador(boolean transportador) {
+        Transportador = transportador;
+    }
+
+    public boolean isOrganizadorEvento() {
+        return OrganizadorEvento;
+    }
+
+    public void setOrganizadorEvento(boolean organizadorEvento) {
+        OrganizadorEvento = organizadorEvento;
+    }
 
     public int getIdUsuario() {
         return idUsuario;
@@ -152,11 +168,11 @@ public class Usuario {
         this.urlImagemCPF = urlImagemCPF;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }

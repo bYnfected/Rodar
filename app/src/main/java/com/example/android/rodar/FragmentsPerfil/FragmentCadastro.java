@@ -45,7 +45,7 @@ public class FragmentCadastro extends Fragment {
     private RadioGroup genero;
     private RadioButton generoM,generoF;
     private ILoginActivity loginActivity;
-    private Date tempDataNascimento;
+    private String tempDataNascimento;
 
     @Nullable
     @Override
@@ -210,9 +210,11 @@ public class FragmentCadastro extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
+            Date teste;
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             try {
-                tempDataNascimento = format.parse (String.valueOf(year) + "-" + String.valueOf(monthOfYear+1) + "-"  + String.valueOf(dayOfMonth));
+                teste = format.parse (String.valueOf(year) + "-" + String.valueOf(monthOfYear+1) + "-"  + String.valueOf(dayOfMonth));
+                tempDataNascimento = teste.toString();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

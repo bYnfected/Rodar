@@ -1,4 +1,4 @@
-package com.example.android.rodar;
+package com.example.android.rodar.FragmentsTransporte;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,42 +9,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
-import com.example.android.rodar.models.Carona;
-import com.example.android.rodar.services.CaronaService;
+import com.example.android.rodar.models.Transporte;
+import com.example.android.rodar.services.TransporteService;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentCriaCarona extends Fragment {
+public class FragmentCriaTransporte extends Fragment {
 
     private Button btnConclui;
-    private TextInputLayout mensagem, rua, numero, complemento, bairro, cidade, uf, valor;
-    private Spinner vagas;
+    private TextInputLayout mensagem, rua, numero, complemento, bairro, cidade, uf, valor, vagas;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.cadastro_carona,container,false);
+        View v = inflater.inflate(R.layout.cadastro_transporte,container,false);
 
-        btnConclui = v.findViewById(R.id.cadastro_carona_concluir);
+        btnConclui = v.findViewById(R.id.cadastro_transporte_concluir);
         btnConclui.setOnClickListener(concluirListener);
 
-        mensagem = v.findViewById(R.id.cadastro_carona_mensagem);
-        rua = v.findViewById(R.id.cadastro_carona_rua);
-        numero = v.findViewById(R.id.cadastro_carona_num);
-        complemento = v.findViewById(R.id.cadastro_carona_complemento);
-        bairro = v.findViewById(R.id.cadastro_carona_bairro);
-        cidade = v.findViewById(R.id.cadastro_carona_cidade);
-        uf = v.findViewById(R.id.cadastro_carona_uf);
-        valor = v.findViewById(R.id.cadastro_carona_valor);
-        vagas = v.findViewById(R.id.cadastro_carona_vagas);
+        mensagem = v.findViewById(R.id.cadastro_transporte_mensagem);
+        rua = v.findViewById(R.id.cadastro_transporte_rua);
+        numero = v.findViewById(R.id.cadastro_transporte_num);
+        complemento = v.findViewById(R.id.cadastro_transporte_complemento);
+        bairro = v.findViewById(R.id.cadastro_transporte_bairro);
+        cidade = v.findViewById(R.id.cadastro_transporte_cidade);
+        uf = v.findViewById(R.id.cadastro_transporte_uf);
+        valor = v.findViewById(R.id.cadastro_transporte_valor);
+        vagas = v.findViewById(R.id.cadastro_transporte_vagas);
 
         return v;
     }
@@ -54,28 +53,29 @@ public class FragmentCriaCarona extends Fragment {
         @Override
         public void onClick(View v) {
             if (validaCampos()){
-                Carona carona = new Carona();
-                carona.setMensagem(mensagem.getEditText().getText().toString());
-                carona.setEnderecoPartidaRua(rua.getEditText().getText().toString());
-                carona.setEnderecoPartidaNumero(Integer.parseInt(numero.getEditText().getText().toString()));
+                Transporte transporte = new Transporte();
+                transporte.setMensagem(mensagem.getEditText().getText().toString());
+                transporte.setEnderecoPartidaRua(rua.getEditText().getText().toString());
+                transporte.setEnderecoPartidaNumero(Integer.parseInt(numero.getEditText().getText().toString()));
                 if (!complemento.getEditText().getText().toString().isEmpty()){
-                    carona.setEnderecoPartidaComplemento(complemento.getEditText().getText().toString());
+                    transporte.setEnderecoPartidaComplemento(complemento.getEditText().getText().toString());
                 }
-                carona.setEnderecoPartidaBairro(bairro.getEditText().getText().toString());
-                carona.setEnderecoPartidaCidade(cidade.getEditText().getText().toString());
-                carona.setEnderecoPartidaUF(uf.getEditText().getText().toString());
-                carona.setValorParticipacao(Double.parseDouble(valor.getEditText().getText().toString()));
-                carona.setQuantidadeVagas(Integer.parseInt(vagas.getSelectedItem().toString()));
-                carona.setIdEvento(16);
+                transporte.setEnderecoPartidaBairro(bairro.getEditText().getText().toString());
+                transporte.setEnderecoPartidaCidade(cidade.getEditText().getText().toString());
+                transporte.setEnderecoPartidaUF(uf.getEditText().getText().toString());
+                transporte.setValorParticipacao(Double.parseDouble(valor.getEditText().getText().toString()));
+                transporte.setQuantidadeVagas(Integer.parseInt(vagas.getEditText().getText().toString()));
+                transporte.setIdEvento(16);
 
-                CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-                Call<ResponseBody> call = service.createCarona(PreferenceUtils.getToken(getContext()), carona);
+                TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
+                Call<ResponseBody> call = service.createTransporte(PreferenceUtils.getToken(getContext()), transporte);
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getContext(), "Cadastrou carona!!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Transporte cadastrado", Toast.LENGTH_LONG).show();
+                            getFragmentManager().popBackStackImmediate();
                         }
                     }
 
@@ -127,6 +127,17 @@ public class FragmentCriaCarona extends Fragment {
         }
         if (valor.getEditText().getText().toString().isEmpty()) {
             valor.setError("Campo obrigatório");
+            ok = false;
+        }
+        try {
+            int i = Integer.parseInt(vagas.getEditText().getText().toString());
+            if (!(i > 0) && (i < 45)){
+                vagas.setError("Valor entre 1 e 45");
+                ok = false;
+            }
+        }
+        catch (NumberFormatException nfe){
+            vagas.setError("Entre 1 e 45");
             ok = false;
         }
 

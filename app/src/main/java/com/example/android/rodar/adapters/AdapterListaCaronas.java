@@ -1,4 +1,5 @@
 package com.example.android.rodar.adapters;
+
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,8 +36,15 @@ public class AdapterListaCaronas extends RecyclerView.Adapter<AdapterListaCarona
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.endereco.setText(caronas.get(i).getEnderecoPartidaRua());;
+        viewHolder.endereco.setText(caronas.get(i).getEnderecoPartidaRua() + ", " +
+                caronas.get(i).getEnderecoPartidaBairro());
+        viewHolder.cidadeUF.setText(caronas.get(i).getEnderecoPartidaCidade() + " - " +
+                caronas.get(i).getEnderecoPartidaUF());
         viewHolder.valor.setText("R$ " + caronas.get(i).getValorParticipacao().toString());
+        viewHolder.barraVagas.setProgress(caronas.get(i).getQuantidadeVagasOcupadas());
+        viewHolder.barraVagas.setMax(caronas.get(i).getQuantidadeVagas());
+        viewHolder.vagas.setText("Vagas Diponíveis: " + caronas.get(i).getQuantidadeVagasDisponiveis()
+                + " de " + caronas.get(i).getQuantidadeVagas());
 
     }
 
@@ -45,9 +53,9 @@ public class AdapterListaCaronas extends RecyclerView.Adapter<AdapterListaCarona
         return caronas.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView endereco, valor, dataHora, vagas;
+        TextView endereco, valor, dataHora, vagas, cidadeUF;
         ProgressBar barraVagas;
         OnCaronaClickListener onCaronaClickListener;
 
@@ -59,6 +67,7 @@ public class AdapterListaCaronas extends RecyclerView.Adapter<AdapterListaCarona
             dataHora = itemView.findViewById(R.id.card_evento_carona_dataHora);
             vagas = itemView.findViewById(R.id.card_evento_carona_vagas);
             barraVagas = itemView.findViewById(R.id.card_evento_carona_barra);
+            cidadeUF = itemView.findViewById(R.id.card_evento_carona_cidadeUF);
 
             this.onCaronaClickListener = onCaronaClickListener;
 
@@ -73,7 +82,7 @@ public class AdapterListaCaronas extends RecyclerView.Adapter<AdapterListaCarona
 
     }
 
-    public interface OnCaronaClickListener{
+    public interface OnCaronaClickListener {
         void onCaronaClick(int position);
     }
 }

@@ -34,5 +34,11 @@ public interface UsuarioService {
     @Multipart
     @POST("Usuario/EnviarSelfie")
     Call<ResponseBody> enviarFoto(@Header("Authorization") String token, @Part MultipartBody.Part foto);
+
+    @POST("Usuario/PromoverParaTransportador")
+    Call<ResponseBody> promoverTransportador(@Header("Authorization") String token);
+
+    @POST("Usuario/PromoverParaOrganizadorEvento")
+    Call<ResponseBody> promoverOrganizador(@Header("Authorization") String token);
 }
 

@@ -7,19 +7,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Menu;
 
-import com.example.android.rodar.FragmentCriaCarona;
+import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
-import com.example.android.rodar.FragmentCriaTransporte;
+import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
+import com.example.android.rodar.FragmentsTransporte.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentEventoDetalhe;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
 import com.example.android.rodar.FragmentPesquisaEventos;
 import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
-import com.example.android.rodar.FragmentTransportes;
+import com.example.android.rodar.FragmentTransportesParticipei;
+import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
 import com.example.android.rodar.R;
+import com.example.android.rodar.Utils.PreferenceUtils;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
 
@@ -31,9 +33,11 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         BottomNavigationView bottomNav = findViewById(R.id.botton_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentEventos()).commit();
+        PreferenceUtils.getTipoUsuario(this);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentEventos()).commit();
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentEventos();
                             break;
                         case R.id.nav_transportes :
-                            selectedFragment = new FragmentTransportes();
+                            selectedFragment = new FragmentTransportesParticipei();
                             break;
                         case R.id.nav_mensagens :
                             selectedFragment = new FragmentCriaCarona();
@@ -123,6 +127,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         else if (fragment == "evento_detalhe") {
             FragmentEventoDetalhe novoFragment = new FragmentEventoDetalhe();
             doFragmentTransaction(novoFragment, bundle);
+        }
+        else if (fragment == "participaCarona") {
+            FragmentParticipaCarona novoFramgment = new FragmentParticipaCarona();
+            doFragmentTransaction(novoFramgment,bundle);
+        }
+        else if (fragment == "participaTransporte") {
+            FragmentParticipaTransporte novoFramgment = new FragmentParticipaTransporte();
+            doFragmentTransaction(novoFramgment,bundle);
         }
     }
 }

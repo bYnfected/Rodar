@@ -16,7 +16,7 @@ import retrofit2.http.Query;
 public interface EventoService {
 
     @POST ("Evento/Cadastrar")
-    Call<ResponseBody> createEvento(@Body Evento evento);
+    Call<ResponseBody> createEvento(@Header("Authorization") String token, @Body Evento evento);
 
     @GET("Evento/BuscarTodos")
     Call<List<Evento>> getEventos(@Header("Authorization") String token, @Query("somenteMeusEventos") boolean somenteMeusEventos,  @Query("somenteMeusFavoritos") boolean somenteMeusFavoritos);
