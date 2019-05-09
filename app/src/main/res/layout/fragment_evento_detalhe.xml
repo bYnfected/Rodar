@@ -34,13 +34,31 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Término:"
+                    app:layout_constraintStart_toEndOf="@+id/evento_detalhe_dataHoraIni"
+                    app:layout_constraintTop_toTopOf="@+id/evento_detalhe_dataHoraFim" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Início:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/evento_detalhe_dataHoraFim" />
+
+                <TextView
                     android:id="@+id/evento_detalhe_dataHoraIni"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="01/01/2019 10:00"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView12"
                     app:layout_constraintTop_toBottomOf="@+id/evento_detalhe_imagem" />
 
                 <ImageView
@@ -58,7 +76,7 @@
                     android:layout_marginStart="8dp"
                     android:text="02/01/2019 12:00"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/evento_detalhe_dataHoraIni"
+                    app:layout_constraintStart_toEndOf="@+id/textView14"
                     app:layout_constraintTop_toBottomOf="@+id/evento_detalhe_imagem" />
 
                 <TextView

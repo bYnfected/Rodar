@@ -39,9 +39,15 @@ public class AdapterListaTransportes extends RecyclerView.Adapter<AdapterListaTr
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.endereco.setText(transportes.get(i).getEnderecoPartidaRua());;
+        viewHolder.endereco.setText(transportes.get(i).getEnderecoPartidaRua() + ", " +
+                transportes.get(i).getEnderecoPartidaBairro());
+        viewHolder.cidadeUF.setText(transportes.get(i).getEnderecoPartidaCidade() + " - " +
+                transportes.get(i).getEnderecoPartidaUF());
         viewHolder.valor.setText("R$ " + transportes.get(i).getValorParticipacao().toString());
-
+        viewHolder.barraVagas.setProgress(transportes.get(i).getQuantidadeVagasOcupadas());
+        viewHolder.barraVagas.setMax(transportes.get(i).getQuantidadeVagas());
+        viewHolder.vagas.setText("Vagas Diponíveis: " + transportes.get(i).getQuantidadeVagasDisponiveis()
+                + " de " + transportes.get(i).getQuantidadeVagas());
     }
 
     @Override
@@ -51,7 +57,7 @@ public class AdapterListaTransportes extends RecyclerView.Adapter<AdapterListaTr
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView endereco, valor, dataHora, vagas;
+        TextView endereco, valor, dataHora, vagas, cidadeUF;
         ProgressBar barraVagas;
         OnTransporteClickListener onTransporteClickListener;
 
@@ -63,6 +69,7 @@ public class AdapterListaTransportes extends RecyclerView.Adapter<AdapterListaTr
             dataHora = itemView.findViewById(R.id.card_evento_transporte_dataHora);
             vagas = itemView.findViewById(R.id.card_evento_transporte_vagas);
             barraVagas = itemView.findViewById(R.id.card_evento_transporte_barra);
+            cidadeUF = itemView.findViewById(R.id.card_evento_transporte_cidadeUF);
 
             this.onTransporteClickListener = onTransporteClickListener;
 

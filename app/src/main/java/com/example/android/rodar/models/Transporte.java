@@ -4,7 +4,6 @@ public class Transporte {
     public Integer idEventoCarona;
     public Integer idEvento;
     public Integer idUsuarioMotorista;
-    public Integer quantidadeVagas;
     public String enderecoPartidaRua;
     public String enderecoPartidaComplemento;
     public String enderecoPartidaBairro;
@@ -14,6 +13,26 @@ public class Transporte {
     public String enderecoPartidaUF;
     public Double valorParticipacao;
     public String mensagem;
+    public Integer quantidadeVagas;
+    private Integer quantidadeVagasDisponiveis;
+
+    public Integer getQuantidadeVagasDisponiveis() {
+        return quantidadeVagasDisponiveis;
+    }
+
+    public void setQuantidadeVagasDisponiveis(Integer quantidadeVagasDisponiveis) {
+        this.quantidadeVagasDisponiveis = quantidadeVagasDisponiveis;
+    }
+
+    public Integer getQuantidadeVagasOcupadas() {
+        return quantidadeVagasOcupadas;
+    }
+
+    public void setQuantidadeVagasOcupadas(Integer quantidadeVagasOcupadas) {
+        this.quantidadeVagasOcupadas = quantidadeVagasOcupadas;
+    }
+
+    private Integer quantidadeVagasOcupadas;
 
     public Integer getIdEventoCarona() {
         return idEventoCarona;

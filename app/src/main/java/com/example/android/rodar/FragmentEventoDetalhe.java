@@ -54,13 +54,13 @@ public class FragmentEventoDetalhe extends Fragment {
             LocalDateTime localDateTime = LocalDateTime.parse(evento.getDataHoraInicio());
             LocalDateTime localDateTime1 = LocalDateTime.parse(evento.getDataHoraTermino());
             // Cria um formato legivel
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
             // Converte a data para o formato desejado
             dataHrIni.setText(localDateTime.format(formatter));
             dataHrFim.setText(localDateTime1.format(formatter));
         }
 
-        dataHrFim.setText(evento.getDataHoraTermino());
         local.setText(evento.getEnderecoRua() + ", " + evento.getEnderecoNumero().toString() +
                 ", " + evento.getEnderecoBairro() + " - " + evento.getEnderecoCidade() +
                 " - " + evento.getEnderecoUF());
