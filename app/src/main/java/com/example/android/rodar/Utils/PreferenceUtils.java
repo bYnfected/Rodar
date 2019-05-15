@@ -3,7 +3,6 @@ package com.example.android.rodar.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
@@ -11,7 +10,6 @@ import com.example.android.rodar.services.UsuarioService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
 public class PreferenceUtils {
@@ -72,6 +70,7 @@ public class PreferenceUtils {
                         SharedPreferences.Editor prefsEditor = prefs.edit();
                         prefsEditor.putBoolean("transportador", usuario.isTransportador());
                         prefsEditor.putBoolean("organizador", usuario.isOrganizadorEvento());
+                        prefsEditor.putInt("id", usuario.getIdUsuario());
                         prefsEditor.apply();
                     }
                 }
@@ -105,5 +104,10 @@ public class PreferenceUtils {
     public static boolean getOrganizador(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean("organizador", false);
+    }
+
+    public static int getID(final Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt("id",0);
     }
     }

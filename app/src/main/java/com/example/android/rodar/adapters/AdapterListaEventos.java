@@ -63,6 +63,12 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
         favoritoData.setIsFavorito(evento.getFavorito());
         favoritoData.setIdEvento(evento.getIdEvento());
 
+
+        if (PreferenceUtils.getID(viewHolder.btnDeletar.getContext()) != evento.getIdUsuarioCriacao()){
+            viewHolder.btnDeletar.setVisibility(View.GONE);
+        }
+
+
         viewHolder.buttonFavoritar.setTag(favoritoData);
         viewHolder.buttonFavoritar.setBackgroundResource(evento.getFavorito() ? R.drawable.ic_favorite_red_36dp : R.drawable.ic_favorite_border_black_36dp);
     }
@@ -76,7 +82,7 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView textViewEvento, textViewCidade, textViewData;
-        ImageButton buttonFavoritar;
+        ImageButton buttonFavoritar,btnDeletar;
         OnEventoClickListener onEventoClickListener;
 
         public ViewHolder(@NonNull View itemView, OnEventoClickListener onEventoClickListener) {
@@ -88,6 +94,9 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
             textViewData = itemView.findViewById(R.id.card_evento_data);
             buttonFavoritar = itemView.findViewById(R.id.card_evento_favoritar);
             buttonFavoritar.setOnClickListener(this);
+
+            btnDeletar = itemView.findViewById(R.id.card_evento_deletar);
+            btnDeletar.setOnClickListener(this);
 
             this.onEventoClickListener = onEventoClickListener;
 
@@ -129,13 +138,13 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
             }
             else
             {
-                onEventoClickListener.onEventoClick(getAdapterPosition());
+                onEventoClickListener.onEventoClick(getAdapterPosition(), view);
             }
         }
     }
 
     public interface OnEventoClickListener{
-        void onEventoClick(int position);
+        void onEventoClick(int position, View view);
     }
 
     public class FavoritoData

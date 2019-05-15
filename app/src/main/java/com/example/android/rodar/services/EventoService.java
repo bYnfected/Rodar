@@ -23,4 +23,7 @@ public interface EventoService {
 
     @GET("Evento/Buscar")
     Call <Evento> getEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
+
+    @DELETE("Evento/Excluir")
+    Call <ResponseBody> deleteEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 }

@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +25,7 @@ import com.example.android.rodar.services.EventoService;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +37,7 @@ public class FragmentEventos extends Fragment {
     private List<Evento> eventos;
     private boolean somenteMeusEventos = false;
     private boolean somenteMeusFavoritos = false;
+    private AdapterListaEventos mEventosAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,8 +126,8 @@ public class FragmentEventos extends Fragment {
                     Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
                     eventos = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
-                    AdapterListaEventos adapter = new AdapterListaEventos(eventos, teste);
-                    recyclerView.setAdapter(adapter);
+                    mEventosAdapter = new AdapterListaEventos(eventos, teste);
+                    recyclerView.setAdapter(mEventosAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
                 }
             }
@@ -141,13 +141,40 @@ public class FragmentEventos extends Fragment {
 
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
-        public void onEventoClick(int position) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("id",eventos.get(position).getIdEvento());
-            bundle.putSerializable("evento",eventos.get(position));
-            mainActivity.inflateFragment("evento_detalhe",bundle);
+        public void onEventoClick(int position, View view) {
+            if (view.getId() == R.id.card_evento_deletar) {
+                deletarEvento(position);
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id",eventos.get(position).getIdEvento());
+                bundle.putSerializable("evento",eventos.get(position));
+                mainActivity.inflateFragment("evento_detalhe",bundle);
+            }
         }
     };
+
+    private void deletarEvento(final int position) {
+        EventoService service = RetrofitClient.getClient().create(EventoService.class);
+        Call<ResponseBody> call = service.deleteEvento(PreferenceUtils.getToken(getContext()),
+                eventos.get(position).getIdEvento());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(getContext(), "Evento deletado", Toast.LENGTH_LONG).show();
+                    eventos.remove(position);
+                    mEventosAdapter.notifyItemRemoved(position);
+                    mEventosAdapter.notifyItemRangeChanged(position,eventos.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
 }
