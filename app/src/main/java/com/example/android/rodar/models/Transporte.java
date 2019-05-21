@@ -1,5 +1,7 @@
 package com.example.android.rodar.models;
 
+import java.util.List;
+
 public class Transporte {
     public Integer idEventoCarona;
     public Integer idEvento;
@@ -15,6 +17,15 @@ public class Transporte {
     public String mensagem;
     public Integer quantidadeVagas;
     private Integer quantidadeVagasDisponiveis;
+    private List<Usuario> Passageiros;
+
+    public List<Usuario> getPassageiros() {
+        return Passageiros;
+    }
+
+    public void setPassageiros(List<Usuario> passageiros) {
+        Passageiros = passageiros;
+    }
 
     public Integer getQuantidadeVagasDisponiveis() {
         return quantidadeVagasDisponiveis;

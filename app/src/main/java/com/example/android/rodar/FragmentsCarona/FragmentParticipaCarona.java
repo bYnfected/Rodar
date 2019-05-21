@@ -15,6 +15,7 @@ import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.PreferenceUtils;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Carona;
+import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.CaronaService;
 
 import okhttp3.ResponseBody;
@@ -54,9 +55,25 @@ public class FragmentParticipaCarona extends Fragment {
         vagasTotal.setText(mCarona.getQuantidadeVagas().toString());
         valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
 
+        if (participando()) {
+            btnConcluir.setText("Cancelar Participação");
+            btnConcluir.setOnClickListener(cancelarListener);
+        }
+
 
         return v;
     }
+
+    private boolean participando() {
+        if (mCarona.getPassageiros() != null){
+            for (Usuario usuario : mCarona.getPassageiros()) {
+                if (usuario.getIdUsuario() == PreferenceUtils.getID(getContext()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
 
     View.OnClickListener concluirListener = new View.OnClickListener() {
         @Override
@@ -78,6 +95,14 @@ public class FragmentParticipaCarona extends Fragment {
 
                 }
             });
+
+        }
+    };
+
+    View.OnClickListener cancelarListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
 
         }
     };

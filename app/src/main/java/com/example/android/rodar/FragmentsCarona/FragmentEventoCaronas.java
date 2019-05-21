@@ -75,10 +75,9 @@ public class FragmentEventoCaronas extends Fragment {
 
         @Override
         public void onCaronaClick(int position) {
-            // Listener do card, retorna a posicao = valor no array
+            // Listener do card, retorna o objeto da carona
             Bundle bundle = new Bundle();
             bundle.putSerializable("carona", caronas.get(position));
-            //bundle.putInt("idEventoCarona", caronas.get(position).getIdEventoCarona());
             mainActivity.inflateFragment("participaCarona",bundle);
         }
     };

@@ -1,6 +1,8 @@
 package com.example.android.rodar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -154,28 +156,37 @@ public class FragmentEventos extends Fragment {
     };
 
     private void deletarEvento(final int position) {
-        EventoService service = RetrofitClient.getClient().create(EventoService.class);
-        Call<ResponseBody> call = service.deleteEvento(PreferenceUtils.getToken(getContext()),
-                eventos.get(position).getIdEvento());
-
-        call.enqueue(new Callback<ResponseBody>() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Deseja excluir esse evento? Todas os transportes e " +
+                "caronas para ele serão excluídos");
+        builder.setNegativeButton("Não", null);
+        builder.setCancelable(true);
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
-                    Toast.makeText(getContext(), "Evento deletado", Toast.LENGTH_LONG).show();
-                    eventos.remove(position);
-                    mEventosAdapter.notifyItemRemoved(position);
-                    mEventosAdapter.notifyItemRangeChanged(position,eventos.size());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+            public void onClick(DialogInterface dialog, int which) {
+                EventoService service = RetrofitClient.getClient().create(EventoService.class);
+                Call<ResponseBody> call = service.deleteEvento(PreferenceUtils.getToken(getContext()),
+                        eventos.get(position).getIdEvento());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()){
+                            Toast.makeText(getContext(), "Evento deletado", Toast.LENGTH_LONG).show();
+                            eventos.remove(position);
+                            mEventosAdapter.notifyItemRemoved(position);
+                            mEventosAdapter.notifyItemRangeChanged(position,eventos.size());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
+
+        builder.show();
     }
 
-
-}
+};
 
