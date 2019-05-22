@@ -1,11 +1,14 @@
 package com.example.android.rodar.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Transporte {
-    public Integer idEventoCarona;
+public class Transporte implements Serializable {
+    public Integer idEventoTransporte;
     public Integer idEvento;
-    public Integer idUsuarioMotorista;
+    public String nomeTransporte;
+    public Integer idUsuarioTransportador;
+    public Usuario usuarioTransportador;
     public String enderecoPartidaRua;
     public String enderecoPartidaComplemento;
     public String enderecoPartidaBairro;
@@ -14,43 +17,18 @@ public class Transporte {
     public String enderecoPartidaCidade;
     public String enderecoPartidaUF;
     public Double valorParticipacao;
-    public String mensagem;
+    public String Mensagem;
     public Integer quantidadeVagas;
-    private Integer quantidadeVagasDisponiveis;
-    private List<Usuario> Passageiros;
+    public Integer quantidadeVagasDisponiveis;
+    public Integer quantidadeVagasOcupadas;
+    public List<Usuario> Passageiros;
 
-    public List<Usuario> getPassageiros() {
-        return Passageiros;
+    public Integer getIdEventoTransporte() {
+        return idEventoTransporte;
     }
 
-    public void setPassageiros(List<Usuario> passageiros) {
-        Passageiros = passageiros;
-    }
-
-    public Integer getQuantidadeVagasDisponiveis() {
-        return quantidadeVagasDisponiveis;
-    }
-
-    public void setQuantidadeVagasDisponiveis(Integer quantidadeVagasDisponiveis) {
-        this.quantidadeVagasDisponiveis = quantidadeVagasDisponiveis;
-    }
-
-    public Integer getQuantidadeVagasOcupadas() {
-        return quantidadeVagasOcupadas;
-    }
-
-    public void setQuantidadeVagasOcupadas(Integer quantidadeVagasOcupadas) {
-        this.quantidadeVagasOcupadas = quantidadeVagasOcupadas;
-    }
-
-    private Integer quantidadeVagasOcupadas;
-
-    public Integer getIdEventoCarona() {
-        return idEventoCarona;
-    }
-
-    public void setIdEventoCarona(Integer idEventoCarona) {
-        this.idEventoCarona = idEventoCarona;
+    public void setIdEventoTransporte(Integer idEventoTransporte) {
+        this.idEventoTransporte = idEventoTransporte;
     }
 
     public Integer getIdEvento() {
@@ -61,20 +39,28 @@ public class Transporte {
         this.idEvento = idEvento;
     }
 
-    public Integer getIdUsuarioMotorista() {
-        return idUsuarioMotorista;
+    public String getNomeTransporte() {
+        return nomeTransporte;
     }
 
-    public void setIdUsuarioMotorista(Integer idUsuarioMotorista) {
-        this.idUsuarioMotorista = idUsuarioMotorista;
+    public void setNomeTransporte(String nomeTransporte) {
+        this.nomeTransporte = nomeTransporte;
     }
 
-    public Integer getQuantidadeVagas() {
-        return quantidadeVagas;
+    public Integer getIdUsuarioTransportador() {
+        return idUsuarioTransportador;
     }
 
-    public void setQuantidadeVagas(Integer quantidadeVagas) {
-        this.quantidadeVagas = quantidadeVagas;
+    public void setIdUsuarioTransportador(Integer idUsuarioTransportador) {
+        this.idUsuarioTransportador = idUsuarioTransportador;
+    }
+
+    public Usuario getUsuarioTransportador() {
+        return usuarioTransportador;
+    }
+
+    public void setUsuarioTransportador(Usuario usuarioTransportador) {
+        this.usuarioTransportador = usuarioTransportador;
     }
 
     public String getEnderecoPartidaRua() {
@@ -142,10 +128,42 @@ public class Transporte {
     }
 
     public String getMensagem() {
-        return mensagem;
+        return Mensagem;
     }
 
     public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+        Mensagem = mensagem;
+    }
+
+    public Integer getQuantidadeVagas() {
+        return quantidadeVagas;
+    }
+
+    public void setQuantidadeVagas(Integer quantidadeVagas) {
+        this.quantidadeVagas = quantidadeVagas;
+    }
+
+    public Integer getQuantidadeVagasDisponiveis() {
+        return quantidadeVagasDisponiveis;
+    }
+
+    public void setQuantidadeVagasDisponiveis(Integer quantidadeVagasDisponiveis) {
+        this.quantidadeVagasDisponiveis = quantidadeVagasDisponiveis;
+    }
+
+    public Integer getQuantidadeVagasOcupadas() {
+        return quantidadeVagasOcupadas;
+    }
+
+    public void setQuantidadeVagasOcupadas(Integer quantidadeVagasOcupadas) {
+        this.quantidadeVagasOcupadas = quantidadeVagasOcupadas;
+    }
+
+    public List<Usuario> getPassageiros() {
+        return Passageiros;
+    }
+
+    public void setPassageiros(List<Usuario> passageiros) {
+        Passageiros = passageiros;
     }
 }

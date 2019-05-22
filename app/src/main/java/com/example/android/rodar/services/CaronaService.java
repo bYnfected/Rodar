@@ -8,6 +8,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -24,6 +25,18 @@ public interface CaronaService {
     @GET ("EventoCarona/BuscarPorEvento")
     Call<List<Carona>> getCaronasEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 
+    @DELETE ("EventoCarona/Excluir")
+    Call <ResponseBody> deleteCarona(@Header("Authorization") String token, @Query("idEventoCarona") int idEventoCarona);
+
     @POST ("EventoCarona/AdicionarParticipacaoCarona")
     Call <ResponseBody> participarCarona(@Header("Authorization") String token, @Query("idEventoCarona") int idEventoCarona);
+
+    @DELETE ("EventoCarona/RemoverParticipacaoCarona")
+    Call <ResponseBody> sairCarona(@Header("Authorization") String token, @Query("idEventoCarona") int idEventoCarona);
+
+    @GET ("EventoCarona/BuscarAtivos")
+    Call <List<Carona>> getAtivos(@Header("Authorization") String token);
+
+    @GET ("EventoCarona/BuscarHistorico")
+    Call <List<Carona>> getHistorico(@Header("Authorization") String token);
 }

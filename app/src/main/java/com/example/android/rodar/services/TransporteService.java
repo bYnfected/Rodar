@@ -7,6 +7,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -22,4 +23,19 @@ public interface TransporteService {
 
     @GET ("EventoTransporte/BuscarPorEvento")
     Call<List<Transporte>> getTransportesEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
+
+    @DELETE("EventoTransporte/Excluir")
+    Call <ResponseBody> deleteTransporte(@Header("Authorization") String token, @Query("idEventoTransporte") int idEventoTransporte);
+
+    @POST ("EventoTransporte/AdicionarParticipacaoTransporte")
+    Call <ResponseBody> participarTransporte(@Header("Authorization") String token, @Query("idEventoTransporte") int idEventoTransporte);
+
+    @DELETE ("EventoTransporte/RemoverParticipacaoTransporte")
+    Call <ResponseBody> sairTransporte(@Header("Authorization") String token, @Query("idEventoTransporte") int idEventoTransporte);
+
+    @GET ("EventoTransporte/BuscarAtivos")
+    Call <List<Transporte>> getAtivos(@Header("Authorization") String token);
+
+    @GET ("EventoTransporte/BuscarHistorico")
+    Call <List<Transporte>> getHistorico(@Header("Authorization") String token);
 }

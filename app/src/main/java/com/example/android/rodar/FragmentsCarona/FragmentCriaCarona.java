@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
@@ -71,7 +71,7 @@ public class FragmentCriaCarona extends Fragment {
                 carona.setIdEvento(getArguments().getInt("idEvento"));
 
                 CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-                Call<ResponseBody> call = service.createCarona(PreferenceUtils.getToken(getContext()), carona);
+                Call<ResponseBody> call = service.createCarona(SPUtil.getToken(getContext()), carona);
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override

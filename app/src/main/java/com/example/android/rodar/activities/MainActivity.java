@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.android.rodar.FragmentAtivos;
 import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
@@ -21,7 +22,7 @@ import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
 import com.example.android.rodar.FragmentTransportesParticipei;
 import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         BottomNavigationView bottomNav = findViewById(R.id.botton_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        PreferenceUtils.getTipoUsuario(this);
+        SPUtil.getTipoUsuario(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentEventos()).commit();
     }
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentEventos();
                             break;
                         case R.id.nav_transportes :
-                            selectedFragment = new FragmentTransportesParticipei();
+                        //    selectedFragment = new FragmentTransportesParticipei();
+                            selectedFragment = new FragmentAtivos();
                             break;
                         case R.id.nav_mensagens :
                             selectedFragment = new FragmentCriaCarona();

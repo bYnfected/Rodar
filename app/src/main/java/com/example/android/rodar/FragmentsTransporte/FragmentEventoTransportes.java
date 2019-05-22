@@ -1,5 +1,6 @@
 package com.example.android.rodar.FragmentsTransporte;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaTransportes;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.TransporteService;
@@ -26,6 +28,7 @@ import retrofit2.Response;
 
 public class FragmentEventoTransportes extends Fragment {
 
+    private IMainActivity mainActivity;
     private List<Transporte> transportes;
     private int idEvento;
 
@@ -40,14 +43,19 @@ public class FragmentEventoTransportes extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
+    }
+
     public void CarregaTransportes() {
         TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
-        Call<List<Transporte>> call = service.getTransportesEvento(PreferenceUtils.getToken(getContext()),idEvento);
+        Call<List<Transporte>> call = service.getTransportesEvento(SPUtil.getToken(getContext()),idEvento);
         call.enqueue(new Callback<List<Transporte>>() {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
                 if (response.isSuccessful()){
-
                     transportes = response.body();
                     RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_evento_detalhe_transportes);
                     AdapterListaTransportes adapter = new AdapterListaTransportes(transportes,listenerTransportes);
@@ -66,7 +74,10 @@ public class FragmentEventoTransportes extends Fragment {
     AdapterListaTransportes.OnTransporteClickListener listenerTransportes = new AdapterListaTransportes.OnTransporteClickListener() {
         @Override
         public void onTransporteClick(int position) {
-            Toast.makeText(getContext(), "CLICOU TRANSPORTE", Toast.LENGTH_LONG).show();
+            // Listener do card, retorna o objeto do transporte
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("transporte", transportes.get(position));
+            mainActivity.inflateFragment("participaTransporte",bundle);
         }
     };
 }

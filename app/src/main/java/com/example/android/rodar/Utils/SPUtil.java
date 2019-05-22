@@ -12,9 +12,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PreferenceUtils {
+public class SPUtil {
 
-        public PreferenceUtils(){
+        public SPUtil(){
 
         }
         public static boolean saveEmail(String email, Context context) {

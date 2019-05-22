@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.DatePickerFragment;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
@@ -179,8 +179,8 @@ public class FragmentCadastro extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
-                PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
-                PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+                SPUtil.saveEmail(email.getEditText().getText().toString(), getContext());
+                SPUtil.savePassword(senha.getEditText().getText().toString(),getContext());
                 loginActivity.loginUsuario();
             }
 

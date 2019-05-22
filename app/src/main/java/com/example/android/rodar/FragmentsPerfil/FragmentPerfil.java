@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
@@ -56,10 +56,10 @@ public class FragmentPerfil extends Fragment {
 
 
     private void ConfiguraBotoes() {
-            if (PreferenceUtils.getTransportador(getContext()))
+            if (SPUtil.getTransportador(getContext()))
                 btnPromoverTransportador.setVisibility(View.GONE);
 
-            if (PreferenceUtils.getOrganizador(getContext()))
+            if (SPUtil.getOrganizador(getContext()))
                 btnPromoverOrganizador.setVisibility(View.GONE);
         }
 
@@ -85,9 +85,9 @@ public class FragmentPerfil extends Fragment {
             builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    PreferenceUtils.saveEmail(null,getActivity());
-                    PreferenceUtils.savePassword(null, getActivity());
-                    PreferenceUtils.saveToken(null,getActivity());
+                    SPUtil.saveEmail(null,getActivity());
+                    SPUtil.savePassword(null, getActivity());
+                    SPUtil.saveToken(null,getActivity());
                     Intent activityIntent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                     startActivity(activityIntent);
                     getActivity().finish();
@@ -118,13 +118,13 @@ public class FragmentPerfil extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-                    Call<ResponseBody> call = service.promoverTransportador(PreferenceUtils.getToken(getContext()));
+                    Call<ResponseBody> call = service.promoverTransportador(SPUtil.getToken(getContext()));
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext(), "Perfil Atualizado", Toast.LENGTH_LONG).show();
-                                PreferenceUtils.saveTransportador(getContext());
+                                SPUtil.saveTransportador(getContext());
                                 mainActivity.inflateFragment("perfil",null);
                             }
                         }
@@ -153,13 +153,13 @@ public class FragmentPerfil extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-                    Call<ResponseBody> call = service.promoverOrganizador(PreferenceUtils.getToken(getContext()));
+                    Call<ResponseBody> call = service.promoverOrganizador(SPUtil.getToken(getContext()));
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()){
                                 Toast.makeText(getContext(), "Perfil Atualizado", Toast.LENGTH_LONG).show();
-                                PreferenceUtils.saveOrganizador(getContext());
+                                SPUtil.saveOrganizador(getContext());
                                 mainActivity.inflateFragment("perfil",null);
                             }
                         }

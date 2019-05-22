@@ -17,7 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.android.rodar.Utils.DatePickerFragment;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.TimePickerFragment;
 import com.example.android.rodar.models.Evento;
@@ -90,7 +90,7 @@ public class FragmentCriaEvento extends Fragment {
 
 
                 EventoService service = RetrofitClient.getClient().create(EventoService.class);
-                Call<ResponseBody> call = service.createEvento(PreferenceUtils.getToken(getContext()),evento);
+                Call<ResponseBody> call = service.createEvento(SPUtil.getToken(getContext()),evento);
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

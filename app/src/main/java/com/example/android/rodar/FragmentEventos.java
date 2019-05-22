@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaEventos;
@@ -98,7 +98,7 @@ public class FragmentEventos extends Fragment {
         btnCadastro = v.findViewById(R.id.cria_evento_btn);
         btnCadastro.setOnClickListener(criaEventoListener);
 
-        if (PreferenceUtils.getOrganizador(getContext()))
+        if (SPUtil.getOrganizador(getContext()))
             btnCadastro.show();
         CarregarEventos();
 
@@ -120,7 +120,7 @@ public class FragmentEventos extends Fragment {
     private void CarregarEventos(){
 
         EventoService service = RetrofitClient.getClient().create(EventoService.class);
-        Call<List<Evento>> call = service.getEventos(PreferenceUtils.getToken(getContext()), somenteMeusEventos, somenteMeusFavoritos);
+        Call<List<Evento>> call = service.getEventos(SPUtil.getToken(getContext()), somenteMeusEventos, somenteMeusFavoritos);
         call.enqueue(new Callback<List<Evento>>() {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
@@ -165,7 +165,7 @@ public class FragmentEventos extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EventoService service = RetrofitClient.getClient().create(EventoService.class);
-                Call<ResponseBody> call = service.deleteEvento(PreferenceUtils.getToken(getContext()),
+                Call<ResponseBody> call = service.deleteEvento(SPUtil.getToken(getContext()),
                         eventos.get(position).getIdEvento());
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override

@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/participa_carona_endereco"
+        android:id="@+id/participa_transporte_endereco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <TextView
-        android:id="@+id/participa_carona_valor"
+        android:id="@+id/participa_transporte_valor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <Button
-        android:id="@+id/participa_carona_concluir"
+        android:id="@+id/participa_transporte_concluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -49,10 +49,10 @@
         android:text="Participar "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/participa_carona_passageiros" />
+        app:layout_constraintTop_toBottomOf="@+id/participa_transporte_passageiros" />
 
     <TextView
-        android:id="@+id/participa_carona_mensagem"
+        android:id="@+id/participa_transporte_mensagem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,10 +70,10 @@
         android:layout_marginTop="8dp"
         android:text="Vagas Disponíveis:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/participa_carona_mensagem" />
+        app:layout_constraintTop_toBottomOf="@+id/participa_transporte_mensagem" />
 
     <TextView
-        android:id="@+id/participa_carona_vagas_disp"
+        android:id="@+id/participa_transporte_vagas_disp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -81,7 +81,7 @@
         android:text="XX"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/participa_carona_mensagem" />
+        app:layout_constraintTop_toBottomOf="@+id/participa_transporte_mensagem" />
 
     <TextView
         android:id="@+id/textView12"
@@ -101,7 +101,7 @@
         android:layout_marginTop="8dp"
         android:text="Mensagem do Motorista:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/participa_carona_endereco" />
+        app:layout_constraintTop_toBottomOf="@+id/participa_transporte_endereco" />
 
     <TextView
         android:id="@+id/textView18"
@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
-        android:id="@+id/participa_carona_vagas_total"
+        android:id="@+id/participa_transporte_vagas_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -122,10 +122,10 @@
         android:text="XX"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/participa_carona_vagas_disp" />
+        app:layout_constraintTop_toBottomOf="@+id/participa_transporte_vagas_disp" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/participa_carona_passageiros"
+        android:id="@+id/participa_transporte_passageiros"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

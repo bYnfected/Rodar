@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
 import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
 
@@ -131,8 +131,8 @@ public class FragmentEventoDetalhe extends Fragment {
     }
 
     private void mostraBotaoCriar(int i) {
-        if (((i == 0) && (PreferenceUtils.getTransportador(getContext()))) ||
-                ((i == 1) && (!PreferenceUtils.getTransportador(getContext()))))
+        if (((i == 0) && (SPUtil.getTransportador(getContext()))) ||
+                ((i == 1) && (!SPUtil.getTransportador(getContext()))))
             btnCriaTranspCarona.show();
         else
             btnCriaTranspCarona.hide();

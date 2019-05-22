@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.android.rodar.FragmentsPerfil.FragmentCadastro;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.facebook.AccessToken;
@@ -101,8 +101,8 @@ public class FragmentInicial extends Fragment {
 
         @Override
         public void onClick(View v) {
-            PreferenceUtils.saveEmail(email.getEditText().getText().toString(), getContext());
-            PreferenceUtils.savePassword(senha.getEditText().getText().toString(),getContext());
+            SPUtil.saveEmail(email.getEditText().getText().toString(), getContext());
+            SPUtil.savePassword(senha.getEditText().getText().toString(),getContext());
             loginActivity.loginUsuario();
         }
     };

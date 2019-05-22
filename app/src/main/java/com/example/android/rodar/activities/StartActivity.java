@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.services.UsuarioService;
 import com.google.gson.JsonObject;
@@ -21,16 +21,16 @@ public class StartActivity extends AppCompatActivity {
 
 
         // Vai direto para a MainActivity se esta logado
-        if (PreferenceUtils.getPassword(getApplicationContext()) != null) {
+        if (SPUtil.getPassword(getApplicationContext()) != null) {
             UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
-            Call<JsonObject> call = usrService.loginUser(PreferenceUtils.getEmail(this), PreferenceUtils.getPassword(this), "password");
+            Call<JsonObject> call = usrService.loginUser(SPUtil.getEmail(this), SPUtil.getPassword(this), "password");
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.isSuccessful()) {
                         JsonObject resposta = response.body();
                         if (resposta.has("access_token")) {
-                            PreferenceUtils.saveToken(resposta.get("access_token").toString(), getApplicationContext());
+                            SPUtil.saveToken(resposta.get("access_token").toString(), getApplicationContext());
 
                             Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(activityIntent);

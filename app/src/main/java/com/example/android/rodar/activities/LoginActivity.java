@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.android.rodar.FragmentInicial;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.services.UsuarioService;
@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     public void loginUsuario() {
         UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);
 
-        Call<JsonObject> call = usrService.loginUser(PreferenceUtils.getEmail(this), PreferenceUtils.getPassword(this), "password");
+        Call<JsonObject> call = usrService.loginUser(SPUtil.getEmail(this), SPUtil.getPassword(this), "password");
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
                     JsonObject resposta = response.body();
                     if (resposta.has("access_token")) {
 
-                        PreferenceUtils.saveToken(resposta.get("access_token").toString(), getApplicationContext());
+                        SPUtil.saveToken(resposta.get("access_token").toString(), getApplicationContext());
                         Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(activityIntent);
                         finish();

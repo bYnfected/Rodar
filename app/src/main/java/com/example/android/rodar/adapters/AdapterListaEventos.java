@@ -1,6 +1,5 @@
 package com.example.android.rodar.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.FavoritoService;
@@ -64,7 +63,7 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
         favoritoData.setIdEvento(evento.getIdEvento());
 
 
-        if (PreferenceUtils.getID(viewHolder.btnDeletar.getContext()) != evento.getIdUsuarioCriacao()){
+        if (SPUtil.getID(viewHolder.btnDeletar.getContext()) != evento.getIdUsuarioCriacao()){
             viewHolder.btnDeletar.setVisibility(View.GONE);
         }
 
@@ -114,10 +113,10 @@ public class AdapterListaEventos extends RecyclerView.Adapter<AdapterListaEvento
                 Call<ResponseBody> call;
 
                 if (!favoritoData.isFavorito) {
-                    call = service.adicionarFavorito(PreferenceUtils.getToken(view.getContext()), favoritoData.getIdEvento());
+                    call = service.adicionarFavorito(SPUtil.getToken(view.getContext()), favoritoData.getIdEvento());
                 }
                 else {
-                    call = service.removerFavorito(PreferenceUtils.getToken(view.getContext()), favoritoData.getIdEvento());
+                    call = service.removerFavorito(SPUtil.getToken(view.getContext()), favoritoData.getIdEvento());
                 }
 
                 call.enqueue(new Callback<ResponseBody>() {

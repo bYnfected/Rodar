@@ -7,6 +7,7 @@ public class Carona implements Serializable {
     public Integer idEventoCarona;
     public Integer idEvento;
     public Integer idUsuarioMotorista;
+    public Usuario usuarioMotorista;
     public String enderecoPartidaRua;
     public String enderecoPartidaComplemento;
     public String enderecoPartidaBairro;
@@ -20,6 +21,15 @@ public class Carona implements Serializable {
     private Integer quantidadeVagasDisponiveis;
     private Integer quantidadeVagasOcupadas;
     private List<Usuario> Passageiros;
+
+
+    public Usuario getUsuarioMotorista() {
+        return usuarioMotorista;
+    }
+
+    public void setUsuarioMotorista(Usuario usuarioMotorista) {
+        this.usuarioMotorista = usuarioMotorista;
+    }
 
     public List<Usuario> getPassageiros() {
         return Passageiros;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaCaronas;
@@ -51,7 +51,7 @@ public class FragmentEventoCaronas extends Fragment {
 
     private void CarregaCaronas() {
         CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-        Call<List<Carona>> call = service.getCaronasEvento(PreferenceUtils.getToken(getContext()),idEvento);
+        Call<List<Carona>> call = service.getCaronasEvento(SPUtil.getToken(getContext()),idEvento);
         call.enqueue(new Callback<List<Carona>>() {
             @Override
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -17,12 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.FileUtil;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Usuario;
@@ -30,11 +27,7 @@ import com.example.android.rodar.services.UsuarioService;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -89,7 +82,7 @@ public class FragmentMeusDados extends Fragment {
 
     private void carregaDados() {
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-        Call<Usuario> call = service.getUser(PreferenceUtils.getToken(getContext()));
+        Call<Usuario> call = service.getUser(SPUtil.getToken(getContext()));
 
         call.enqueue(new Callback<Usuario>() {
             @Override
@@ -135,7 +128,7 @@ public class FragmentMeusDados extends Fragment {
             user.setSenha(senha.getEditText().getText().toString());
 
             UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-            Call<ResponseBody> call = service.updateUser(PreferenceUtils.getToken(getContext()),user);
+            Call<ResponseBody> call = service.updateUser(SPUtil.getToken(getContext()),user);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -229,7 +222,7 @@ public class FragmentMeusDados extends Fragment {
         MultipartBody.Part multiPart = MultipartBody.Part.createFormData("foto",fotoFile.getName(),fotoPart);
 
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-        Call<ResponseBody> call = service.enviarFoto(PreferenceUtils.getToken(getContext()),multiPart);
+        Call<ResponseBody> call = service.enviarFoto(SPUtil.getToken(getContext()),multiPart);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.PreferenceUtils;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.TransporteService;
@@ -68,7 +68,7 @@ public class FragmentCriaTransporte extends Fragment {
                 transporte.setIdEvento(16);
 
                 TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
-                Call<ResponseBody> call = service.createTransporte(PreferenceUtils.getToken(getContext()), transporte);
+                Call<ResponseBody> call = service.createTransporte(SPUtil.getToken(getContext()), transporte);
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
