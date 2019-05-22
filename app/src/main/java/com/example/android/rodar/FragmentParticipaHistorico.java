@@ -8,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.rodar.R;
-
-public class FragmentTransportesParticipei extends Fragment {
-
+public class FragmentParticipaHistorico extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_transportes, container, false);
+        View v = inflater.inflate(R.layout.fragment_participa_historico, container, false);
+
+        return v;
     }
+
+
 }

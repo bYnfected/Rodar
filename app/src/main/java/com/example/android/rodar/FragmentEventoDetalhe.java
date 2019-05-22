@@ -97,7 +97,7 @@ public class FragmentEventoDetalhe extends Fragment {
 
     // Configura quais os fragments para as abas
     private void setupViewPager(ViewPager viewPager) {
-        EventoDetalhePageAdapter adapter = new EventoDetalhePageAdapter(getChildFragmentManager());
+        PageAdapterPadrao adapter = new PageAdapterPadrao(getChildFragmentManager());
         Bundle bundle = new Bundle();
         bundle.putInt("idEvento",evento.getIdEvento());
 

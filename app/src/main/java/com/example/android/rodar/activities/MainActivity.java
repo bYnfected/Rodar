@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.android.rodar.FragmentAtivos;
+import com.example.android.rodar.FragmentParticipa;
 import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
@@ -19,7 +19,6 @@ import com.example.android.rodar.FragmentMensagens;
 import com.example.android.rodar.FragmentPesquisaEventos;
 import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
-import com.example.android.rodar.FragmentTransportesParticipei;
 import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.SPUtil;
@@ -51,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentEventos();
                             break;
                         case R.id.nav_transportes :
-                        //    selectedFragment = new FragmentTransportesParticipei();
-                            selectedFragment = new FragmentAtivos();
+                            selectedFragment = new FragmentParticipa();
                             break;
                         case R.id.nav_mensagens :
                             selectedFragment = new FragmentCriaCarona();
