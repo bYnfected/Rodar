@@ -39,11 +39,11 @@ public class AdapterListaTransportes extends RecyclerView.Adapter<AdapterListaTr
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.endereco.setText(transportes.get(i).getEnderecoPartidaRua() + ", " +
-                transportes.get(i).getEnderecoPartidaBairro());
         viewHolder.cidadeUF.setText(transportes.get(i).getEnderecoPartidaCidade() + " - " +
                 transportes.get(i).getEnderecoPartidaUF());
         viewHolder.valor.setText("R$ " + transportes.get(i).getValorParticipacao().toString());
+        viewHolder.endereco.setText(transportes.get(i).getEnderecoPartidaRua() + ", " +
+                transportes.get(i).getEnderecoPartidaBairro());
         viewHolder.barraVagas.setProgress(transportes.get(i).getQuantidadeVagasOcupadas());
         viewHolder.barraVagas.setMax(transportes.get(i).getQuantidadeVagas());
         viewHolder.vagas.setText("Vagas Diponíveis: " + transportes.get(i).getQuantidadeVagasDisponiveis()

@@ -21,7 +21,10 @@ public class AdapterTranspCarona extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TRANSPORTE = 0;
     private static final int CARONA = 1;
 
-
+    public AdapterTranspCarona(List<Object> mAtivos, OnTranspCaronaClickListener mOnTranspCaronaClickListener) {
+        this.mAtivos = mAtivos;
+        this.mOnTranspCaronaClickListener = mOnTranspCaronaClickListener;
+    }
 
     @NonNull
     @Override

@@ -66,13 +66,13 @@ public class FragmentParticipaTransporte extends Fragment {
 
         // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
         if (mTransporte.getIdUsuarioTransportador() == SPUtil.getID(getContext())) {
-            btnConcluir.setText("Excluir Carona");
+            btnConcluir.setText("Excluir Transporte");
             btnConcluir.setOnClickListener(excluirListener);
         } else if (participando()) {
             btnConcluir.setText("Cancelar Participação");
             btnConcluir.setOnClickListener(cancelarListener);
         } else if (mTransporte.getQuantidadeVagasDisponiveis() == 0) {
-            btnConcluir.setText("Carona Lotada");
+            btnConcluir.setText("Transporte Lotado");
             btnConcluir.setEnabled(false);
         } else {
             btnConcluir.setOnClickListener(concluirListener);

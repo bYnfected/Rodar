@@ -1,9 +1,11 @@
 package com.example.android.rodar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,9 @@ import android.widget.Toast;
 
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
+import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaTransportes;
+import com.example.android.rodar.adapters.AdapterTranspCarona;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.CaronaService;
@@ -27,21 +31,27 @@ import retrofit2.Response;
 
 public class FragmentParticipaAtivos extends Fragment {
 
-    private List<Object> mAtivos = new ArrayList<>();
+    private IMainActivity mainActivity;
+    private List<Object> mAtivos;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_participa_ativos, container, false);
-
+        mAtivos = new ArrayList<>();
         CarregaAtivos();
 
         return v;
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
+    }
 
     private void CarregaAtivos() {
+/*
         TransporteService tService = RetrofitClient.getClient().create(TransporteService.class);
         Call<List<Transporte>> callT = tService.getAtivos(SPUtil.getToken(getContext()));
         callT.enqueue(new Callback<List<Transporte>>() {
@@ -57,6 +67,14 @@ public class FragmentParticipaAtivos extends Fragment {
             }
         });
 
+        try {
+            //set time in mili
+            Thread.sleep(3000);
+            Toast.makeText(getContext(), "Dormiu 3s", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+*/
 
         CaronaService cService = RetrofitClient.getClient().create(CaronaService.class);
         Call<List<Carona>> callC = cService.getAtivos(SPUtil.getToken(getContext()));
@@ -65,6 +83,13 @@ public class FragmentParticipaAtivos extends Fragment {
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {
                 if (response.isSuccessful()) {
                     mAtivos.addAll(response.body());
+                    if (mAtivos.size() > 0){
+                        RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativos_recycler);
+                        AdapterTranspCarona adapter = new AdapterTranspCarona(mAtivos,listener);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+
+                    }
                 }
             }
             @Override
@@ -73,26 +98,28 @@ public class FragmentParticipaAtivos extends Fragment {
             }
         });
 
-
-        if (mAtivos.size() > 0){
+        /*if (mAtivos.size() > 0){
             RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativos_recycler);
-            AdapterListaTransportes adapter = new AdapterListaTransportes(mAtivos,listener);
+            AdapterTranspCarona adapter = new AdapterTranspCarona(mAtivos,listener);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
 
-            R.layout.
-
-        }
+        }*/
     }
 
-    AdapterListaTransportes.OnTransporteClickListener listener =
-            new AdapterListaTransportes.OnTransporteClickListener() {
-                @Override
-                public void onTransporteClick(int position) {
-                    if (mAtivos.get(position) instanceof Transporte) {
-                        Toast.makeText(getContext(), "TRANSPORTE", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "CARONA", Toast.LENGTH_LONG).show();
-                    }
-
-                }
+    AdapterTranspCarona.OnTranspCaronaClickListener listener = new AdapterTranspCarona.OnTranspCaronaClickListener() {
+        @Override
+        public void onTranspCaronaClick(int position) {
+            if (mAtivos.get(position) instanceof Carona){
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("carona", (Carona) mAtivos.get(position));
+                mainActivity.inflateFragment("participaCarona",bundle);
+            } else if (mAtivos.get(position) instanceof Transporte) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("transporte", (Transporte) mAtivos.get(position));
+                mainActivity.inflateFragment("participaTransporte",bundle);
             }
+        }
+    };
+
 }

@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.rodar.adapters.AdapterTranspCarona;
+
 public class FragmentParticipa extends Fragment {
 
     private ViewPager mViewPager;
@@ -22,6 +24,11 @@ public class FragmentParticipa extends Fragment {
         View v = inflater.inflate(R.layout.fragment_participa, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
+        mViewPager = v.findViewById(R.id.fragment_participa_viewPager);
+        setupViewPager();
+
+        mTabLayout = v.findViewById(R.id.fragment_participa_tabLayout);
+        mTabLayout.setupWithViewPager(mViewPager);
 
         return v;
     }
@@ -42,5 +49,7 @@ public class FragmentParticipa extends Fragment {
         adapter.addFragment(fragmentHistorico,"Histórico");
 
         mViewPager.setAdapter(adapter);
+
     }
+
 }
