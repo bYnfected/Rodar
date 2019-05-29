@@ -78,6 +78,7 @@ public class FragmentEventoCaronas extends Fragment {
             // Listener do card, retorna o objeto da carona
             Bundle bundle = new Bundle();
             bundle.putSerializable("carona", caronas.get(position));
+            bundle.putBoolean("ativo",true);
             mainActivity.inflateFragment("participaCarona",bundle);
         }
     };

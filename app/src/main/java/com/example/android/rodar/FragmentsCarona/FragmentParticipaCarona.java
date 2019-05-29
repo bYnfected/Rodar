@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class FragmentParticipaCarona extends Fragment {
     private Carona mCarona;
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
+    private RatingBar rating;
 
     @Nullable
     @Override
@@ -48,6 +50,7 @@ public class FragmentParticipaCarona extends Fragment {
         valor = v.findViewById(R.id.participa_carona_valor);
         btnConcluir = v.findViewById(R.id.participa_carona_concluir);
         recyclerViewPassageiros = v.findViewById(R.id.participa_carona_passageiros);
+        rating = v.findViewById(R.id.participa_carona_rating);
 
         endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
                 ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
@@ -63,23 +66,34 @@ public class FragmentParticipaCarona extends Fragment {
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
         recyclerViewPassageiros.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        configuraTela();
+        return v;
+    }
 
-        // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
-        if (mCarona.getIdUsuarioMotorista() == SPUtil.getID(getContext())){
-            btnConcluir.setText("Excluir Carona");
-            btnConcluir.setOnClickListener(excluirListener);
-        } else if (participando()) {
-            btnConcluir.setText("Cancelar Participação");
-            btnConcluir.setOnClickListener(cancelarListener);
-        } else if (mCarona.getQuantidadeVagasDisponiveis() == 0){
-            btnConcluir.setText("Carona Lotada");
-            btnConcluir.setEnabled(false);
-        } else {
-            btnConcluir.setOnClickListener(concluirListener);
+    private void configuraTela() {
+        if (getArguments().getBoolean("ativo")){
+            rating.setVisibility(View.GONE);
+            // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
+            if (mCarona.getIdUsuarioMotorista() == SPUtil.getID(getContext())){
+                btnConcluir.setText("Excluir Carona");
+                btnConcluir.setOnClickListener(excluirListener);
+            } else if (participando()) {
+                btnConcluir.setText("Cancelar Participação");
+                btnConcluir.setOnClickListener(cancelarListener);
+            } else if (mCarona.getQuantidadeVagasDisponiveis() == 0){
+                btnConcluir.setText("Carona Lotada");
+                btnConcluir.setEnabled(false);
+            } else {
+                btnConcluir.setOnClickListener(concluirListener);
+            }
+        } else { // Se a carona já esta completa
+            btnConcluir.setText("Enviar Avaliação");
+            btnConcluir.setOnClickListener(avaliarListener);
+            rating.setMax(5);
+            rating.setNumStars(5);
+            rating.setStepSize((float) 0.5);
         }
 
-
-        return v;
     }
 
     private boolean participando() {
@@ -104,6 +118,30 @@ public class FragmentParticipaCarona extends Fragment {
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CONFIRMADA", Toast.LENGTH_LONG).show();
+                        getFragmentManager().popBackStackImmediate();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+    };
+
+    View.OnClickListener avaliarListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
+            Call<ResponseBody> call = service.avaliarCarona(SPUtil.getToken(getContext()), rating.getRating());
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "AVALIADO COM SUCESSO", Toast.LENGTH_LONG).show();
                         getFragmentManager().popBackStackImmediate();
                     }
                 }

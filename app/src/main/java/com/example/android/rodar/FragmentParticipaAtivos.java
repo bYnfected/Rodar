@@ -113,6 +113,7 @@ public class FragmentParticipaAtivos extends Fragment {
             if (mAtivos.get(position) instanceof Carona){
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("carona", (Carona) mAtivos.get(position));
+                bundle.putBoolean("ativo",false);
                 mainActivity.inflateFragment("participaCarona",bundle);
             } else if (mAtivos.get(position) instanceof Transporte) {
                 Bundle bundle = new Bundle();

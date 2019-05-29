@@ -39,4 +39,7 @@ public interface CaronaService {
 
     @GET ("EventoCarona/BuscarHistorico")
     Call <List<Carona>> getHistorico(@Header("Authorization") String token);
+
+    @POST ("EventoCarona/AvaliarCarona")
+    Call <ResponseBody> avaliarCarona(@Header("Authorization") String token,@Query("avaliacao") Float rating);
 }
