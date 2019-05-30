@@ -51,31 +51,6 @@ public class FragmentParticipaAtivos extends Fragment {
     }
 
     private void CarregaAtivos() {
-/*
-        TransporteService tService = RetrofitClient.getClient().create(TransporteService.class);
-        Call<List<Transporte>> callT = tService.getAtivos(SPUtil.getToken(getContext()));
-        callT.enqueue(new Callback<List<Transporte>>() {
-            @Override
-            public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
-                if (response.isSuccessful()){
-                    mAtivos.addAll(response.body());
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Transporte>> call, Throwable t) {
-                Toast.makeText(getContext(), "FALHA AO CARREGAR TRASNPORTES", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        try {
-            //set time in mili
-            Thread.sleep(3000);
-            Toast.makeText(getContext(), "Dormiu 3s", Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-*/
-
         CaronaService cService = RetrofitClient.getClient().create(CaronaService.class);
         Call<List<Carona>> callC = cService.getAtivos(SPUtil.getToken(getContext()));
         callC.enqueue(new Callback<List<Carona>>() {
@@ -83,29 +58,38 @@ public class FragmentParticipaAtivos extends Fragment {
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {
                 if (response.isSuccessful()) {
                     mAtivos.addAll(response.body());
+                    CarregaTransportes();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Carona>> call, Throwable t) {
+                Toast.makeText(getContext(), "FALHA AO CARREGAR", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void CarregaTransportes() {
+        TransporteService tService = RetrofitClient.getClient().create(TransporteService.class);
+        Call<List<Transporte>> callT = tService.getAtivos(SPUtil.getToken(getContext()));
+        callT.enqueue(new Callback<List<Transporte>>() {
+            @Override
+            public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
+                if (response.isSuccessful()){
+                    mAtivos.addAll(response.body());
                     if (mAtivos.size() > 0){
                         RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativos_recycler);
                         AdapterTranspCarona adapter = new AdapterTranspCarona(mAtivos,listener);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
-
                     }
                 }
             }
             @Override
-            public void onFailure(Call<List<Carona>> call, Throwable t) {
-                Toast.makeText(getContext(), "FALHA AO CARREGAR CARONAS", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<List<Transporte>> call, Throwable t) {
+                Toast.makeText(getContext(), "FALHA AO CARREGAR", Toast.LENGTH_LONG).show();
             }
         });
-
-        /*if (mAtivos.size() > 0){
-            RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativos_recycler);
-            AdapterTranspCarona adapter = new AdapterTranspCarona(mAtivos,listener);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
-
-        }*/
-    }
+            }
 
     AdapterTranspCarona.OnTranspCaronaClickListener listener = new AdapterTranspCarona.OnTranspCaronaClickListener() {
         @Override

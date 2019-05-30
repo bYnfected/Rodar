@@ -13,6 +13,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Aqui envia para o servidor o novo token
         super.onNewToken(s);
         Log.d("Notificacao", "Refreshed token: " + s);
+
     }
 
     @Override
