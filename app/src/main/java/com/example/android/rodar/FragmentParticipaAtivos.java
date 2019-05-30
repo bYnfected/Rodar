@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
-import com.example.android.rodar.adapters.AdapterListaTransportes;
 import com.example.android.rodar.adapters.AdapterTranspCarona;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Transporte;

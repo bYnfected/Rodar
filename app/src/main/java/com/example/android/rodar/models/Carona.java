@@ -21,7 +21,16 @@ public class Carona implements Serializable {
     private Integer quantidadeVagasDisponiveis;
     private Integer quantidadeVagasOcupadas;
     private List<Usuario> Passageiros;
+    private AvaliacaoCarona avaliacaoCarona;
 
+
+    public AvaliacaoCarona getAvaliacaoCarona() {
+        return avaliacaoCarona;
+    }
+
+    public void setAvaliacaoCarona(AvaliacaoCarona avaliacaoCarona) {
+        this.avaliacaoCarona = avaliacaoCarona;
+    }
 
     public Usuario getUsuarioMotorista() {
         return usuarioMotorista;

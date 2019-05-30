@@ -3,6 +3,7 @@ package com.example.android.rodar.FragmentsCarona;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.adapters.AdapterPassageiros;
+import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.CaronaService;
@@ -30,6 +32,7 @@ import retrofit2.Response;
 public class FragmentParticipaCarona extends Fragment {
 
     private TextView endereco, mensagem, vagas, valor, vagasTotal;
+    private TextInputLayout msgAvaliacao;
     private Button btnConcluir;
     private Carona mCarona;
     private AdapterPassageiros mAdapterPassageiros;
@@ -51,6 +54,7 @@ public class FragmentParticipaCarona extends Fragment {
         btnConcluir = v.findViewById(R.id.participa_carona_concluir);
         recyclerViewPassageiros = v.findViewById(R.id.participa_carona_passageiros);
         rating = v.findViewById(R.id.participa_carona_rating);
+        msgAvaliacao = v.findViewById(R.id.participa_carona_msgAvaliacao);
 
         endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
                 ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
@@ -134,8 +138,10 @@ public class FragmentParticipaCarona extends Fragment {
     View.OnClickListener avaliarListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            AvaliacaoCarona avaliacao = new AvaliacaoCarona(mCarona.getIdEventoCarona(),
+                    rating.getRating(),msgAvaliacao.getEditText().getText().toString());
             CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-            Call<ResponseBody> call = service.avaliarCarona(SPUtil.getToken(getContext()), rating.getRating());
+            Call<ResponseBody> call = service.avaliarCarona(SPUtil.getToken(getContext()), avaliacao);
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
