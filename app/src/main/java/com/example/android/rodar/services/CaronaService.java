@@ -42,5 +42,5 @@ public interface CaronaService {
     Call <List<Carona>> getHistorico(@Header("Authorization") String token);
 
     @POST ("EventoCarona/AvaliarCarona")
-    Call <ResponseBody> avaliarCarona(@Header("Authorization") String token, AvaliacaoCarona avaliacao);
+    Call <ResponseBody> avaliarCarona(@Header("Authorization") String token, @Body AvaliacaoCarona avaliacao);
 }
