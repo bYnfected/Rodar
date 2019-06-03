@@ -13,4 +13,28 @@ public class AvaliacaoCarona {
 
     public AvaliacaoCarona() {
     }
+
+    public Integer getIdEventoCarona() {
+        return idEventoCarona;
+    }
+
+    public void setIdEventoCarona(Integer idEventoCarona) {
+        this.idEventoCarona = idEventoCarona;
+    }
+
+    public Float getAvaliacao() {
+        return Avaliacao;
+    }
+
+    public void setAvaliacao(Float avaliacao) {
+        Avaliacao = avaliacao;
+    }
+
+    public String getMensagem() {
+        return Mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        Mensagem = mensagem;
+    }
 }

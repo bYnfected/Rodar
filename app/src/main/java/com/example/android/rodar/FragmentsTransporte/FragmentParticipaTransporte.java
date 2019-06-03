@@ -3,6 +3,7 @@ package com.example.android.rodar.FragmentsTransporte;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +19,11 @@ import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.adapters.AdapterPassageiros;
+import com.example.android.rodar.models.AvaliacaoCarona;
+import com.example.android.rodar.models.AvaliacaoTransporte;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.models.Usuario;
+import com.example.android.rodar.services.CaronaService;
 import com.example.android.rodar.services.TransporteService;
 
 import okhttp3.ResponseBody;
@@ -29,10 +34,12 @@ import retrofit2.Response;
 public class FragmentParticipaTransporte extends Fragment {
 
     private TextView endereco, mensagem, vagas, valor, vagasTotal;
+    private TextInputLayout msgAvaliacao;
     private Button btnConcluir;
     private Transporte mTransporte;
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
+    private RatingBar rating;
 
     @Nullable
     @Override
@@ -48,6 +55,8 @@ public class FragmentParticipaTransporte extends Fragment {
         valor = v.findViewById(R.id.participa_transporte_valor);
         btnConcluir = v.findViewById(R.id.participa_transporte_concluir);
         recyclerViewPassageiros = v.findViewById(R.id.participa_transporte_passageiros);
+        rating = v.findViewById(R.id.participa_transporte_rating);
+        msgAvaliacao = v.findViewById(R.id.participa_transporte_msgAvaliacao);
 
         endereco.setText(mTransporte.getEnderecoPartidaRua() + ", " + mTransporte.getEnderecoPartidaNumero() +
                 ", " + mTransporte.getEnderecoPartidaCEP() + ", " + mTransporte.getEnderecoPartidaBairro() +
@@ -63,23 +72,45 @@ public class FragmentParticipaTransporte extends Fragment {
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
         recyclerViewPassageiros.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        configuraTela();
+        return v;
+    }
 
-        // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
-        if (mTransporte.getIdUsuarioTransportador() == SPUtil.getID(getContext())) {
-            btnConcluir.setText("Excluir Transporte");
-            btnConcluir.setOnClickListener(excluirListener);
-        } else if (participando()) {
-            btnConcluir.setText("Cancelar Participação");
-            btnConcluir.setOnClickListener(cancelarListener);
-        } else if (mTransporte.getQuantidadeVagasDisponiveis() == 0) {
-            btnConcluir.setText("Transporte Lotado");
-            btnConcluir.setEnabled(false);
-        } else {
-            btnConcluir.setOnClickListener(concluirListener);
+    private void configuraTela() {
+
+        if (getArguments().getBoolean("ativo")){
+            rating.setVisibility(View.GONE);
+            // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
+            if (mTransporte.getIdUsuarioTransportador() == SPUtil.getID(getContext())){
+                btnConcluir.setText("Excluir Transporte");
+                btnConcluir.setOnClickListener(excluirListener);
+            } else if (participando()) {
+                btnConcluir.setText("Cancelar Participação");
+                btnConcluir.setOnClickListener(cancelarListener);
+            } else if (mTransporte.getQuantidadeVagasDisponiveis() == 0){
+                btnConcluir.setText("Transporte Lotado");
+                btnConcluir.setEnabled(false);
+            } else {
+                btnConcluir.setOnClickListener(concluirListener);
+            }
+        } else { // Se a carona já esta completa
+            rating.setMax(5);
+            rating.setNumStars(5);
+            rating.setStepSize((float) 0.5);
+
+            if ((mTransporte.getAvaliacaoTransporte() == null)){
+                btnConcluir.setText("Enviar Avaliação");
+                btnConcluir.setOnClickListener(avaliarListener);
+            } else {
+                btnConcluir.setEnabled(false);
+                btnConcluir.setText("Carona Avaliada");
+                rating.setIsIndicator(true);
+                rating.setRating(mTransporte.getAvaliacaoTransporte().getAvaliacao());
+                msgAvaliacao.setEnabled(false);
+                msgAvaliacao.getEditText().setText(mTransporte.getAvaliacaoTransporte().getMensagem());
+            }
         }
 
-
-        return v;
     }
 
     private boolean participando() {
@@ -104,6 +135,32 @@ public class FragmentParticipaTransporte extends Fragment {
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CONFIRMADA", Toast.LENGTH_LONG).show();
+                        getFragmentManager().popBackStackImmediate();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+    };
+
+    View.OnClickListener avaliarListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AvaliacaoTransporte avaliacao = new AvaliacaoTransporte(mTransporte.getIdEventoTransporte(),
+                    rating.getRating(),msgAvaliacao.getEditText().getText().toString());
+            TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
+            Call<ResponseBody> call = service.avaliarTransporte(SPUtil.getToken(getContext()), avaliacao);
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "AVALIADO COM SUCESSO", Toast.LENGTH_LONG).show();
                         getFragmentManager().popBackStackImmediate();
                     }
                 }

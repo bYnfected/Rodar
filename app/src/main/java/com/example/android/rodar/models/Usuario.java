@@ -22,6 +22,15 @@ public class Usuario {
     private String urlImagemCPF;
     private boolean Transportador;
     private boolean OrganizadorEvento;
+    private String tokenNotificacao;
+
+    public String getTokenNotificacao() {
+        return tokenNotificacao;
+    }
+
+    public void setTokenNotificacao(String tokenNotificacao) {
+        this.tokenNotificacao = tokenNotificacao;
+    }
 
     public boolean isTransportador() {
         return Transportador;

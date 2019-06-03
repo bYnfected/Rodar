@@ -76,6 +76,7 @@ public class FragmentEventoTransportes extends Fragment {
         public void onTransporteClick(int position) {
             // Listener do card, retorna o objeto do transporte
             Bundle bundle = new Bundle();
+            bundle.putBoolean("ativo",true);
             bundle.putSerializable("transporte", transportes.get(position));
             mainActivity.inflateFragment("participaTransporte",bundle);
         }

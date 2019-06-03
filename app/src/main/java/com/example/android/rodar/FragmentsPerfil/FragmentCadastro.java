@@ -100,6 +100,7 @@ public class FragmentCadastro extends Fragment {
                 novoUsuario.setEmail(email.getEditText().getText().toString());
                 novoUsuario.setSenha(senha.getEditText().getText().toString());
                 novoUsuario.setDataNascimento(tempDataNascimento);
+                novoUsuario.setTokenNotificacao(SPUtil.getTokenFirebase(getContext()));
                 registraUsuario(novoUsuario);
             }
         }

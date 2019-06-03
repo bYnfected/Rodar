@@ -22,7 +22,24 @@ public class Carona implements Serializable {
     private Integer quantidadeVagasOcupadas;
     private List<Usuario> Passageiros;
     private AvaliacaoCarona avaliacaoCarona;
+    private String dataHoraPartida;
+    private String dataHoraPrevisaoChegada;
 
+    public String getDataHoraPrevisaoChegada() {
+        return dataHoraPrevisaoChegada;
+    }
+
+    public void setDataHoraPrevisaoChegada(String dataHoraPrevisaoChegada) {
+        this.dataHoraPrevisaoChegada = dataHoraPrevisaoChegada;
+    }
+
+    public String getDataHoraPartida() {
+        return dataHoraPartida;
+    }
+
+    public void setDataHoraPartida(String dataHoraPartida) {
+        this.dataHoraPartida = dataHoraPartida;
+    }
 
     public AvaliacaoCarona getAvaliacaoCarona() {
         return avaliacaoCarona;

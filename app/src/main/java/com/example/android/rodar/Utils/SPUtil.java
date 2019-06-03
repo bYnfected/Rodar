@@ -53,8 +53,14 @@ public class SPUtil {
 
         public static String getToken(Context context) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            String tokenBearer = ("Bearer " + prefs.getString("token",null));
-            return tokenBearer.replace("\"", "");
+            String tokenBearer = (prefs.getString("token",null));
+            if (tokenBearer == null){
+                return null;
+            } else
+            {
+                tokenBearer = ("Bearer " + tokenBearer);
+                return tokenBearer.replace("\"", "");
+            }
         }
 
         public static void getTipoUsuario(final Context context) {
@@ -110,4 +116,16 @@ public class SPUtil {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt("id",0);
     }
+
+    public static void saveTokenFirebase(final Context context, String s) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString("tokenFirebase", s);
+        prefsEditor.apply();
     }
+
+    public static String getTokenFirebase(final Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString("tokenFirebase", null);
+    }
+}

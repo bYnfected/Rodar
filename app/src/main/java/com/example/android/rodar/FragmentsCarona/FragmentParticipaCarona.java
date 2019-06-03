@@ -23,6 +23,7 @@ import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.CaronaService;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -75,6 +76,7 @@ public class FragmentParticipaCarona extends Fragment {
     }
 
     private void configuraTela() {
+
         if (getArguments().getBoolean("ativo")){
             rating.setVisibility(View.GONE);
             // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
@@ -91,11 +93,21 @@ public class FragmentParticipaCarona extends Fragment {
                 btnConcluir.setOnClickListener(concluirListener);
             }
         } else { // Se a carona já esta completa
-            btnConcluir.setText("Enviar Avaliação");
-            btnConcluir.setOnClickListener(avaliarListener);
             rating.setMax(5);
             rating.setNumStars(5);
             rating.setStepSize((float) 0.5);
+
+            if ((mCarona.getAvaliacaoCarona() == null)){
+                btnConcluir.setText("Enviar Avaliação");
+                btnConcluir.setOnClickListener(avaliarListener);
+            } else {
+                btnConcluir.setEnabled(false);
+                btnConcluir.setText("Carona Avaliada");
+                rating.setIsIndicator(true);
+                rating.setRating(mCarona.getAvaliacaoCarona().getAvaliacao());
+                msgAvaliacao.setEnabled(false);
+                msgAvaliacao.getEditText().setText(mCarona.getAvaliacaoCarona().getMensagem());
+            }
         }
 
     }
@@ -122,6 +134,7 @@ public class FragmentParticipaCarona extends Fragment {
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CONFIRMADA", Toast.LENGTH_LONG).show();
+                        FirebaseMessaging.getInstance().subscribeToTopic("carona"+mCarona.getIdEventoCarona().toString());
                         getFragmentManager().popBackStackImmediate();
                     }
                 }
@@ -172,6 +185,7 @@ public class FragmentParticipaCarona extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CANCELADA", Toast.LENGTH_LONG).show();
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("carona"+mCarona.getIdEventoCarona().toString());
                         getFragmentManager().popBackStackImmediate();
                     }
                 }

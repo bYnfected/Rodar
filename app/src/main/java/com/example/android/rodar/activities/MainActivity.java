@@ -1,39 +1,32 @@
 package com.example.android.rodar.activities;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.android.rodar.FragmentParticipa;
-import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
 import com.example.android.rodar.FragmentCriaEvento;
-import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
-import com.example.android.rodar.FragmentsTransporte.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentEventoDetalhe;
 import com.example.android.rodar.FragmentEventos;
 import com.example.android.rodar.FragmentMensagens;
+import com.example.android.rodar.FragmentParticipa;
 import com.example.android.rodar.FragmentPesquisaEventos;
+import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
+import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
 import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
+import com.example.android.rodar.FragmentsTransporte.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.SPUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -56,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FragmentEventos()).commit();
 
         createNotificationChannels();
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String mToken = instanceIdResult.getToken();
+                Log.e("Token: ",mToken);
+            }
+        });
     }
 
 

@@ -22,6 +22,33 @@ public class Transporte implements Serializable {
     public Integer quantidadeVagasDisponiveis;
     public Integer quantidadeVagasOcupadas;
     public List<Usuario> Passageiros;
+    private AvaliacaoTransporte avaliacaoTransporte;
+    private String dataHoraPartida;
+    private String dataHoraPrevisaoChegada;
+
+    public String getDataHoraPartida() {
+        return dataHoraPartida;
+    }
+
+    public void setDataHoraPartida(String dataHoraPartida) {
+        this.dataHoraPartida = dataHoraPartida;
+    }
+
+    public String getDataHoraPrevisaoChegada() {
+        return dataHoraPrevisaoChegada;
+    }
+
+    public void setDataHoraPrevisaoChegada(String dataHoraPrevisaoChegada) {
+        this.dataHoraPrevisaoChegada = dataHoraPrevisaoChegada;
+    }
+
+    public AvaliacaoTransporte getAvaliacaoTransporte() {
+        return avaliacaoTransporte;
+    }
+
+    public void setAvaliacaoTransporte(AvaliacaoTransporte avaliacaoTransporte) {
+        this.avaliacaoTransporte = avaliacaoTransporte;
+    }
 
     public Integer getIdEventoTransporte() {
         return idEventoTransporte;

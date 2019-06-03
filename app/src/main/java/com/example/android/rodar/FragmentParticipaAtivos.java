@@ -36,7 +36,7 @@ public class FragmentParticipaAtivos extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_participa_ativos, container, false);
+        View v = inflater.inflate(R.layout.fragment_participa_ativos_historico, container, false);
         mAtivos = new ArrayList<>();
         CarregaAtivos();
 
@@ -76,7 +76,7 @@ public class FragmentParticipaAtivos extends Fragment {
                 if (response.isSuccessful()){
                     mAtivos.addAll(response.body());
                     if (mAtivos.size() > 0){
-                        RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativos_recycler);
+                        RecyclerView recyclerView = getView().findViewById(R.id.fragment_participa_ativosHistorico_recycler);
                         AdapterTranspCarona adapter = new AdapterTranspCarona(mAtivos,listener);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
@@ -93,13 +93,12 @@ public class FragmentParticipaAtivos extends Fragment {
     AdapterTranspCarona.OnTranspCaronaClickListener listener = new AdapterTranspCarona.OnTranspCaronaClickListener() {
         @Override
         public void onTranspCaronaClick(int position) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("ativo",true);
             if (mAtivos.get(position) instanceof Carona){
-                Bundle bundle = new Bundle();
                 bundle.putSerializable("carona", (Carona) mAtivos.get(position));
-                bundle.putBoolean("ativo",false);
                 mainActivity.inflateFragment("participaCarona",bundle);
             } else if (mAtivos.get(position) instanceof Transporte) {
-                Bundle bundle = new Bundle();
                 bundle.putSerializable("transporte", (Transporte) mAtivos.get(position));
                 mainActivity.inflateFragment("participaTransporte",bundle);
             }

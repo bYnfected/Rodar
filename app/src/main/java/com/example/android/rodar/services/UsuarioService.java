@@ -14,6 +14,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface UsuarioService {
 
@@ -39,5 +40,9 @@ public interface UsuarioService {
 
     @POST("Usuario/PromoverParaOrganizadorEvento")
     Call<ResponseBody> promoverOrganizador(@Header("Authorization") String token);
+
+    @POST
+    ("Usuario/AtualizarTokenNotificacao")
+    Call<ResponseBody> setTokenFirebase(@Header("Authorization") String token,@Query ("novoTokenNotificacao") String tokenFirebase);
 }
 
