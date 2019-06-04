@@ -1,5 +1,7 @@
 package com.example.android.rodar.FragmentsCarona;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.adapters.AdapterPassageiros;
 import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.Carona;
@@ -204,7 +206,8 @@ public class FragmentParticipaCarona extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CANCELADA", Toast.LENGTH_LONG).show();
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("carona"+mCarona.getIdEventoCarona().toString());
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("carona"+
+                                mCarona.getIdEventoCarona().toString());
                         getFragmentManager().popBackStackImmediate();
                     }
                 }
@@ -222,26 +225,30 @@ public class FragmentParticipaCarona extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // FALTA ADICIONAR A CONFIRMACAO AQUI
-            CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
-            Call<ResponseBody> call = service.deleteCarona(SPUtil.getToken(getContext()), mCarona.getIdEventoCarona());
-            call.enqueue(new Callback<ResponseBody>() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Deseja excluir esse transporte?");
+            builder.setNegativeButton("Não", null);
+            builder.setCancelable(true);
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()){
-                        Toast.makeText(getContext(), "CARONA EXCLUIDA", Toast.LENGTH_LONG).show();
-                        getFragmentManager().popBackStackImmediate();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                public void onClick(DialogInterface dialog, int which) {
+                    CaronaService service = RetrofitClient.getClient().create(CaronaService.class);
+                    Call<ResponseBody> call = service.deleteCarona(SPUtil.getToken(getContext()), mCarona.getIdEventoCarona());
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()){
+                                Toast.makeText(getContext(), "CARONA EXCLUIDA", Toast.LENGTH_LONG).show();
+                                getFragmentManager().popBackStackImmediate();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
-
         }
     };
-
-
 }

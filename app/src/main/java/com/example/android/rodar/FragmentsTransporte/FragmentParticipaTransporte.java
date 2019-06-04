@@ -1,5 +1,7 @@
 package com.example.android.rodar.FragmentsTransporte;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.example.android.rodar.models.AvaliacaoTransporte;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.TransporteService;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -152,6 +155,7 @@ public class FragmentParticipaTransporte extends Fragment {
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CONFIRMADA", Toast.LENGTH_LONG).show();
+                        FirebaseMessaging.getInstance().subscribeToTopic("transporte"+mTransporte.getIdEventoTransporte().toString());
                         getFragmentManager().popBackStackImmediate();
                     }
                 }
@@ -202,6 +206,8 @@ public class FragmentParticipaTransporte extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "PARTICIPAÇÃO CANCELADA", Toast.LENGTH_LONG).show();
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("transporte"+
+                                mTransporte.getIdEventoTransporte().toString());
                         getFragmentManager().popBackStackImmediate();
                     }
                 }
@@ -219,26 +225,31 @@ public class FragmentParticipaTransporte extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // FALTA ADICIONAR A CONFIRMACAO AQUI
-            TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
-            Call<ResponseBody> call = service.deleteTransporte(SPUtil.getToken(getContext()), mTransporte.getIdEventoTransporte());
-            call.enqueue(new Callback<ResponseBody>() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Deseja excluir esse transporte?");
+            builder.setNegativeButton("Não", null);
+            builder.setCancelable(true);
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "TRANSPORTE EXCLUIDO", Toast.LENGTH_LONG).show();
-                        getFragmentManager().popBackStackImmediate();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                public void onClick(DialogInterface dialog, int which) {
+                    TransporteService service = RetrofitClient.getClient().create(TransporteService.class);
+                    Call<ResponseBody> call = service.deleteTransporte(SPUtil.getToken(getContext()), mTransporte.getIdEventoTransporte());
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getContext(), "TRANSPORTE EXCLUIDO", Toast.LENGTH_LONG).show();
+                                getFragmentManager().popBackStackImmediate();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
-
+            builder.show();
         }
     };
-
-
 }
