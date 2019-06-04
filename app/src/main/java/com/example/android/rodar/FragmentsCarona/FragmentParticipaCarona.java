@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,13 +33,14 @@ import retrofit2.Response;
 
 public class FragmentParticipaCarona extends Fragment {
 
-    private TextView endereco, mensagem, vagas, valor, vagasTotal;
+    private TextView endereco, mensagem, vagas, valor, vagasTotal, nomeMotorista;
     private TextInputLayout msgAvaliacao;
     private Button btnConcluir;
     private Carona mCarona;
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
-    private RatingBar rating;
+    private RatingBar rating, ratingMotorista;
+    private ImageView fotoMotorista;
 
     @Nullable
     @Override
@@ -56,6 +58,9 @@ public class FragmentParticipaCarona extends Fragment {
         recyclerViewPassageiros = v.findViewById(R.id.participa_carona_passageiros);
         rating = v.findViewById(R.id.participa_carona_rating);
         msgAvaliacao = v.findViewById(R.id.participa_carona_msgAvaliacao);
+        ratingMotorista = v.findViewById(R.id.participa_carona_rating_motorista);
+        fotoMotorista = v.findViewById(R.id.participa_carona_foto_motorista);
+        nomeMotorista = v.findViewById(R.id.participa_carona_motorista);
 
         endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
                 ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
@@ -66,6 +71,8 @@ public class FragmentParticipaCarona extends Fragment {
         vagas.setText(mCarona.getQuantidadeVagasDisponiveis().toString());
         vagasTotal.setText(mCarona.getQuantidadeVagas().toString());
         valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
+        nomeMotorista.setText(mCarona.getUsuarioMotorista().getNome() +
+                " " + mCarona.getUsuarioMotorista().getSobrenome());
 
         mAdapterPassageiros = new AdapterPassageiros(mCarona.getPassageiros());
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
@@ -79,6 +86,16 @@ public class FragmentParticipaCarona extends Fragment {
 
         if (getArguments().getBoolean("ativo")){
             rating.setVisibility(View.GONE);
+            msgAvaliacao.setVisibility(View.GONE);
+            // Configura nota do motorista
+            if (mCarona.getUsuarioMotorista().getAvaliacao() == -1){
+                ratingMotorista.setVisibility(View.GONE);
+            } else {
+                ratingMotorista.setIsIndicator(true);
+                ratingMotorista.setNumStars(5);
+                ratingMotorista.setStepSize((float) 0.5);
+                ratingMotorista.setRating(mCarona.getUsuarioMotorista().getAvaliacao());
+            }
             // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
             if (mCarona.getIdUsuarioMotorista() == SPUtil.getID(getContext())){
                 btnConcluir.setText("Excluir Carona");
@@ -93,10 +110,12 @@ public class FragmentParticipaCarona extends Fragment {
                 btnConcluir.setOnClickListener(concluirListener);
             }
         } else { // Se a carona já esta completa
+            ratingMotorista.setVisibility(View.GONE);
+            fotoMotorista.setVisibility(View.GONE);
+
             rating.setMax(5);
             rating.setNumStars(5);
             rating.setStepSize((float) 0.5);
-
             if ((mCarona.getAvaliacaoCarona() == null)){
                 btnConcluir.setText("Enviar Avaliação");
                 btnConcluir.setOnClickListener(avaliarListener);
