@@ -19,11 +19,20 @@ public interface EventoService {
     Call<ResponseBody> createEvento(@Header("Authorization") String token, @Body Evento evento);
 
     @GET("Evento/BuscarTodos")
-    Call<List<Evento>> getEventos(@Header("Authorization") String token, @Query("somenteMeusEventos") boolean somenteMeusEventos,  @Query("somenteMeusFavoritos") boolean somenteMeusFavoritos);
+    Call<List<Evento>> getEventos(@Header("Authorization") String token,
+                                  @Query("somenteMeusEventos") boolean somenteMeusEventos,
+                                  @Query("somenteMeusFavoritos") boolean somenteMeusFavoritos,
+                                  @Query ("nomeEvento") String nomeEvento,
+                                  @Query ("cidadeUfEvento") String cidadeEvento,
+                                  @Query ("dataInicial") String dataIni,
+                                  @Query("dataFinal") String dataFim);
 
     @GET("Evento/Buscar")
     Call <Evento> getEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 
     @DELETE("Evento/Excluir")
     Call <ResponseBody> deleteEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
+
+    @GET ("Evento/BuscarListaCidadeUfsExistentesEmEventos")
+    Call <List<String>> getCidadesEventos(@Header("Authorization") String token);
 }

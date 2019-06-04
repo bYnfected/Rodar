@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +20,9 @@ import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.adapters.AdapterPassageiros;
-import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.AvaliacaoTransporte;
 import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.models.Usuario;
-import com.example.android.rodar.services.CaronaService;
 import com.example.android.rodar.services.TransporteService;
 
 import okhttp3.ResponseBody;
@@ -33,13 +32,14 @@ import retrofit2.Response;
 
 public class FragmentParticipaTransporte extends Fragment {
 
-    private TextView endereco, mensagem, vagas, valor, vagasTotal;
+    private TextView endereco, mensagem, vagas, valor, vagasTotal, nomeMotorista;
     private TextInputLayout msgAvaliacao;
     private Button btnConcluir;
     private Transporte mTransporte;
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
-    private RatingBar rating;
+    private RatingBar rating, ratingMotorista;
+    private ImageView fotoMotorista;
 
     @Nullable
     @Override
@@ -57,6 +57,9 @@ public class FragmentParticipaTransporte extends Fragment {
         recyclerViewPassageiros = v.findViewById(R.id.participa_transporte_passageiros);
         rating = v.findViewById(R.id.participa_transporte_rating);
         msgAvaliacao = v.findViewById(R.id.participa_transporte_msgAvaliacao);
+        ratingMotorista = v.findViewById(R.id.participa_transporte_rating_motorista);
+        fotoMotorista = v.findViewById(R.id.participa_transporte_foto_motorista);
+        nomeMotorista = v.findViewById(R.id.participa_transporte_motorista);
 
         endereco.setText(mTransporte.getEnderecoPartidaRua() + ", " + mTransporte.getEnderecoPartidaNumero() +
                 ", " + mTransporte.getEnderecoPartidaCEP() + ", " + mTransporte.getEnderecoPartidaBairro() +
@@ -67,6 +70,8 @@ public class FragmentParticipaTransporte extends Fragment {
         vagas.setText(mTransporte.getQuantidadeVagasDisponiveis().toString());
         vagasTotal.setText(mTransporte.getQuantidadeVagas().toString());
         valor.setText(String.format("R$ %.2f", mTransporte.getValorParticipacao()));
+        nomeMotorista.setText(mTransporte.getUsuarioTransportador().getNome() +
+                " " + mTransporte.getUsuarioTransportador().getSobrenome());
 
         mAdapterPassageiros = new AdapterPassageiros(mTransporte.getPassageiros());
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
@@ -80,30 +85,42 @@ public class FragmentParticipaTransporte extends Fragment {
 
         if (getArguments().getBoolean("ativo")){
             rating.setVisibility(View.GONE);
+            msgAvaliacao.setVisibility(View.GONE);
+            // Configura nota do motorista
+            if (mTransporte.getUsuarioTransportador().getAvaliacao() == -1){
+                ratingMotorista.setVisibility(View.GONE);
+            } else {
+                ratingMotorista.setIsIndicator(true);
+                ratingMotorista.setNumStars(5);
+                ratingMotorista.setStepSize((float) 0.5);
+                ratingMotorista.setRating(mTransporte.getUsuarioTransportador().getAvaliacao());
+            }
             // Se é o motorista pode excluir, se esta participando pode cancelar, se esta lotado informa
             if (mTransporte.getIdUsuarioTransportador() == SPUtil.getID(getContext())){
-                btnConcluir.setText("Excluir Transporte");
+                btnConcluir.setText("Excluir transporte");
                 btnConcluir.setOnClickListener(excluirListener);
             } else if (participando()) {
                 btnConcluir.setText("Cancelar Participação");
                 btnConcluir.setOnClickListener(cancelarListener);
             } else if (mTransporte.getQuantidadeVagasDisponiveis() == 0){
-                btnConcluir.setText("Transporte Lotado");
+                btnConcluir.setText("transporte Lotada");
                 btnConcluir.setEnabled(false);
             } else {
                 btnConcluir.setOnClickListener(concluirListener);
             }
-        } else { // Se a carona já esta completa
+        } else { // Se a transporte já esta completa
+            ratingMotorista.setVisibility(View.GONE);
+            fotoMotorista.setVisibility(View.GONE);
+
             rating.setMax(5);
             rating.setNumStars(5);
             rating.setStepSize((float) 0.5);
-
             if ((mTransporte.getAvaliacaoTransporte() == null)){
                 btnConcluir.setText("Enviar Avaliação");
                 btnConcluir.setOnClickListener(avaliarListener);
             } else {
                 btnConcluir.setEnabled(false);
-                btnConcluir.setText("Carona Avaliada");
+                btnConcluir.setText("transporte Avaliada");
                 rating.setIsIndicator(true);
                 rating.setRating(mTransporte.getAvaliacaoTransporte().getAvaliacao());
                 msgAvaliacao.setEnabled(false);

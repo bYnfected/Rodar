@@ -23,6 +23,15 @@ public class Usuario {
     private boolean Transportador;
     private boolean OrganizadorEvento;
     private String tokenNotificacao;
+    private Float Avaliacao;
+
+    public float getAvaliacao() {
+        return Avaliacao;
+    }
+
+    public void setAvaliacao(Float avaliacao) {
+        Avaliacao = avaliacao;
+    }
 
     public String getTokenNotificacao() {
         return tokenNotificacao;

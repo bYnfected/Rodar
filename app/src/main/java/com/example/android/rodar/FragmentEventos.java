@@ -120,7 +120,8 @@ public class FragmentEventos extends Fragment {
     private void CarregarEventos(){
 
         EventoService service = RetrofitClient.getClient().create(EventoService.class);
-        Call<List<Evento>> call = service.getEventos(SPUtil.getToken(getContext()), somenteMeusEventos, somenteMeusFavoritos);
+        Call<List<Evento>> call = service.getEventos(SPUtil.getToken(getContext()),
+                somenteMeusEventos, somenteMeusFavoritos,null,null,null,null);
         call.enqueue(new Callback<List<Evento>>() {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
