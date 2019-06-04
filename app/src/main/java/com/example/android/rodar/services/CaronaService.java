@@ -2,6 +2,7 @@ package com.example.android.rodar.services;
 
 import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.Carona;
+import com.example.android.rodar.models.MensagemCarona;
 
 import java.util.List;
 
@@ -43,4 +44,7 @@ public interface CaronaService {
 
     @POST ("EventoCarona/AvaliarCarona")
     Call <ResponseBody> avaliarCarona(@Header("Authorization") String token, @Body AvaliacaoCarona avaliacao);
+
+    @GET ("EventoCarona/BuscarMensagensEnviadasUsuario")
+    Call <List<MensagemCarona>> getMensagensEnviadasUsuario(@Header("Authorization") String token);
 }

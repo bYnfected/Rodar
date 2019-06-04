@@ -41,7 +41,4 @@ public class FragmentPesquisaEventos extends Fragment {
     private static final String[] CIDADES  = new String[] {
             "Caxias do Sul", "Bento Gonçalves", "Farroupilha", "Flores da Cunha", "Gramado"
     };
-
-
-
 }

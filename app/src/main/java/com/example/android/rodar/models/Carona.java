@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Carona implements Serializable {
+
     public Integer idEventoCarona;
     public Integer idEvento;
+    public Evento Evento;
     public Integer idUsuarioMotorista;
     public Usuario usuarioMotorista;
     public String enderecoPartidaRua;
@@ -183,5 +185,13 @@ public class Carona implements Serializable {
 
     public void setMensagem(String mensagem) {
         this.Mensagem = mensagem;
+    }
+
+    public com.example.android.rodar.models.Evento getEvento() {
+        return Evento;
+    }
+
+    public void setEvento(com.example.android.rodar.models.Evento evento) {
+        Evento = evento;
     }
 }

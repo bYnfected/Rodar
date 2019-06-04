@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     public static final String CHANNEL_ID = "CHTESTE";
     public static final String CHANNEL_DESC = "Canal padrão de notificações";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         });
     }
 
-
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             manager.createNotificationChannel(channel1);
         }
     }
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -87,19 +84,17 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentParticipa();
                             break;
                         case R.id.nav_mensagens :
-                            selectedFragment = new FragmentCriaCarona();
+                            selectedFragment = new FragmentMensagens();
                             break;
                         case R.id.nav_perfil :
                             selectedFragment = new FragmentPerfil();
                             break;
                     }
 
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
 
                     return true;
-
                 }
             };
 

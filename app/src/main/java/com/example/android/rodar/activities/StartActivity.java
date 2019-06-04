@@ -19,7 +19,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // Vai direto para a MainActivity se esta logado
         if (SPUtil.getPassword(getApplicationContext()) != null) {
             UsuarioService usrService = RetrofitClient.getClient().create(UsuarioService.class);

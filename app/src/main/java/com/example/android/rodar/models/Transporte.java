@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Transporte implements Serializable {
+
     public Integer idEventoTransporte;
     public Integer idEvento;
+    public Evento Evento;
     public String nomeTransporte;
     public Integer idUsuarioTransportador;
     public Usuario usuarioTransportador;
@@ -192,5 +194,13 @@ public class Transporte implements Serializable {
 
     public void setPassageiros(List<Usuario> passageiros) {
         Passageiros = passageiros;
+    }
+
+    public com.example.android.rodar.models.Evento getEvento() {
+        return Evento;
+    }
+
+    public void setEvento(com.example.android.rodar.models.Evento evento) {
+        Evento = evento;
     }
 }
