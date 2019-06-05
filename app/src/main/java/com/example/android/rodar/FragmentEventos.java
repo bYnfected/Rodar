@@ -35,11 +35,13 @@ import retrofit2.Response;
 public class FragmentEventos extends Fragment {
 
     private IMainActivity mainActivity;
+    private RecyclerView mRecyclerView;
     private FloatingActionButton btnCadastro;
-    private List<Evento> eventos;
+    private List<Evento> mEventos;
     private boolean somenteMeusEventos = false;
     private boolean somenteMeusFavoritos = false;
     private AdapterListaEventos mEventosAdapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,15 +94,21 @@ public class FragmentEventos extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_eventos, container, false);
 
+        mRecyclerView = v.findViewById(R.id.recycler_view_eventos);
         btnCadastro = v.findViewById(R.id.cria_evento_btn);
         btnCadastro.setOnClickListener(criaEventoListener);
 
         if (SPUtil.getOrganizador(getContext()))
             btnCadastro.show();
-        CarregarEventos();
+
+        if (getArguments() != null){
+            mEventos = (List<Evento>) getArguments().getSerializable("eventos");
+            preencheRecycler();
+        } else {
+            CarregarEventos();
+        }
 
         return v;
     }
@@ -127,11 +135,8 @@ public class FragmentEventos extends Fragment {
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
-                    eventos = response.body();
-                    RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_eventos);
-                    mEventosAdapter = new AdapterListaEventos(eventos, teste);
-                    recyclerView.setAdapter(mEventosAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+                    mEventos = response.body();
+                    preencheRecycler();
                 }
             }
 
@@ -142,6 +147,12 @@ public class FragmentEventos extends Fragment {
         });
     }
 
+    private void preencheRecycler() {
+        mEventosAdapter = new AdapterListaEventos(mEventos, teste);
+        mRecyclerView.setAdapter(mEventosAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
     AdapterListaEventos.OnEventoClickListener teste = new AdapterListaEventos.OnEventoClickListener() {
         @Override
         public void onEventoClick(int position, View view) {
@@ -149,8 +160,8 @@ public class FragmentEventos extends Fragment {
                 deletarEvento(position);
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putInt("id",eventos.get(position).getIdEvento());
-                bundle.putSerializable("evento",eventos.get(position));
+                bundle.putInt("id", mEventos.get(position).getIdEvento());
+                bundle.putSerializable("evento", mEventos.get(position));
                 mainActivity.inflateFragment("evento_detalhe",bundle);
             }
         }
@@ -167,15 +178,15 @@ public class FragmentEventos extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 EventoService service = RetrofitClient.getClient().create(EventoService.class);
                 Call<ResponseBody> call = service.deleteEvento(SPUtil.getToken(getContext()),
-                        eventos.get(position).getIdEvento());
+                        mEventos.get(position).getIdEvento());
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()){
                             Toast.makeText(getContext(), "Evento deletado", Toast.LENGTH_LONG).show();
-                            eventos.remove(position);
+                            mEventos.remove(position);
                             mEventosAdapter.notifyItemRemoved(position);
-                            mEventosAdapter.notifyItemRangeChanged(position,eventos.size());
+                            mEventosAdapter.notifyItemRangeChanged(position, mEventos.size());
                         }
                     }
                     @Override

@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pesquisa_evento_nome" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/pesquisa_evento_dataIni"
+        android:id="@+id/tt"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pesquisa_evento_cidade">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/pesquisa_evento_dataIni"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Data Evento Inicio" />
@@ -58,18 +59,19 @@
         android:text="Pesquisar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pesquisa_evento_dataIni" />
+        app:layout_constraintTop_toBottomOf="@+id/tt" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/pesquisa_evento_dataFim"
+        android:id="@+id/tt2"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/pesquisa_evento_dataIni"
+        app:layout_constraintStart_toEndOf="@+id/tt"
         app:layout_constraintTop_toBottomOf="@+id/pesquisa_evento_cidade">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/pesquisa_evento_dataFim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Data Evento Fim" />
