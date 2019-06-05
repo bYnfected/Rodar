@@ -24,8 +24,7 @@ public interface EventoService {
                                   @Query("somenteMeusFavoritos") boolean somenteMeusFavoritos,
                                   @Query ("nomeEvento") String nomeEvento,
                                   @Query ("cidadeUfEvento") String cidadeEvento,
-                                  @Query ("dataInicial") String dataIni,
-                                  @Query("dataFinal") String dataFim);
+                                  @Query ("dataEvento") String dataIni);
 
     @GET("Evento/Buscar")
     Call <Evento> getEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);

@@ -47,8 +47,8 @@ public class FragmentPesquisaEventos extends Fragment {
     TextInputLayout nome;
     Button btnPesquisar;
     private int tmpAno,tmpMes,tmpDia,tmpHora,tmpMiuto;
-    private String tmpDataHrIni = "",tmpDataHrFim = "";
-    TextInputEditText dataIni,dataFim;
+    private String tmpDataHrIni = "";
+    TextInputEditText dataIni;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,13 +63,11 @@ public class FragmentPesquisaEventos extends Fragment {
         View v = inflater.inflate(R.layout.fragment_pesquisa_evento, container, false);
         nome = v.findViewById(R.id.pesquisa_evento_nome);
         cidadeAutoComplete = v.findViewById(R.id.pesquisa_evento_cidade);
-        dataIni = v.findViewById(R.id.pesquisa_evento_dataIni);
-        dataFim = v.findViewById(R.id.pesquisa_evento_dataFim);
+        dataIni = v.findViewById(R.id.pesquisa_evento_data);
         btnPesquisar = v.findViewById(R.id.pesquisa_evento_btnPesquisar);
         btnPesquisar.setOnClickListener(pesquisarListener);
 
         dataIni.setOnFocusChangeListener(dataListener);
-        dataFim.setOnFocusChangeListener(dataListener);
 
         carregaCidades();
         return v;
@@ -86,18 +84,16 @@ public class FragmentPesquisaEventos extends Fragment {
         public void onClick(View v) {
             String nomeEvento = nome.getEditText().getText().toString();
             String cidadeEvento = cidadeAutoComplete.getText().toString();
-            String dataIniEvento = tmpDataHrIni;
-            String dataFimEvento = tmpDataHrFim;
+            String dataEvento = tmpDataHrIni;
             if (nomeEvento.length() == 0) nomeEvento = null;
             if (cidadeEvento.length() == 0) cidadeEvento = null;
-            if (dataIniEvento.length() == 0) dataIniEvento = null;
-            if (dataFimEvento.length() == 0) dataFimEvento = null;
+            if (dataEvento.length() == 0) dataEvento = null;
 
 
             EventoService service = RetrofitClient.getClient().create(EventoService.class);
             Call<List<Evento>> call = service.getEventos(SPUtil.getToken(getContext()),
                     false, false, nomeEvento,
-                    cidadeEvento,dataIniEvento,dataFimEvento);
+                    cidadeEvento,dataEvento);
             call.enqueue(new Callback<List<Evento>>() {
                 @Override
                 public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
@@ -141,17 +137,13 @@ public class FragmentPesquisaEventos extends Fragment {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                if (v.getId() == R.id.pesquisa_evento_dataIni){
-                    showDatePicker("ini");
-                } else {
-                    showDatePicker("fim");
-                }
+                    showDatePicker();
             }
         }
     };
 
 
-    private void showDatePicker(String tipo) {
+    private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
         // Informa a data atual como inicial
         Calendar calender = Calendar.getInstance();
@@ -161,11 +153,7 @@ public class FragmentPesquisaEventos extends Fragment {
         args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
         date.setArguments(args);
         // Indica quem ira receber o retorno da chamada
-        if (tipo == "ini") {
-            date.setCallBack(ondateIni);
-        } else {
-            date.setCallBack(ondateFim);
-        }
+        date.setCallBack(ondateIni);
         date.show(getFragmentManager(), "Date Picker");
     }
 
@@ -176,56 +164,10 @@ public class FragmentPesquisaEventos extends Fragment {
             tmpAno = year;
             tmpMes = monthOfYear;
             tmpDia = dayOfMonth;
-            showTimePicker("ini");
-        }
-    };
-
-    DatePickerDialog.OnDateSetListener ondateFim = new DatePickerDialog.OnDateSetListener() {
-
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-
-            tmpAno = year;
-            tmpMes = monthOfYear;
-            tmpDia = dayOfMonth;
-            showTimePicker("fim");
-        }
-    };
-
-    private void showTimePicker(String tipo) {
-        TimePickerFragment time = new TimePickerFragment();
-        // Informa a data atual como inicial
-        Calendar calender = Calendar.getInstance();
-        Bundle args = new Bundle();
-        args.putInt("hora", calender.get(Calendar.HOUR_OF_DAY));
-        args.putInt("minuto", calender.get(Calendar.MINUTE));
-        time.setArguments(args);
-        // Indica quem ira receber o retorno da chamada
-        if (tipo == "ini") {
-            time.setCallBack(ontimeIni);
-        } else {
-            time.setCallBack(ontimeFim);
-        }
-        time.show(getFragmentManager(), "Time Picker");
-    }
-
-    TimePickerDialog.OnTimeSetListener ontimeIni = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            tmpHora = hourOfDay;
-            tmpMiuto = minute;
             tmpDataHrIni = transformaDataHrString(dataIni);
         }
     };
 
-    TimePickerDialog.OnTimeSetListener ontimeFim = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            tmpHora = hourOfDay;
-            tmpMiuto = minute;
-            tmpDataHrFim = transformaDataHrString(dataFim);
-        }
-    };
 
     private String transformaDataHrString(EditText dataHora){
         GregorianCalendar calendar;
@@ -234,7 +176,7 @@ public class FragmentPesquisaEventos extends Fragment {
         // Conversao em formato padrao para o banco
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX");
         // Formato para exibir
-        SimpleDateFormat sdfExibicao = new SimpleDateFormat("dd/MMM/yy HH:mm" ,new Locale("pt", "BR"));
+        SimpleDateFormat sdfExibicao = new SimpleDateFormat("dd/MMM/yy" ,new Locale("pt", "BR"));
         dataHora.setText(sdfExibicao.format(date));
 
         sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
