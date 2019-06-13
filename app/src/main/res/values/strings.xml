@@ -2,6 +2,7 @@
     <string name="app_name">Rodar</string>
     <string name="facebook_app_id">894011187657056</string>
     <string name="fb_login_protocol_scheme">fb894011187657056</string>
+    <string name="url">http://plurallsoftware.com.br/Rodar/UserImages/</string>
 
     <string-array name="vagas_carona">
         <item>1</item>

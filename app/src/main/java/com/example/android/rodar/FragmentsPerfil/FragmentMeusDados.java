@@ -25,6 +25,7 @@ import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +99,10 @@ public class FragmentMeusDados extends Fragment {
                     senha.getEditText().setText(user.getSenha());
                     senhaConfirma.getEditText().setText(user.getSenha());
                     descricao.getEditText().setText(user.getDescricao());
+                    if (!user.getUrlImagemSelfie().isEmpty()) {
+                        Picasso.get().load(getString(R.string.url) + user.getUrlImagemSelfie())
+                                .into(foto);
+                    }
 
                 }
                 else {

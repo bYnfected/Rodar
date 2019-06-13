@@ -77,6 +77,7 @@ public class SPUtil {
                         prefsEditor.putBoolean("transportador", usuario.isTransportador());
                         prefsEditor.putBoolean("organizador", usuario.isOrganizadorEvento());
                         prefsEditor.putInt("id", usuario.getIdUsuario());
+                        prefsEditor.putString("urlImg",usuario.getUrlImagemSelfie());
                         prefsEditor.apply();
                     }
                 }

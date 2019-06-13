@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.models.Usuario;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,13 @@ public class AdapterPassageiros extends RecyclerView.Adapter<AdapterPassageiros.
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.nomePassageiro.setText(passageiros.get(i).getNome() + " " +
                 passageiros.get(i).getSobrenome());
+
+        // Verifica se existe selfie e carrega
+        String imgUrl = passageiros.get(i).getUrlImagemSelfie();
+        if (!imgUrl.isEmpty()){
+            Picasso.get().load(viewHolder.itemView.getContext().getString(R.string.url) +
+                    imgUrl).into(viewHolder.imagem);
+        }
     }
 
     @Override
@@ -48,11 +57,14 @@ public class AdapterPassageiros extends RecyclerView.Adapter<AdapterPassageiros.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView nomePassageiro;
+        CircularImageView imagem;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nomePassageiro = itemView.findViewById(R.id.passageiro_nomeCompleto);
+            imagem = itemView.findViewById(R.id.passageiro_imagem);
         }
     }
 }

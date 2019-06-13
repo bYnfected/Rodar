@@ -27,6 +27,8 @@ import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.CaronaService;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,7 +44,7 @@ public class FragmentParticipaCarona extends Fragment {
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
     private RatingBar rating, ratingMotorista;
-    private ImageView fotoMotorista;
+    private CircularImageView imgMotorista;
 
     @Nullable
     @Override
@@ -61,7 +63,7 @@ public class FragmentParticipaCarona extends Fragment {
         rating = v.findViewById(R.id.participa_carona_rating);
         msgAvaliacao = v.findViewById(R.id.participa_carona_msgAvaliacao);
         ratingMotorista = v.findViewById(R.id.participa_carona_rating_motorista);
-        fotoMotorista = v.findViewById(R.id.participa_carona_foto_motorista);
+        imgMotorista = v.findViewById(R.id.participa_carona_img_motorista);
         nomeMotorista = v.findViewById(R.id.participa_carona_motorista);
 
         endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
@@ -73,8 +75,14 @@ public class FragmentParticipaCarona extends Fragment {
         vagas.setText(mCarona.getQuantidadeVagasDisponiveis().toString());
         vagasTotal.setText(mCarona.getQuantidadeVagas().toString());
         valor.setText(String.format("R$ %.2f",mCarona.getValorParticipacao()));
+        String urlImgMotorista = mCarona.getUsuarioMotorista().getUrlImagemSelfie();
+        if (!urlImgMotorista.isEmpty()){
+            Picasso.get().load(getString(R.string.url) + urlImgMotorista).into(imgMotorista);
+        }
+
         nomeMotorista.setText(mCarona.getUsuarioMotorista().getNome() +
                 " " + mCarona.getUsuarioMotorista().getSobrenome());
+
 
         mAdapterPassageiros = new AdapterPassageiros(mCarona.getPassageiros());
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
@@ -113,7 +121,7 @@ public class FragmentParticipaCarona extends Fragment {
             }
         } else { // Se a carona já esta completa
             ratingMotorista.setVisibility(View.GONE);
-            fotoMotorista.setVisibility(View.GONE);
+            imgMotorista.setVisibility(View.GONE);
 
             rating.setMax(5);
             rating.setNumStars(5);
