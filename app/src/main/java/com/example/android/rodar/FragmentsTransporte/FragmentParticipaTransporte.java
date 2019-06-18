@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +26,8 @@ import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.TransporteService;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,7 +43,7 @@ public class FragmentParticipaTransporte extends Fragment {
     private AdapterPassageiros mAdapterPassageiros;
     private RecyclerView recyclerViewPassageiros;
     private RatingBar rating, ratingMotorista;
-    private ImageView fotoMotorista;
+    private CircularImageView imgMotorista;
 
     @Nullable
     @Override
@@ -61,7 +62,7 @@ public class FragmentParticipaTransporte extends Fragment {
         rating = v.findViewById(R.id.participa_transporte_rating);
         msgAvaliacao = v.findViewById(R.id.participa_transporte_msgAvaliacao);
         ratingMotorista = v.findViewById(R.id.participa_transporte_rating_motorista);
-        fotoMotorista = v.findViewById(R.id.participa_transporte_foto_motorista);
+        imgMotorista = v.findViewById(R.id.participa_transporte_img_motorista);
         nomeMotorista = v.findViewById(R.id.participa_transporte_motorista);
 
         endereco.setText(mTransporte.getEnderecoPartidaRua() + ", " + mTransporte.getEnderecoPartidaNumero() +
@@ -73,6 +74,10 @@ public class FragmentParticipaTransporte extends Fragment {
         vagas.setText(mTransporte.getQuantidadeVagasDisponiveis().toString());
         vagasTotal.setText(mTransporte.getQuantidadeVagas().toString());
         valor.setText(String.format("R$ %.2f", mTransporte.getValorParticipacao()));
+        String urlImgMotorista = mTransporte.getUsuarioTransportador().getUrlImagemSelfie();
+        if (!urlImgMotorista.isEmpty()){
+            Picasso.get().load(getString(R.string.url) + urlImgMotorista).into(imgMotorista);
+        }
         nomeMotorista.setText(mTransporte.getUsuarioTransportador().getNome() +
                 " " + mTransporte.getUsuarioTransportador().getSobrenome());
 
@@ -113,7 +118,7 @@ public class FragmentParticipaTransporte extends Fragment {
             }
         } else { // Se a transporte já esta completa
             ratingMotorista.setVisibility(View.GONE);
-            fotoMotorista.setVisibility(View.GONE);
+            imgMotorista.setVisibility(View.GONE);
 
             rating.setMax(5);
             rating.setNumStars(5);

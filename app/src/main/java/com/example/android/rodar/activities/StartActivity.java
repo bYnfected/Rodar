@@ -1,11 +1,11 @@
 package com.example.android.rodar.activities;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.services.UsuarioService;
 import com.google.gson.JsonObject;
 

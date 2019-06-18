@@ -1,7 +1,6 @@
 package com.example.android.rodar;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,12 +16,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.example.android.rodar.Utils.DatePickerFragment;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
-import com.example.android.rodar.Utils.TimePickerFragment;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.EventoService;

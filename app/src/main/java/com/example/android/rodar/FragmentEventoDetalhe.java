@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
@@ -21,6 +22,7 @@ import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Evento;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +33,7 @@ public class FragmentEventoDetalhe extends Fragment {
     private IMainActivity mainActivity;
     CollapsingToolbarLayout collapsingToolbarLayout;
     private Evento evento;
+    private ImageView img;
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -48,6 +51,7 @@ public class FragmentEventoDetalhe extends Fragment {
         dataHrIni = v.findViewById(R.id.evento_detalhe_dataHoraIni);
         dataHrFim = v.findViewById(R.id.evento_detalhe_dataHoraFim);
         local = v.findViewById(R.id.evento_detalhe_local);
+        img = v.findViewById(R.id.evento_detalhe_imagem);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Converte para LocalDateTime
@@ -78,6 +82,11 @@ public class FragmentEventoDetalhe extends Fragment {
         // Como o viewPager ja esta inicializado com os fragments, basta setar ele como fonte das abas
         mTabLayout = v.findViewById(R.id.evento_detalhe_tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        String urlImgEvento = evento.getUrlImagemCapa();
+        if (!urlImgEvento.isEmpty()){
+            Picasso.get().load(getString(R.string.urlEvento) + urlImgEvento).into(img);
+        }
 
         mostraBotaoCriar(0);
         return v;

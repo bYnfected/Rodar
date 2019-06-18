@@ -1,19 +1,13 @@
 package com.example.android.rodar;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,22 +15,15 @@ import android.widget.Toast;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
-import com.example.android.rodar.adapters.AdapterListaEventos;
 import com.example.android.rodar.adapters.AdapterListaMensagens;
-import com.example.android.rodar.adapters.AdapterTranspCarona;
-import com.example.android.rodar.models.Carona;
-import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.models.MensagemCarona;
 import com.example.android.rodar.models.MensagemTransporte;
-import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.CaronaService;
-import com.example.android.rodar.services.EventoService;
 import com.example.android.rodar.services.TransporteService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

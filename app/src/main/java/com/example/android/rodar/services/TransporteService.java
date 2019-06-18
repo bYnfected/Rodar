@@ -1,6 +1,5 @@
 package com.example.android.rodar.services;
 
-import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.AvaliacaoTransporte;
 import com.example.android.rodar.models.MensagemTransporte;
 import com.example.android.rodar.models.Transporte;
