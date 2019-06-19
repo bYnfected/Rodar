@@ -20,9 +20,6 @@ public interface CaronaService {
     @POST ("EventoCarona/Cadastrar")
     Call<ResponseBody> createCarona(@Header("Authorization") String token, @Body Carona carona);
 
-    @GET ("EventoCarona/BuscarTodos")
-    Call<List<Carona>> getCaronas(@Header("Authorization") String token);
-
     @GET ("EventoCarona/BuscarPorEvento")
     Call<List<Carona>> getCaronasEvento(@Header("Authorization") String token, @Query("idEvento") int idEvento);
 
@@ -46,4 +43,14 @@ public interface CaronaService {
 
     @GET ("EventoCarona/BuscarMensagensEnviadasUsuario")
     Call <List<MensagemCarona>> getMensagensEnviadasUsuario(@Header("Authorization") String token);
+
+    @GET ("EventoCarona/BuscarPorEvento")
+    Call<List<Carona>> getCaronasFiltro(@Header("Authorization") String token,
+                                  @Query("idEvento") String idEvento,
+                                  @Query("cidadeUfPartida") String cidadeUF,
+                                  @Query("dataPartida") String dataPartida,
+                                  @Query("valorInicial") String valorInicial,
+                                  @Query("valorFinal") String valorFinal,
+                                  @Query("vagasDisponiveis") String minVagasDisponiveis);
+
 }

@@ -20,10 +20,12 @@ import com.example.android.rodar.FragmentParticipa;
 import com.example.android.rodar.FragmentPesquisaEventos;
 import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
 import com.example.android.rodar.FragmentsCarona.FragmentParticipaCarona;
+import com.example.android.rodar.FragmentsCarona.FragmentPesquisaCarona;
 import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
 import com.example.android.rodar.FragmentsTransporte.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
+import com.example.android.rodar.FragmentsTransporte.FragmentPesquisaTransporte;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.SPUtil;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -164,6 +166,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         else if (fragment == "participaTransporte") {
             FragmentParticipaTransporte novoFramgment = new FragmentParticipaTransporte();
             doFragmentTransaction(novoFramgment,bundle);
+        }
+        else if (fragment == "pesquisaCarona") {
+            FragmentPesquisaCarona novoFragment = new FragmentPesquisaCarona();
+            doFragmentTransaction(novoFragment,bundle);
+        }
+        else if (fragment == "pesquisaEvento") {
+            FragmentPesquisaTransporte novoFragment = new FragmentPesquisaTransporte();
+            doFragmentTransaction(novoFragment,bundle);
         }
     }
 }

@@ -11,7 +11,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class FragmentEventoDetalhe extends Fragment {
     private TextView dataHrIni,dataHrFim, local;
 
     private FloatingActionButton btnCriaTranspCarona;
+    private int mAbaAtual = 0;
 
     @Nullable
     @Override
@@ -77,6 +80,10 @@ public class FragmentEventoDetalhe extends Fragment {
         collapsingToolbarLayout.setTitle(evento.getNomeEvento());
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
+        Toolbar toolbar = v.findViewById(R.id.evento_detalhe_toolbar);
+        toolbar.inflateMenu(R.menu.menu_pesquisa_transportes);
+        toolbar.setOnMenuItemClickListener(toolbarListener);
+
         mViewPager = v.findViewById(R.id.evento_detalhe_viewPager);
         setupViewPager(mViewPager);
         // Como o viewPager ja esta inicializado com os fragments, basta setar ele como fonte das abas
@@ -104,6 +111,21 @@ public class FragmentEventoDetalhe extends Fragment {
         mainActivity = (IMainActivity) getActivity();
     }
 
+    Toolbar.OnMenuItemClickListener toolbarListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            Bundle bundle = new Bundle();
+            bundle.putString("idEvento",String.valueOf(evento.getIdEvento()));
+            if (mAbaAtual == 0){
+                mainActivity.inflateFragment("pesquisaTransporte",bundle);
+            } else
+            {
+                mainActivity.inflateFragment("pesquisaCarona",bundle);
+            }
+            return false;
+        }
+    };
+
     // Configura quais os fragments para as abas
     private void setupViewPager(ViewPager viewPager) {
         PageAdapterPadrao adapter = new PageAdapterPadrao(getChildFragmentManager());
@@ -129,6 +151,7 @@ public class FragmentEventoDetalhe extends Fragment {
             @Override
             // Verifica se deve ou nao exibir o botao conforme perfil do usuario
             public void onPageSelected(int i) {
+                mAbaAtual = i;
                 mostraBotaoCriar(i);
             }
             @Override
