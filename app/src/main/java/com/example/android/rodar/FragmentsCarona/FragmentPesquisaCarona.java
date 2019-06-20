@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.DatePickerFragment;
@@ -26,6 +27,7 @@ import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -147,12 +149,21 @@ public class FragmentPesquisaCarona extends Fragment {
                 public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {
                     if (response.isSuccessful()){
                         mCaronas = response.body();
+                        if (mCaronas.size() > 0){
+                            Toast.makeText(getContext(), String.valueOf(mCaronas.size()) +
+                                    " Caronas encontradas", Toast.LENGTH_LONG).show();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("caronas", (Serializable) mCaronas);
+                            bundle.putSerializable("evento",mCaronas.get(0).getEvento());
+                            mainActivity.inflateFragment("evento_detalhe",bundle);
+                        } else {
+                            Toast.makeText(getContext(), "Nenhuma carona encontrada", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
-
                 @Override
                 public void onFailure(Call<List<Carona>> call, Throwable t) {
-
+                    Toast.makeText(getContext(), "Falha na pesquisa", Toast.LENGTH_LONG).show();
                 }
             });
         }

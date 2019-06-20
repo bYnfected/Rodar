@@ -135,14 +135,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             FragmentCriaEvento novoFragment = new FragmentCriaEvento();
             doFragmentTransaction(novoFragment,bundle);
         }
-        else if (fragment == "eventos_criaEvento"){
-            FragmentCriaEvento novoFragment = new FragmentCriaEvento();
-            doFragmentTransaction(novoFragment,bundle);
-        }
-        else if (fragment == "eventos_criaEvento"){
-            FragmentCriaEvento novoFragment = new FragmentCriaEvento();
-            doFragmentTransaction(novoFragment,bundle);
-        }
         else if (fragment == "eventos_pesquisaEvento"){
             FragmentPesquisaEventos novoFragment = new FragmentPesquisaEventos();
             doFragmentTransaction(novoFragment,bundle);

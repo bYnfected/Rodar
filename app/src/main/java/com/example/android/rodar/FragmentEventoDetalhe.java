@@ -23,11 +23,14 @@ import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
 import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
+import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Evento;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class FragmentEventoDetalhe extends Fragment {
@@ -95,7 +98,6 @@ public class FragmentEventoDetalhe extends Fragment {
             Picasso.get().load(getString(R.string.urlEvento) + urlImgEvento).into(img);
         }
 
-        mostraBotaoCriar(0);
         return v;
     }
 
@@ -128,20 +130,6 @@ public class FragmentEventoDetalhe extends Fragment {
 
     // Configura quais os fragments para as abas
     private void setupViewPager(ViewPager viewPager) {
-        PageAdapterPadrao adapter = new PageAdapterPadrao(getChildFragmentManager());
-        Bundle bundle = new Bundle();
-        bundle.putInt("idEvento",evento.getIdEvento());
-
-        FragmentEventoTransportes fragmentTransportes = new FragmentEventoTransportes();
-        fragmentTransportes.setArguments(bundle);
-        FragmentEventoCaronas fragmentCaronas = new FragmentEventoCaronas();
-        fragmentCaronas.setArguments(bundle);
-
-        adapter.addFragment(fragmentTransportes, "Transportes");
-        adapter.addFragment(fragmentCaronas, "Caronas");
-        // Seta esse adapter para o viewPager
-        viewPager.setAdapter(adapter);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -159,6 +147,31 @@ public class FragmentEventoDetalhe extends Fragment {
 
             }
         });
+
+        PageAdapterPadrao adapter = new PageAdapterPadrao(getChildFragmentManager());
+        Bundle bundle = new Bundle();
+        bundle.putInt("idEvento",evento.getIdEvento());
+        int abaSelecionada = 0;
+
+        if (getArguments().containsKey("caronas")){
+            bundle.putSerializable("caronas", getArguments().getSerializable("caronas"));
+            abaSelecionada = 1;
+        } else if (getArguments().containsKey("transportes")){
+            bundle.putSerializable("transportes",getArguments().getSerializable("transportes"));
+        }
+
+        FragmentEventoTransportes fragmentTransportes = new FragmentEventoTransportes();
+        fragmentTransportes.setArguments(bundle);
+        FragmentEventoCaronas fragmentCaronas = new FragmentEventoCaronas();
+        fragmentCaronas.setArguments(bundle);
+
+        adapter.addFragment(fragmentTransportes, "Transportes");
+        adapter.addFragment(fragmentCaronas, "Caronas");
+        // Seta esse adapter para o viewPager
+        viewPager.setAdapter(adapter);
+
+        viewPager.setCurrentItem(abaSelecionada);
+        mostraBotaoCriar(abaSelecionada);
 
     }
 
