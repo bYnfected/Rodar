@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.DatePickerFragment;
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.ILoginActivity;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.UsuarioService;

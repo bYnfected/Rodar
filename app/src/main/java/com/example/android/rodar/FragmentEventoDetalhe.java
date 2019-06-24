@@ -11,19 +11,26 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.rodar.FragmentsCarona.FragmentEventoCaronas;
 import com.example.android.rodar.FragmentsTransporte.FragmentEventoTransportes;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
+import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.models.Evento;
+import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class FragmentEventoDetalhe extends Fragment {
@@ -31,12 +38,14 @@ public class FragmentEventoDetalhe extends Fragment {
     private IMainActivity mainActivity;
     CollapsingToolbarLayout collapsingToolbarLayout;
     private Evento evento;
+    private ImageView img;
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private TextView dataHrIni,dataHrFim, local;
 
     private FloatingActionButton btnCriaTranspCarona;
+    private int mAbaAtual = 0;
 
     @Nullable
     @Override
@@ -48,6 +57,7 @@ public class FragmentEventoDetalhe extends Fragment {
         dataHrIni = v.findViewById(R.id.evento_detalhe_dataHoraIni);
         dataHrFim = v.findViewById(R.id.evento_detalhe_dataHoraFim);
         local = v.findViewById(R.id.evento_detalhe_local);
+        img = v.findViewById(R.id.evento_detalhe_imagem);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Converte para LocalDateTime
@@ -73,13 +83,21 @@ public class FragmentEventoDetalhe extends Fragment {
         collapsingToolbarLayout.setTitle(evento.getNomeEvento());
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
+        Toolbar toolbar = v.findViewById(R.id.evento_detalhe_toolbar);
+        toolbar.inflateMenu(R.menu.menu_pesquisa_transportes);
+        toolbar.setOnMenuItemClickListener(toolbarListener);
+
         mViewPager = v.findViewById(R.id.evento_detalhe_viewPager);
         setupViewPager(mViewPager);
         // Como o viewPager ja esta inicializado com os fragments, basta setar ele como fonte das abas
         mTabLayout = v.findViewById(R.id.evento_detalhe_tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mostraBotaoCriar(0);
+        String urlImgEvento = evento.getUrlImagemCapa();
+        if (!urlImgEvento.isEmpty()){
+            Picasso.get().load(getString(R.string.urlEvento) + urlImgEvento).into(img);
+        }
+
         return v;
     }
 
@@ -95,11 +113,52 @@ public class FragmentEventoDetalhe extends Fragment {
         mainActivity = (IMainActivity) getActivity();
     }
 
+    Toolbar.OnMenuItemClickListener toolbarListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            Bundle bundle = new Bundle();
+            bundle.putString("idEvento",String.valueOf(evento.getIdEvento()));
+            if (mAbaAtual == 0){
+                mainActivity.inflateFragment("pesquisaTransporte",bundle);
+            } else
+            {
+                mainActivity.inflateFragment("pesquisaCarona",bundle);
+            }
+            return false;
+        }
+    };
+
     // Configura quais os fragments para as abas
     private void setupViewPager(ViewPager viewPager) {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            // Verifica se deve ou nao exibir o botao conforme perfil do usuario
+            public void onPageSelected(int i) {
+                mAbaAtual = i;
+                mostraBotaoCriar(i);
+            }
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
         PageAdapterPadrao adapter = new PageAdapterPadrao(getChildFragmentManager());
         Bundle bundle = new Bundle();
         bundle.putInt("idEvento",evento.getIdEvento());
+        int abaSelecionada = 0;
+
+        if (getArguments().containsKey("caronas")){
+            bundle.putSerializable("caronas", getArguments().getSerializable("caronas"));
+            abaSelecionada = 1;
+        } else if (getArguments().containsKey("transportes")){
+            bundle.putSerializable("transportes",getArguments().getSerializable("transportes"));
+        }
 
         FragmentEventoTransportes fragmentTransportes = new FragmentEventoTransportes();
         fragmentTransportes.setArguments(bundle);
@@ -111,22 +170,8 @@ public class FragmentEventoDetalhe extends Fragment {
         // Seta esse adapter para o viewPager
         viewPager.setAdapter(adapter);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            // Verifica se deve ou nao exibir o botao conforme perfil do usuario
-            public void onPageSelected(int i) {
-                mostraBotaoCriar(i);
-            }
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+        viewPager.setCurrentItem(abaSelecionada);
+        mostraBotaoCriar(abaSelecionada);
 
     }
 

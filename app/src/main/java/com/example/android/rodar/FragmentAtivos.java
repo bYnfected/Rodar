@@ -1,7 +1,6 @@
 package com.example.android.rodar;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,11 +12,8 @@ import android.widget.Toast;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.models.Carona;
-import com.example.android.rodar.models.Transporte;
 import com.example.android.rodar.services.CaronaService;
-import com.example.android.rodar.services.TransporteService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

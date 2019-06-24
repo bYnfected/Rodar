@@ -1,28 +1,38 @@
 package com.example.android.rodar;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.android.rodar.Utils.DatePickerFragment;
-import com.example.android.rodar.Utils.SPUtil;
+import com.example.android.rodar.Utils.FileUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.TimePickerFragment;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.EventoService;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +40,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,11 +50,16 @@ import retrofit2.Response;
 
 public class FragmentCriaEvento extends Fragment {
 
+    private static final int GALLERY_REQUEST_CODE = 1001;
     private Button btnConclui;
     private TextInputLayout nome, rua, numero, complemento, bairro, cidade, uf, descricao;
     private EditText dataHoraInicio,dataHoraFim;
     private int tmpAno,tmpMes,tmpDia,tmpHora,tmpMiuto;
     private String tmpDataHrIni,tmpDataHrFim;
+    private ImageView img;
+    private Uri uriImg;
+    private ProgressBar progressBar;
+    private ConstraintLayout layout;
 
 
     @Nullable
@@ -53,6 +71,8 @@ public class FragmentCriaEvento extends Fragment {
         btnConclui = v.findViewById(R.id.cadastro_evento_but_concluir);
         btnConclui.setOnClickListener(concluirListener);
 
+        img = v.findViewById(R.id.cadastro_evento_img);
+        img.setOnClickListener(carregarImg);
         nome = v.findViewById(R.id.cadastro_evento_nome);
         rua = v.findViewById(R.id.cadastro_evento_rua);
         numero = v.findViewById(R.id.cadastro_evento_nr);
@@ -65,17 +85,20 @@ public class FragmentCriaEvento extends Fragment {
         cidade = v.findViewById(R.id.cadastro_evento_cidade);
         uf = v.findViewById(R.id.cadastro_evento_uf);
         descricao = v.findViewById(R.id.cadastro_evento_desc);
+        progressBar = v.findViewById(R.id.cadastro_evento_progressBar);
+        layout = v.findViewById(R.id.cria_evento_layout);
 
         return v;
     }
 
-    private View.OnClickListener concluirListener = new View.OnClickListener(){
+    private View.OnClickListener concluirListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             if (validaCampos()) {
-
-
+                progressBar.setVisibility(View.VISIBLE);
+                layout.setBackgroundColor(000000);
+                layout.setAlpha((float) 0.4);
                 Evento evento = new Evento();
                 evento.setNomeEvento(nome.getEditText().getText().toString());
                 evento.setEnderecoRua(rua.getEditText().getText().toString());
@@ -90,18 +113,27 @@ public class FragmentCriaEvento extends Fragment {
 
 
                 EventoService service = RetrofitClient.getClient().create(EventoService.class);
-                Call<ResponseBody> call = service.createEvento(SPUtil.getToken(getContext()),evento);
-                call.enqueue(new Callback<ResponseBody>() {
+                Call<Integer> call = service.createEvento(SPUtil.getToken(getContext()), evento);
+                call.enqueue(new Callback<Integer>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
                         if (response.isSuccessful()) {
-                            getFragmentManager().popBackStackImmediate();
+                            if (uriImg != null) {
+                                uploadFoto(uriImg, response.body());
+                            } else {
+                                Toast.makeText(getContext(), "Evento criado com sucesso!", Toast.LENGTH_LONG).show();
+                                getFragmentManager().popBackStackImmediate();
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(getContext(), "Erro ao se conectar no servidor", Toast.LENGTH_LONG).show();
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        Toast.makeText(getContext(), "Falha ao criar evento!", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+                        layout.setBackgroundColor(000000);
+                        layout.setAlpha(0);
+
                     }
                 });
             }
@@ -257,5 +289,76 @@ public class FragmentCriaEvento extends Fragment {
             ok = false;
         }
         return ok;
+    }
+
+    private View.OnClickListener carregarImg = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            pickFromGallery();
+        }
+    };
+
+    private void pickFromGallery(){
+        //Create an Intent with action as ACTION_PICK
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        // Sets the type as image/*. This ensures only components of type image are selected
+        intent.setType("image/*");
+        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        // Launching the Intent
+        startActivityForResult(intent,GALLERY_REQUEST_CODE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
+        // Result code is RESULT_OK only if the user selects an Image
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode){
+                case GALLERY_REQUEST_CODE:
+                    //data.getData returns the content URI for the selected Image
+                    Uri selectedImage = data.getData();
+                    img.setImageURI(selectedImage);
+
+                    uriImg = selectedImage;
+                    break;
+            }
+    }
+
+    private void uploadFoto(Uri imagemSelecionada, Integer idEvento) {
+        File fotoFile = null;
+        try {
+            fotoFile = FileUtil.from(getContext(), imagemSelecionada);
+            Log.d("file", "File...:::: uti - " + fotoFile.getPath() + " file -" + fotoFile + " : " + fotoFile.exists());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // Cria o PART foto com esse arquivo
+        RequestBody fotoPart = RequestBody.create(
+                MediaType.parse(getContext().getContentResolver().getType(imagemSelecionada)), fotoFile);
+
+        MultipartBody.Part multiPart = MultipartBody.Part.createFormData("foto", fotoFile.getName(), fotoPart);
+
+        EventoService service = RetrofitClient.getClient().create(EventoService.class);
+        Call<ResponseBody> call = service.enviarFoto(SPUtil.getToken(getContext()),idEvento,multiPart);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(getContext(), "Evento criado com sucesso!", Toast.LENGTH_LONG).show();
+                    getFragmentManager().popBackStackImmediate();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }

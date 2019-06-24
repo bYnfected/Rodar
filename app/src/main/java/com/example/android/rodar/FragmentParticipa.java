@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.rodar.adapters.AdapterTranspCarona;
-
 public class FragmentParticipa extends Fragment {
 
     private ViewPager mViewPager;

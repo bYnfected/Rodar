@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.models.Evento;
 import com.example.android.rodar.services.FavoritoService;
 

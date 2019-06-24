@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
 import com.example.android.rodar.services.UsuarioService;

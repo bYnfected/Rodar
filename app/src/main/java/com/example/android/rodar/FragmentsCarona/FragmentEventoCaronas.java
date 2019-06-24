@@ -13,10 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.android.rodar.R;
-import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.Utils.RetrofitClient;
+import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterListaCaronas;
+import com.example.android.rodar.adapters.AdapterListaEventos;
 import com.example.android.rodar.models.Carona;
 import com.example.android.rodar.services.CaronaService;
 
@@ -31,16 +32,31 @@ public class FragmentEventoCaronas extends Fragment {
     private IMainActivity mainActivity;
     private  List<Carona> caronas;
     private int idEvento;
+    private RecyclerView mRecyclerView;
+    private AdapterListaCaronas mCaronaAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_evento_caronas,container,false);
+
+        mRecyclerView = v.findViewById(R.id.recycler_view_evento_detalhe_caronas);
+
         idEvento = getArguments().getInt("idEvento");
 
-        CarregaCaronas();
-
+        if(getArguments() != null && getArguments().containsKey("caronas")){
+            caronas = (List<Carona>) getArguments().getSerializable("caronas");
+            preencheRecycler();
+        } else {
+            CarregaCaronas();
+        }
         return v;
+    }
+
+    private void preencheRecycler() {
+        mCaronaAdapter = new AdapterListaCaronas(caronas, listenerCaronas);
+        mRecyclerView.setAdapter(mCaronaAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -57,10 +73,7 @@ public class FragmentEventoCaronas extends Fragment {
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {
                 if (response.isSuccessful()){
                     caronas = response.body();
-                    RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_evento_detalhe_caronas);
-                    AdapterListaCaronas adapter = new AdapterListaCaronas(caronas, listenerCaronas);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+                    preencheRecycler();
                 }
             }
 
