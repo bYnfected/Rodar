@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.example.android.rodar.FragmentCriaEvento;
 import com.example.android.rodar.FragmentEventoDetalhe;
 import com.example.android.rodar.FragmentEventos;
-import com.example.android.rodar.FragmentMensagens;
+import com.example.android.rodar.FragmentCabecalhoMensagens;
 import com.example.android.rodar.FragmentParticipa;
 import com.example.android.rodar.FragmentPesquisaEventos;
 import com.example.android.rodar.FragmentsCarona.FragmentCriaCarona;
@@ -24,6 +24,7 @@ import com.example.android.rodar.FragmentsPerfil.FragmentMeusDados;
 import com.example.android.rodar.FragmentsPerfil.FragmentPerfil;
 import com.example.android.rodar.FragmentsTransporte.FragmentCriaTransporte;
 import com.example.android.rodar.FragmentsTransporte.FragmentParticipaTransporte;
+import com.example.android.rodar.FragmentMensagens;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.SPUtil;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                             selectedFragment = new FragmentParticipa();
                             break;
                         case R.id.nav_mensagens :
-                            selectedFragment = new FragmentMensagens();
+                            selectedFragment = new FragmentCabecalhoMensagens();
                             break;
                         case R.id.nav_perfil :
                             selectedFragment = new FragmentPerfil();
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             doFragmentTransaction(novoFragment, bundle);
         }
         else if (fragment == "mensagens"){
-            FragmentMensagens novoFragment = new FragmentMensagens();
+            FragmentCabecalhoMensagens novoFragment = new FragmentCabecalhoMensagens();
             doFragmentTransaction(novoFragment, bundle);
         }
         else if (fragment == "perfil"){
@@ -163,6 +164,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         }
         else if (fragment == "participaTransporte") {
             FragmentParticipaTransporte novoFramgment = new FragmentParticipaTransporte();
+            doFragmentTransaction(novoFramgment,bundle);
+        }
+        else if (fragment == "mensagensUsuario") {
+            FragmentMensagens novoFramgment = new FragmentMensagens();
             doFragmentTransaction(novoFramgment,bundle);
         }
     }

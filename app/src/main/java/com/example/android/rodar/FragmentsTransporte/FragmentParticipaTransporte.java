@@ -1,6 +1,7 @@
 package com.example.android.rodar.FragmentsTransporte;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
+import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterPassageiros;
 import com.example.android.rodar.models.AvaliacaoTransporte;
 import com.example.android.rodar.models.Transporte;
@@ -43,6 +45,8 @@ public class FragmentParticipaTransporte extends Fragment {
     private RecyclerView recyclerViewPassageiros;
     private RatingBar rating, ratingMotorista;
     private ImageView fotoMotorista;
+    private Button btnMensagens;
+    private IMainActivity mainActivity;
 
     @Nullable
     @Override
@@ -56,7 +60,11 @@ public class FragmentParticipaTransporte extends Fragment {
         vagas = v.findViewById(R.id.participa_transporte_vagas_disp);
         vagasTotal = v.findViewById(R.id.participa_transporte_vagas_total);
         valor = v.findViewById(R.id.participa_transporte_valor);
+
         btnConcluir = v.findViewById(R.id.participa_transporte_concluir);
+        btnMensagens = v.findViewById(R.id.participa_transporte_mensagens);
+        btnMensagens.setOnClickListener(mensagensListener);
+
         recyclerViewPassageiros = v.findViewById(R.id.participa_transporte_passageiros);
         rating = v.findViewById(R.id.participa_transporte_rating);
         msgAvaliacao = v.findViewById(R.id.participa_transporte_msgAvaliacao);
@@ -84,6 +92,12 @@ public class FragmentParticipaTransporte extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
+    }
+
     private void configuraTela() {
 
         if (getArguments().getBoolean("ativo")){
@@ -102,6 +116,8 @@ public class FragmentParticipaTransporte extends Fragment {
             if (mTransporte.getIdUsuarioTransportador() == SPUtil.getID(getContext())){
                 btnConcluir.setText("Excluir transporte");
                 btnConcluir.setOnClickListener(excluirListener);
+                btnMensagens.setVisibility(View.INVISIBLE);
+
             } else if (participando()) {
                 btnConcluir.setText("Cancelar Participação");
                 btnConcluir.setOnClickListener(cancelarListener);
@@ -142,6 +158,19 @@ public class FragmentParticipaTransporte extends Fragment {
         }
         return false;
     }
+
+    View.OnClickListener mensagensListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Bundle bundle = new Bundle();
+
+            bundle.putSerializable("idEventoTransporteCarona", mTransporte.getIdEventoTransporte());
+            bundle.putSerializable("tipoTransporteCarona", "Transporte");
+            bundle.putSerializable("idUsuarioDestino", mTransporte.getIdUsuarioTransportador());
+            mainActivity.inflateFragment("mensagensUsuario",bundle);
+        }
+    };
 
 
     View.OnClickListener concluirListener = new View.OnClickListener() {

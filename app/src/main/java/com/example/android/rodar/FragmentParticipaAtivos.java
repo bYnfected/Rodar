@@ -56,8 +56,10 @@ public class FragmentParticipaAtivos extends Fragment {
             @Override
             public void onResponse(Call<List<Carona>> call, Response<List<Carona>> response) {
                 if (response.isSuccessful()) {
-                    mAtivos.addAll(response.body());
-                    CarregaTransportes();
+                    if (response.body() != null) {
+                        mAtivos.addAll(response.body());
+                        CarregaTransportes();
+                    }
                 }
             }
             @Override

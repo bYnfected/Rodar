@@ -52,17 +52,6 @@
         app:layout_constraintTop_toBottomOf="@+id/perfil_btn_transportador" />
 
     <Button
-        android:id="@+id/perfil_btn_notifica"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Configurar Notificações"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_organizador" />
-
-    <Button
         android:id="@+id/perfil_btn_sair"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
@@ -72,5 +61,5 @@
         android:text="Sair da conta"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_notifica" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil_btn_organizador" />
 </android.support.constraint.ConstraintLayout>

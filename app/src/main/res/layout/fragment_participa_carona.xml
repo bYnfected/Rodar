@@ -54,6 +54,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/participa_carona_msgAvaliacao" />
 
+    <Button
+        android:id="@+id/participa_carona_mensagens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Mensagem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/participa_carona_concluir"/>
+
     <TextView
         android:id="@+id/participa_carona_mensagem"
         android:layout_width="wrap_content"

@@ -36,11 +36,9 @@ import java.util.Arrays;
 public class FragmentInicial extends Fragment {
 
     private Button cadastra,entra;
-    private LoginButton loginButtonFB;
     private TextInputLayout email,senha;
     private CallbackManager callbackManager;
     private ILoginActivity loginActivity;
-
 
     @Nullable
     @Override
@@ -55,27 +53,7 @@ public class FragmentInicial extends Fragment {
         cadastra.setOnClickListener(cadastraListener);
         entra.setOnClickListener(entraListener);
 
-        loginButtonFB = v.findViewById(R.id.inicial_button_fb);
-        loginButtonFB.setFragment(this);
         callbackManager = CallbackManager.Factory.create();
-        loginButtonFB.setReadPermissions(Arrays.asList("email","public_profile"));
-
-        loginButtonFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
 
         return v;
     }

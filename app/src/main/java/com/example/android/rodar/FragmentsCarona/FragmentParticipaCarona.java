@@ -1,6 +1,7 @@
 package com.example.android.rodar.FragmentsCarona;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,9 +22,11 @@ import android.widget.Toast;
 import com.example.android.rodar.R;
 import com.example.android.rodar.Utils.RetrofitClient;
 import com.example.android.rodar.Utils.SPUtil;
+import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.adapters.AdapterPassageiros;
 import com.example.android.rodar.models.AvaliacaoCarona;
 import com.example.android.rodar.models.Carona;
+import com.example.android.rodar.models.MensagemCarona;
 import com.example.android.rodar.models.Usuario;
 import com.example.android.rodar.services.CaronaService;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -45,6 +48,8 @@ public class FragmentParticipaCarona extends Fragment {
     private RecyclerView recyclerViewPassageiros;
     private RatingBar rating, ratingMotorista;
     private CircularImageView imgMotorista;
+    private Button btnMensagens;
+    private IMainActivity mainActivity;
 
     @Nullable
     @Override
@@ -59,6 +64,9 @@ public class FragmentParticipaCarona extends Fragment {
         vagasTotal = v.findViewById(R.id.participa_carona_vagas_total);
         valor = v.findViewById(R.id.participa_carona_valor);
         btnConcluir = v.findViewById(R.id.participa_carona_concluir);
+        btnMensagens = v.findViewById(R.id.participa_carona_mensagens);
+        btnMensagens.setOnClickListener(mensagensListener);
+
         recyclerViewPassageiros = v.findViewById(R.id.participa_carona_passageiros);
         rating = v.findViewById(R.id.participa_carona_rating);
         msgAvaliacao = v.findViewById(R.id.participa_carona_msgAvaliacao);
@@ -69,7 +77,6 @@ public class FragmentParticipaCarona extends Fragment {
         endereco.setText(mCarona.getEnderecoPartidaRua() + ", " + mCarona.getEnderecoPartidaNumero() +
                 ", " + mCarona.getEnderecoPartidaCEP() + ", " + mCarona.getEnderecoPartidaBairro() +
                 " - " + mCarona.getEnderecoPartidaCidade() + " - " + mCarona.getEnderecoPartidaUF());
-
 
         mensagem.setText(mCarona.getMensagem());
         vagas.setText(mCarona.getQuantidadeVagasDisponiveis().toString());
@@ -92,6 +99,12 @@ public class FragmentParticipaCarona extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (IMainActivity) getActivity();
+    }
+
     private void configuraTela() {
 
         if (getArguments().getBoolean("ativo")){
@@ -110,6 +123,8 @@ public class FragmentParticipaCarona extends Fragment {
             if (mCarona.getIdUsuarioMotorista() == SPUtil.getID(getContext())){
                 btnConcluir.setText("Excluir Carona");
                 btnConcluir.setOnClickListener(excluirListener);
+                btnMensagens.setVisibility(View.INVISIBLE);
+
             } else if (participando()) {
                 btnConcluir.setText("Cancelar Participação");
                 btnConcluir.setOnClickListener(cancelarListener);
@@ -138,7 +153,6 @@ public class FragmentParticipaCarona extends Fragment {
                 msgAvaliacao.getEditText().setText(mCarona.getAvaliacaoCarona().getMensagem());
             }
         }
-
     }
 
     private boolean participando() {
@@ -150,6 +164,20 @@ public class FragmentParticipaCarona extends Fragment {
         }
         return false;
     }
+
+
+    View.OnClickListener mensagensListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Bundle bundle = new Bundle();
+
+            bundle.putSerializable("idEventoTransporteCarona", mCarona.getIdEventoCarona());
+            bundle.putSerializable("tipoTransporteCarona", "Carona");
+            bundle.putSerializable("idUsuarioDestino", mCarona.getIdUsuarioMotorista());
+            mainActivity.inflateFragment("mensagensUsuario",bundle);
+        }
+    };
 
 
     View.OnClickListener concluirListener = new View.OnClickListener() {
@@ -225,7 +253,6 @@ public class FragmentParticipaCarona extends Fragment {
                     Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
                 }
             });
-
         }
     };
 

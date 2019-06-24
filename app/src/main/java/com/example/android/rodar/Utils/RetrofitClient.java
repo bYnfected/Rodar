@@ -5,6 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
+    //private static final String BASE_URL = "http://192.168.100.54:50081/api/";
     private static final String BASE_URL = "http://plurallsoftware.com.br/Rodar/api/";
     private static Retrofit retrofit = null;
 

@@ -35,8 +35,8 @@ public class FragmentLogin extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.pagina_inicial, container, false);
 
-        loginButtonFB = v.findViewById(R.id.inicial_button_fb);
-        loginButtonFB.setFragment(this);
+        //loginButtonFB = v.findViewById(R.id.inicial_button_fb);
+        //loginButtonFB.setFragment(this);
         callbackManager = CallbackManager.Factory.create();
         loginButtonFB.setReadPermissions(Arrays.asList("email","public_profile"));
 

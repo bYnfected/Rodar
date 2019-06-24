@@ -6,7 +6,6 @@ import com.example.android.rodar.models.MensagemCarona;
 
 import java.util.List;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -45,6 +44,12 @@ public interface CaronaService {
     @POST ("EventoCarona/AvaliarCarona")
     Call <ResponseBody> avaliarCarona(@Header("Authorization") String token, @Body AvaliacaoCarona avaliacao);
 
-    @GET ("EventoCarona/BuscarMensagensEnviadasUsuario")
-    Call <List<MensagemCarona>> getMensagensEnviadasUsuario(@Header("Authorization") String token);
+    @GET ("EventoCarona/BuscarCabecalhoMensagensUsuario")
+    Call <List<MensagemCarona>> getCabecalhoMensagensUsuario(@Header("Authorization") String token);
+
+    @GET ("EventoCarona/BuscarMensagensUsuario")
+    Call <List<MensagemCarona>> getMensagensUsuario(@Header("Authorization") String token, @Query("idEventoCarona") int idEventoCarona);
+
+    @POST ("EventoCarona/EnviarMensagem")
+    Call <ResponseBody> enviarMensagem(@Header("Authorization") String token, @Body MensagemCarona mensagemCarona);
 }
