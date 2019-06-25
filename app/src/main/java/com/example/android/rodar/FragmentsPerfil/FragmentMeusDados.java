@@ -3,8 +3,10 @@ package com.example.android.rodar.FragmentsPerfil;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -229,12 +231,17 @@ public class FragmentMeusDados extends Fragment {
         MultipartBody.Part multiPart = MultipartBody.Part.createFormData("foto",fotoFile.getName(),fotoPart);
 
         UsuarioService service = RetrofitClient.getClient().create(UsuarioService.class);
-        Call<ResponseBody> call = service.enviarFoto(SPUtil.getToken(getContext()),multiPart);
+        Call<String> call = service.enviarFoto(SPUtil.getToken(getContext()),multiPart);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
+                    String teste = response.body();
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor prefsEditor = prefs.edit();
+                    prefsEditor.putString("urlImg",teste);
+                    prefsEditor.apply();
                     Toast.makeText(getContext(), "ENVIOU FOTO", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getContext(), "RESPOSTA POSITIVA, ERRO", Toast.LENGTH_LONG).show();
@@ -242,7 +249,7 @@ public class FragmentMeusDados extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "FALHA ENVIO/CONEXAO", Toast.LENGTH_LONG).show();
             }
         });
