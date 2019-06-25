@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import com.example.android.rodar.Utils.SPUtil;
 import com.example.android.rodar.activities.IMainActivity;
 import com.example.android.rodar.activities.LoginActivity;
 import com.example.android.rodar.services.UsuarioService;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,6 +33,7 @@ public class FragmentPerfil extends Fragment {
 
     private Button btnLogout,btnDados, btnPromoverTransportador, btnPromoverOrganizador;
     private IMainActivity mainActivity;
+    private CircularImageView img;
 
     @Nullable
     @Override
@@ -48,19 +52,34 @@ public class FragmentPerfil extends Fragment {
         btnPromoverTransportador = v.findViewById(R.id.perfil_btn_transportador);
         btnPromoverTransportador.setOnClickListener(promoverTransportador);
 
-        ConfiguraBotoes();
+        img = v.findViewById(R.id.perfil_img);
+
+        ConfiguraTela();
 
         return v;
     }
 
 
 
-    private void ConfiguraBotoes() {
-            if (SPUtil.getTransportador(getContext()))
-                btnPromoverTransportador.setVisibility(View.GONE);
+    private void ConfiguraTela() {
+            if (SPUtil.getTransportador(getContext())) {
+                btnPromoverTransportador.setText("Você é um transportador!");
+                btnPromoverTransportador.setEnabled(false);
+            }
 
-            if (SPUtil.getOrganizador(getContext()))
-                btnPromoverOrganizador.setVisibility(View.GONE);
+            if (SPUtil.getOrganizador(getContext())){
+                btnPromoverOrganizador.setText("Você é um organizador de evento!");
+                btnPromoverOrganizador.setEnabled(false);
+            }
+
+
+            String tmp = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("urlImg","");
+            if(tmp.isEmpty()){
+                img.setVisibility(View.GONE);
+            } else {
+                Picasso.get().load(getString(R.string.url) + tmp)
+                        .into(img);
+            }
         }
 
     @Override
