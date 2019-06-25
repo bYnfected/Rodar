@@ -67,11 +67,13 @@ public class FragmentMeusDados extends Fragment {
         senha = v.findViewById(R.id.atualiza_senha);
         senhaConfirma = v.findViewById(R.id.atualiza_senha2);
         descricao = v.findViewById(R.id.atualiza_bio);
-        foto = v.findViewById(R.id.atualiza_foto);
+        foto = v.findViewById(R.id.perfil_img);
 
 
         nome.getEditText().setEnabled(false);
         sobrenome.getEditText().setEnabled(false);
+        email.getEditText().setEnabled(false);
+        cpf.getEditText().setEnabled(false);
         return v;
     }
 

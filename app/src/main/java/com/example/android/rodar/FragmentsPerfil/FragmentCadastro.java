@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -67,8 +68,6 @@ public class FragmentCadastro extends Fragment {
         email = v.findViewById(R.id.cadastro_email);
         senha = v.findViewById(R.id.cadastro_senha);
         senhaConfirma = v.findViewById(R.id.cadastro_senha2);
-
-
 
         // Inicia como masculino
         generoM.toggle();
@@ -211,7 +210,7 @@ public class FragmentCadastro extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
-            Date teste;
+            Date teste = null;
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 teste = format.parse (String.valueOf(year) + "-" + String.valueOf(monthOfYear+1) + "-"  + String.valueOf(dayOfMonth));
@@ -219,8 +218,8 @@ public class FragmentCadastro extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            dataNascimento.setText(String.valueOf(dayOfMonth) + "-" +String.valueOf(monthOfYear+1) + "-" + String.valueOf(year));
+            SimpleDateFormat sdfExibicao = new SimpleDateFormat("dd/MMM/yyyy" ,new Locale("pt", "BR"));
+            dataNascimento.setText(sdfExibicao.format(teste));
         }
     };
 

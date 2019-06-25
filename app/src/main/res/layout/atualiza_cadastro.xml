@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/atualiza_foto"
+        android:id="@+id/perfil_img"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
@@ -33,7 +33,7 @@
         android:layout_marginTop="8dp"
         android:hint="Nome"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_foto">
+        app:layout_constraintTop_toBottomOf="@+id/perfil_img">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:hint="Sobrenome"
         app:layout_constraintStart_toEndOf="@+id/atualiza_nome"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_foto">
+        app:layout_constraintTop_toBottomOf="@+id/perfil_img">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -151,23 +151,23 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/atualiza_bio"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:counterMaxLength="100"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/atualiza_senha2">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/atualiza_bio"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Minha Bio" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:counterMaxLength="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/atualiza_senha2">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Minha Bio" />
+        </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/atualiza_edita_foto"
@@ -178,8 +178,8 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@+id/atualiza_foto"
-        app:layout_constraintStart_toEndOf="@+id/atualiza_foto"
+        app:layout_constraintBottom_toBottomOf="@+id/perfil_img"
+        app:layout_constraintStart_toEndOf="@+id/perfil_img"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
