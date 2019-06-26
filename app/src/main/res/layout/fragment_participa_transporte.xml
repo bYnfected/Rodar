@@ -239,10 +239,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="Transporte:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Transporte:" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/participa_transporte_nome"
