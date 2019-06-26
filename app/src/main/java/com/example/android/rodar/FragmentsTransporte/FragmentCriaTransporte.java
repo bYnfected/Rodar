@@ -138,7 +138,7 @@ public class FragmentCriaTransporte extends Fragment {
             ok = false;
         }
         if (numero.getEditText().getText().toString().isEmpty()) {
-            numero.setError("Campo obrigatório");
+            numero.setError("Obrigatório");
             ok = false;
         }
         if (bairro.getEditText().getText().toString().isEmpty()) {
@@ -150,7 +150,7 @@ public class FragmentCriaTransporte extends Fragment {
             ok = false;
         }
         if (uf.getEditText().getText().toString().isEmpty()) {
-            uf.setError("Campo obrigatório");
+            uf.setError("Obrigatório");
             ok = false;
         }
         if (valor.getEditText().getText().toString().isEmpty()) {
@@ -159,7 +159,7 @@ public class FragmentCriaTransporte extends Fragment {
         }
         try {
             int i = Integer.parseInt(vagas.getEditText().getText().toString());
-            if (!(i > 0) && (i < 45)){
+            if (!((i > 0) && (i < 45))){
                 vagas.setError("Valor entre 1 e 45");
                 ok = false;
             }
