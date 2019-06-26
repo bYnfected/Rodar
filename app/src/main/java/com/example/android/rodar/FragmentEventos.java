@@ -134,7 +134,6 @@ public class FragmentEventos extends Fragment {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getContext(), "CARREGOU EVENTOS", Toast.LENGTH_LONG).show();
                     mEventos = response.body();
                     preencheRecycler();
                 }

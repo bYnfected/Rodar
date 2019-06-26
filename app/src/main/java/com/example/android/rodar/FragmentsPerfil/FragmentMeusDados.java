@@ -242,15 +242,14 @@ public class FragmentMeusDados extends Fragment {
                     SharedPreferences.Editor prefsEditor = prefs.edit();
                     prefsEditor.putString("urlImg",teste);
                     prefsEditor.apply();
-                    Toast.makeText(getContext(), "ENVIOU FOTO", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext(), "RESPOSTA POSITIVA, ERRO", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Erro ao salvar foto", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "FALHA ENVIO/CONEXAO", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Falha ao conectar ao servidor", Toast.LENGTH_LONG).show();
             }
         });
 

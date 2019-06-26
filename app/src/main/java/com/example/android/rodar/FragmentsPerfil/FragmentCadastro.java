@@ -178,10 +178,12 @@ public class FragmentCadastro extends Fragment {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
-                SPUtil.saveEmail(email.getEditText().getText().toString(), getContext());
-                SPUtil.savePassword(senha.getEditText().getText().toString(),getContext());
-                loginActivity.loginUsuario();
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
+                    SPUtil.saveEmail(email.getEditText().getText().toString(), getContext());
+                    SPUtil.savePassword(senha.getEditText().getText().toString(), getContext());
+                    loginActivity.loginUsuario();
+                }
             }
 
             @Override

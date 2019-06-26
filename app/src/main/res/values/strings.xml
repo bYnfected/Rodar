@@ -2,8 +2,8 @@
     <string name="app_name">Rodar</string>
     <string name="facebook_app_id">894011187657056</string>
     <string name="fb_login_protocol_scheme">fb894011187657056</string>
-    <string name="url">http://www.plurallsoftware.com.br/Rodar/UserImages/</string>
-    <string name="urlEvento">http://www.plurallsoftware.com.br/Rodar/EventImages/</string>
+    <string name="url">http://192.168.107.7/Rodar/UserImages/</string>
+    <string name="urlEvento">http://192.168.107.7/Rodar/EventImages/</string>
 
     <string-array name="vagas_carona">
         <item>1</item>
