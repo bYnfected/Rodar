@@ -81,7 +81,7 @@ public class AdapterListaCabecalhoMensagens extends RecyclerView.Adapter<Recycle
             evento.setText(mensagem.getEventoCarona().getEvento().getNomeEvento());
             partida.setText(mensagem.getEventoCarona().getDataHoraPartida());
             chegada.setText(mensagem.getEventoCarona().getDataHoraPrevisaoChegada());
-            usuario.setText(mensagem.getEventoCarona().getUsuarioMotorista().getNome());
+            usuario.setText(mensagem.getUsuarioDestino().getNome());
         }
 
         @Override

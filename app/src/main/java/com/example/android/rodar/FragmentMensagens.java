@@ -40,6 +40,7 @@ public class FragmentMensagens extends Fragment {
     private List<Object> mListaMensagens;
     private int idEventoTransporteCarona;
     private int idUsuarioDestino;
+    private int idUsuarioOrigem;
     private String tipoTransporteCarona;
     Button buttonEnviarMensagem;
     EditText textBoxMensagem;
@@ -50,6 +51,7 @@ public class FragmentMensagens extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_mensagens, container, false);
 
+        idUsuarioOrigem = (int) getArguments().getSerializable("idUsuarioOrigem");
         idUsuarioDestino = (int) getArguments().getSerializable("idUsuarioDestino");
         idEventoTransporteCarona = (int) getArguments().getSerializable("idEventoTransporteCarona");
         tipoTransporteCarona = (String) getArguments().getSerializable("tipoTransporteCarona");
@@ -154,6 +156,7 @@ public class FragmentMensagens extends Fragment {
     {
         MensagemCarona novaMensagem = new MensagemCarona();
         novaMensagem.setIdEventoCarona(idEventoTransporteCarona);
+        novaMensagem.setIdUsuarioOrigem(idUsuarioOrigem);
         novaMensagem.setIdUsuarioDestino(idUsuarioDestino);
         novaMensagem.setMensagem(textBoxMensagem.getText().toString());
 
@@ -180,6 +183,7 @@ public class FragmentMensagens extends Fragment {
     {
         MensagemTransporte novaMensagem = new MensagemTransporte();
         novaMensagem.setIdEventoTransporte(idEventoTransporteCarona);
+        novaMensagem.setIdUsuarioOrigem(idUsuarioOrigem);
         novaMensagem.setIdUsuarioDestino(idUsuarioDestino);
         novaMensagem.setMensagem(textBoxMensagem.getText().toString());
 

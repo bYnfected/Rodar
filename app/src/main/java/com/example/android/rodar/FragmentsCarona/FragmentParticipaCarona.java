@@ -173,7 +173,8 @@ public class FragmentParticipaCarona extends Fragment {
 
             bundle.putSerializable("idEventoTransporteCarona", mCarona.getIdEventoCarona());
             bundle.putSerializable("tipoTransporteCarona", "Carona");
-            bundle.putSerializable("idUsuarioDestino", mCarona.getIdUsuarioMotorista());
+            bundle.putSerializable("idUsuarioOrigem", mCarona.getIdUsuarioMotorista());
+            bundle.putSerializable("idUsuarioDestino", SPUtil.getID(getContext()));
             mainActivity.inflateFragment("mensagensUsuario",bundle);
         }
     };
