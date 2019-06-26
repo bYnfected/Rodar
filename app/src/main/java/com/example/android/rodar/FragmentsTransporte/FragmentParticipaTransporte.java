@@ -38,7 +38,7 @@ import retrofit2.Response;
 
 public class FragmentParticipaTransporte extends Fragment {
 
-    private TextView endereco, mensagem, vagas, valor, vagasTotal, nomeMotorista;
+    private TextView endereco, mensagem, vagas, valor, vagasTotal, nomeMotorista, nomeTransporte;
     private TextInputLayout msgAvaliacao;
     private Button btnConcluir;
     private Transporte mTransporte;
@@ -71,6 +71,7 @@ public class FragmentParticipaTransporte extends Fragment {
         ratingMotorista = v.findViewById(R.id.participa_transporte_rating_motorista);
         imgMotorista = v.findViewById(R.id.participa_transporte_img_motorista);
         nomeMotorista = v.findViewById(R.id.participa_transporte_motorista);
+        nomeTransporte = v.findViewById(R.id.participa_transporte_nome);
 
         endereco.setText(mTransporte.getEnderecoPartidaRua() + ", " + mTransporte.getEnderecoPartidaNumero() +
                 ", " + mTransporte.getEnderecoPartidaCEP() + ", " + mTransporte.getEnderecoPartidaBairro() +
@@ -87,6 +88,7 @@ public class FragmentParticipaTransporte extends Fragment {
         }
         nomeMotorista.setText(mTransporte.getUsuarioTransportador().getNome() +
                 " " + mTransporte.getUsuarioTransportador().getSobrenome());
+        nomeTransporte.setText(mTransporte.getNomeTransporte());
 
         mAdapterPassageiros = new AdapterPassageiros(mTransporte.getPassageiros());
         recyclerViewPassageiros.setAdapter(mAdapterPassageiros);
@@ -126,7 +128,7 @@ public class FragmentParticipaTransporte extends Fragment {
                 btnConcluir.setText("Cancelar Participação");
                 btnConcluir.setOnClickListener(cancelarListener);
             } else if (mTransporte.getQuantidadeVagasDisponiveis() == 0){
-                btnConcluir.setText("transporte Lotada");
+                btnConcluir.setText("Transporte Lotado");
                 btnConcluir.setEnabled(false);
             } else {
                 btnConcluir.setOnClickListener(concluirListener);
@@ -143,7 +145,7 @@ public class FragmentParticipaTransporte extends Fragment {
                 btnConcluir.setOnClickListener(avaliarListener);
             } else {
                 btnConcluir.setEnabled(false);
-                btnConcluir.setText("transporte Avaliada");
+                btnConcluir.setText("Transporte Avaliado");
                 rating.setIsIndicator(true);
                 rating.setRating(mTransporte.getAvaliacaoTransporte().getAvaliacao());
                 msgAvaliacao.setEnabled(false);

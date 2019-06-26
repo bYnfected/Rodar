@@ -102,7 +102,11 @@ public class FragmentCriaEvento extends Fragment {
                 Evento evento = new Evento();
                 evento.setNomeEvento(nome.getEditText().getText().toString());
                 evento.setEnderecoRua(rua.getEditText().getText().toString());
-                evento.setEnderecoNumero(Integer.parseInt(numero.getEditText().getText().toString()));
+                if (numero.getEditText().getText().toString().isEmpty()){
+                    evento.setEnderecoNumero(null);
+                } else {
+                    evento.setEnderecoNumero(Integer.parseInt(numero.getEditText().getText().toString()));
+                }
                 evento.setEnderecoComplemento(complemento.getEditText().getText().toString());
                 evento.setEnderecoBairro(bairro.getEditText().getText().toString());
                 evento.setEnderecoCidade(cidade.getEditText().getText().toString());
